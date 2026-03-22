@@ -292,7 +292,7 @@
 
     <div class="hero-content">
         <div class="hero-pill">
-            <span data-i18n="hero_pill">Atendimento em Portugues para brasileiros nos EUA</span>
+            <span data-i18n="hero_pill">As melhores ofertas de viagem em um so lugar</span>
             <span class="hero-pill-badge" data-i18n="hero_new">NOVO</span>
         </div>
         <h1 data-i18n-html="hero_title">Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span></h1>
@@ -755,6 +755,10 @@ document.addEventListener('click', e => {
     if (!e.target.closest('.search-field')) {
         document.querySelectorAll('.airport-ac').forEach(ac => ac.classList.remove('show'));
     }
+    if (!e.target.closest('.lang-switch')) {
+        const dd = document.getElementById('langDropdown');
+        if (dd) dd.classList.remove('show');
+    }
 });
 
 // Swap airports
@@ -808,7 +812,7 @@ const LANG = {
     pt: {
         nav_flights:'Voos', nav_hotels:'Hoteis', nav_cruises:'Cruzeiros', nav_deals:'Ofertas',
         trip_roundtrip:'Ida e Volta', trip_oneway:'Somente Ida', trip_multi:'Multi-destinos',
-        hero_pill:'Atendimento em Portugues para brasileiros nos EUA', hero_new:'NOVO',
+        hero_pill:'As melhores ofertas de viagem em um so lugar', hero_new:'NOVO',
         hero_title:'Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span>',
         hero_sub:'Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.',
         btn_search:'Buscar', lbl_origin:'Origem', lbl_dest:'Destino', lbl_depart:'Ida', lbl_return:'Volta', lbl_pax:'Passageiros',
@@ -835,7 +839,7 @@ const LANG = {
     en: {
         nav_flights:'Flights', nav_hotels:'Hotels', nav_cruises:'Cruises', nav_deals:'Deals',
         trip_roundtrip:'Round Trip', trip_oneway:'One Way', trip_multi:'Multi-city',
-        hero_pill:'Personalized service for travelers in the USA', hero_new:'NEW',
+        hero_pill:'The best travel deals in one place', hero_new:'NEW',
         hero_title:'Find the Best<br><span class="gradient">Flight Deals</span>',
         hero_sub:'Compare prices on <strong>flights</strong>, hotels and cruises in real time. Personalized service with a certified travel agent.',
         btn_search:'Search', lbl_origin:'From', lbl_dest:'To', lbl_depart:'Depart', lbl_return:'Return', lbl_pax:'Passengers',
@@ -862,7 +866,7 @@ const LANG = {
     es: {
         nav_flights:'Vuelos', nav_hotels:'Hoteles', nav_cruises:'Cruceros', nav_deals:'Ofertas',
         trip_roundtrip:'Ida y Vuelta', trip_oneway:'Solo Ida', trip_multi:'Multi-destinos',
-        hero_pill:'Atencion personalizada para viajeros en EE.UU.', hero_new:'NUEVO',
+        hero_pill:'Las mejores ofertas de viaje en un solo lugar', hero_new:'NUEVO',
         hero_title:'Encuentra las Mejores<br><span class="gradient">Ofertas de Vuelos</span>',
         hero_sub:'Compara precios de <strong>vuelos</strong>, hoteles y cruceros en tiempo real. Atencion personalizada con agente certificado.',
         btn_search:'Buscar', lbl_origin:'Origen', lbl_dest:'Destino', lbl_depart:'Ida', lbl_return:'Vuelta', lbl_pax:'Pasajeros',
@@ -901,16 +905,16 @@ function setLang(lang) {
     document.querySelectorAll('.lang-option').forEach(o => o.classList.toggle('active', o.dataset.lang === lang));
     document.documentElement.lang = lang;
 
-    const t = LANG[lang];
+    const tr = LANG[lang];
     // Update text content
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
-        if (t[key]) el.textContent = t[key];
+        if (tr[key]) el.textContent = tr[key];
     });
     // Update HTML content (for bold/spans)
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
         const key = el.getAttribute('data-i18n-html');
-        if (t[key]) el.innerHTML = t[key];
+        if (tr[key]) el.innerHTML = tr[key];
     });
     // Update labels
     const labelMap = {
@@ -921,7 +925,7 @@ function setLang(lang) {
         const field = document.getElementById(id);
         if (field && field.parentElement) {
             const label = field.parentElement.querySelector('label');
-            if (label && t[key]) label.textContent = t[key];
+            if (label && tr[key]) label.textContent = tr[key];
         }
     });
 }
