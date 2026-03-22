@@ -165,42 +165,50 @@
         .res-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:0 4px;}
         .res-head h2{font-size:18px;font-weight:700;color:var(--w);}
         .res-count{font-size:13px;color:var(--t3);}
-        .res-card{background:rgba(255,255,255,.1);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.18);border-radius:18px;margin-bottom:10px;transition:all .3s;overflow:hidden;position:relative;}
-        .res-card:hover{border-color:rgba(255,255,255,.28);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.2);}
-        .res-inner{display:flex;align-items:center;padding:20px;gap:16px;}
-        [data-theme="light"] .res-card{background:#fff;backdrop-filter:none;border-color:rgba(0,0,0,.08);box-shadow:0 2px 12px rgba(0,0,0,.06);}
-        [data-theme="light"] .res-card:hover{border-color:rgba(255,82,82,.15);box-shadow:0 8px 32px rgba(0,0,0,.1);}
-        [data-theme="light"] .res-air-name{color:#1a1a2e;}
-        [data-theme="light"] .res-ep .time{color:#1a1a2e;}
-        [data-theme="light"] .res-price .amt{color:#1a1a2e;}
-        [data-theme="light"] .best{background:var(--green);color:#fff;}
-        .res-air{display:flex;align-items:center;gap:12px;min-width:140px;}
-        .res-air img{width:48px;height:48px;border-radius:12px;object-fit:contain;background:rgba(255,255,255,.9);padding:5px;}
-        [data-theme="light"] .res-air img{background:rgba(0,0,0,.04);}
-        .res-air-name{font-size:13px;font-weight:700;color:var(--w);}
-        .res-air-code{font-size:11px;color:var(--t3);}
-        .res-route{flex:1;display:flex;align-items:center;gap:12px;}
-        .res-ep{text-align:center;min-width:60px;}
-        .res-ep .time{font-family:Outfit;font-size:22px;font-weight:800;color:var(--w);}
-        .res-ep .code{font-size:11px;color:var(--t3);font-weight:600;letter-spacing:.5px;}
-        .res-line{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 8px;}
-        .res-line-bar{width:100%;height:2px;background:rgba(148,163,184,.4);position:relative;}
-        .res-line-bar::before,.res-line-bar::after{content:'';position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:rgba(148,163,184,.5);}
+        /* Outer glass card */
+        .res-card{background:rgba(255,255,255,.08);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.15);border-radius:20px;margin-bottom:14px;transition:all .3s;overflow:hidden;position:relative;padding:18px;}
+        .res-card:hover{border-color:rgba(255,255,255,.25);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.25);}
+        [data-theme="light"] .res-card{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.08);box-shadow:0 2px 16px rgba(0,0,0,.06);backdrop-filter:blur(16px);}
+        [data-theme="light"] .res-card:hover{border-color:rgba(0,0,0,.12);box-shadow:0 8px 32px rgba(0,0,0,.1);}
+        /* Card header — route + date */
+        .res-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:0 2px;}
+        .res-header i{font-size:16px;color:rgba(255,255,255,.5);}
+        .res-header-txt{font-size:13px;color:rgba(255,255,255,.7);font-weight:500;}
+        .res-header-sub{font-size:12px;color:rgba(255,255,255,.4);}
+        [data-theme="light"] .res-header i{color:rgba(0,0,0,.3);}
+        [data-theme="light"] .res-header-txt{color:rgba(0,0,0,.6);}
+        [data-theme="light"] .res-header-sub{color:rgba(0,0,0,.35);}
+        /* Inner white card — flight details */
+        .res-inner{background:rgba(255,255,255,.95);border-radius:14px;padding:18px 20px;color:#1a1a2e;}
+        [data-theme="light"] .res-inner{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+        /* Airline row inside inner card */
+        .res-airline-row{font-size:13px;font-weight:600;color:#475569;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+        .res-airline-row .cabin-tag{font-size:11px;color:#94a3b8;font-weight:500;}
+        /* Flight route inside inner card */
+        .res-flight{display:flex;align-items:center;gap:14px;}
+        .res-air-logo{width:44px;height:44px;border-radius:10px;object-fit:contain;background:#f1f5f9;padding:4px;flex-shrink:0;}
+        .res-times{flex:1;display:flex;align-items:center;gap:8px;}
+        .res-ep{text-align:center;min-width:50px;}
+        .res-ep .time{font-family:Outfit;font-size:24px;font-weight:800;color:#1a1a2e;line-height:1.1;}
+        .res-ep .code{font-size:11px;color:#94a3b8;font-weight:600;letter-spacing:.5px;margin-top:2px;}
+        .res-line{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 4px;}
+        .res-line-bar{width:100%;height:2px;background:#cbd5e1;position:relative;}
+        .res-line-bar::before,.res-line-bar::after{content:'';position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:#94a3b8;}
         .res-line-bar::before{left:0;}
         .res-line-bar::after{right:0;}
-        .res-line .plane{color:var(--coral);font-size:12px;margin-top:-10px;background:transparent;padding:0 4px;}
-        [data-theme="light"] .res-line-bar{background:rgba(0,0,0,.15);}
-        [data-theme="light"] .res-line-bar::before,[data-theme="light"] .res-line-bar::after{background:rgba(0,0,0,.2);}
-        .res-stops{font-size:10px;color:var(--t3);font-weight:600;}
-        .res-dur{font-size:10px;color:var(--t4);}
-        .res-price{text-align:right;min-width:130px;padding-left:16px;border-left:1px solid rgba(148,163,184,.2);}
-        .res-price .amt{font-family:Outfit;font-size:28px;font-weight:800;color:var(--w);}
-        .res-price .cur{font-size:14px;color:var(--t3);}
-        .res-price .pp{font-size:11px;color:var(--t3);}
-        [data-theme="light"] .res-price{border-left-color:rgba(0,0,0,.08);}
-        .res-price .cta{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:9px 16px;background:#25d366;border-radius:10px;color:var(--w);font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;}
-        .res-price .cta:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,211,102,.3);}
-        .best{position:absolute;top:0;right:0;padding:5px 14px;background:var(--green);color:var(--w);font-size:10px;font-weight:800;letter-spacing:.5px;border-radius:0 18px 0 12px;text-transform:uppercase;}
+        .res-dur{font-size:11px;color:#94a3b8;font-weight:500;}
+        .res-stops{font-size:10px;font-weight:600;}
+        /* Bottom — price + CTA */
+        .res-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:0 2px;}
+        .res-price{display:flex;align-items:baseline;gap:6px;}
+        .res-price .amt{font-family:Outfit;font-size:32px;font-weight:800;color:var(--w);}
+        .res-price .pp{font-size:12px;color:rgba(255,255,255,.45);font-weight:500;}
+        [data-theme="light"] .res-price .amt{color:#1a1a2e;}
+        [data-theme="light"] .res-price .pp{color:#94a3b8;}
+        .res-cta{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:linear-gradient(135deg,var(--coral),var(--orange));border-radius:50px;color:#fff;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;font-family:Inter;white-space:nowrap;}
+        .res-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,82,82,.3);}
+        .res-cta i{font-size:16px;}
+        .best{position:absolute;top:0;right:0;padding:5px 14px;background:var(--green);color:#fff;font-size:10px;font-weight:800;letter-spacing:.5px;border-radius:0 20px 0 12px;text-transform:uppercase;z-index:1;}
         .skel{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:18px;height:90px;margin-bottom:10px;}
         @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
@@ -286,11 +294,10 @@
             .swap{display:none;}
             .sb-opts{gap:4px;padding:10px 12px;}
             .opt-btn{font-size:11px;padding:6px 10px;}
-            .res-inner{flex-direction:column;text-align:center;gap:12px;}
-            .res-air{min-width:auto;justify-content:center;}
-            .res-route{flex-direction:column;gap:8px;width:100%;}
-            .res-price{min-width:auto;border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:12px;width:100%;}
-            .res-price .cta{width:100%;justify-content:center;padding:12px;}
+            .res-card{padding:14px;}
+            .res-flight{flex-wrap:wrap;}
+            .res-bottom{flex-direction:column;gap:12px;align-items:stretch;}
+            .res-cta{justify-content:center;width:100%;padding:14px;}
             .dest-grid{grid-template-columns:1fr 1fr;}
             .dest-lg{grid-column:span 2;}
             .feat-grid{grid-template-columns:1fr 1fr;}
@@ -335,10 +342,13 @@
             .sec-h h2{font-size:26px;}
             .sec-h p{font-size:13px;}
             .results{margin:20px auto 0;padding:0 4px;}
-            .res-card{border-radius:14px;margin-bottom:8px;}
-            .res-inner{padding:14px;}
-            .res-ep .time{font-size:18px;}
-            .res-price .amt{font-size:22px;}
+            .res-card{border-radius:14px;margin-bottom:10px;padding:12px;}
+            .res-inner{padding:14px 16px;border-radius:12px;}
+            .res-ep .time{font-size:20px;}
+            .res-price .amt{font-size:26px;}
+            .res-air-logo{width:36px;height:36px;}
+            .res-header-txt{font-size:12px;}
+            .res-cta{font-size:12px;padding:12px 20px;}
             .ft-inner{grid-template-columns:1fr;gap:24px;text-align:center;}
             .ft-social{justify-content:center;}
             footer{padding:40px 14px 30px;}
@@ -1286,8 +1296,27 @@ function doSearch(){
         document.getElementById('resCount').textContent=`${flights.length} ${t('found')}`;
         list.innerHTML=flights.map((fl,i)=>{
             const stops=fl.stops===0?t('direct'):fl.stops===1?t('stop1'):`${fl.stops} ${t('stops')}`;
+            const stopsColor=fl.stops===0?'#06d6a0':fl.stops===1?'#ffb347':'#94a3b8';
             const msg=encodeURIComponent(t('wamsg').replace('{f}',f).replace('{t}',tt).replace('{d}',d).replace('{p}',fl.price));
-            return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}<div class="res-inner"><div class="res-air"><img src="${fl.airlineLogo||''}" onerror="this.style.display='none'"><div><div class="res-air-name">${fl.airline}</div><div class="res-air-code">${fl.airlineCode||''}</div></div></div><div class="res-route"><div class="res-ep"><div class="time">${fl.departureTime||'--:--'}</div><div class="code">${fl.origin||f}</div></div><div class="res-line"><span class="plane"><i class="bi bi-airplane-fill"></i></span><div class="res-line-bar"></div><div class="res-stops" style="color:${fl.stops===0?'var(--green)':fl.stops===1?'var(--gold)':'var(--t3)'};">${stops}</div><div class="res-dur">${fl.duration||''}</div></div><div class="res-ep"><div class="time">${fl.arrivalTime||'--:--'}</div><div class="code">${fl.destination||tt}</div></div></div><div class="res-price"><div class="amt"><span class="cur">$ </span>${fl.price}</div><div class="pp">${t('pp')}</div><a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div></div>`;
+            const tripLabel=trip==='rt'?t('rt'):t('ow');
+            const cabinLabel=cabin==='economy'?t('eco'):cabin==='business'?t('biz'):cabin==='first'?t('first'):'Premium';
+            const paxLabel=paxA+(paxC>0?' + '+paxC:'')+(paxI>0?' + '+paxI:'');
+            const logoHQ=fl.airlineCode?`https://pics.avs.io/200/200/${fl.airlineCode}.png`:fl.airlineLogo||'';
+            const originCity=fl.originCity||f;
+            const destCity=fl.destinationCity||tt;
+            return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
+<div class="res-header"><i class="bi bi-airplane-fill"></i><div><div class="res-header-txt">${originCity} → ${destCity} · ${tripLabel}</div><div class="res-header-sub">${fl.departureDate||d} · ${paxLabel} pax</div></div></div>
+<div class="res-inner">
+<div class="res-airline-row">${fl.airline} <span class="cabin-tag">· ${cabinLabel}</span></div>
+<div class="res-flight">
+<img class="res-air-logo" src="${logoHQ}" alt="${fl.airline}" onerror="this.src='${fl.airlineLogo||''}';this.onerror=null;">
+<div class="res-times">
+<div class="res-ep"><div class="time">${fl.departureTime||'--:--'}</div><div class="code">${fl.origin||f}</div></div>
+<div class="res-line"><div class="res-line-bar"></div><div class="res-dur">${fl.duration||''}</div><div class="res-stops" style="color:${stopsColor};">${stops}</div></div>
+<div class="res-ep"><div class="time">${fl.arrivalTime||'--:--'}</div><div class="code">${fl.destination||tt}</div></div>
+</div></div></div>
+<div class="res-bottom"><div class="res-price"><div class="amt">$${fl.price}</div><div class="pp">${t('pp')}</div></div>
+<a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
         }).join('');
     }).catch(()=>{btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('search')}`;list.innerHTML='<div style="text-align:center;padding:40px;color:var(--coral);">Error</div>';});
 }
@@ -1305,7 +1334,12 @@ function searchHotels(){
         if(!h.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--t3);">No hotels found.</div>';return;}
         list.innerHTML=h.map((ht,i)=>{
             const msg=encodeURIComponent(`Hi! Hotel ${ht.name} in ${d} for $${ht.price}/night.`);
-            return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}<div class="res-inner">${ht.photo?`<img src="${ht.photo}" style="width:80px;height:60px;border-radius:10px;object-fit:cover;">`:''}<div style="flex:1;"><div style="font-size:15px;font-weight:700;color:var(--w);">${ht.name}</div><div style="color:var(--gold);font-size:12px;margin-top:3px;">${'★'.repeat(ht.stars||0)}</div>${ht.rating?`<div style="font-size:11px;color:var(--t3);">${ht.rating}/10</div>`:''}</div><div class="res-price"><div class="amt"><span class="cur">$ </span>${ht.price}</div><div class="pp">${t('pn')}</div><a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div></div>`;
+            return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
+<div class="res-header"><i class="bi bi-building"></i><div><div class="res-header-txt">${ht.name}</div><div class="res-header-sub">${d} · ${ci} → ${co}</div></div></div>
+<div class="res-inner" style="display:flex;align-items:center;gap:16px;">
+${ht.photo?`<img src="${ht.photo}" style="width:80px;height:60px;border-radius:10px;object-fit:cover;flex-shrink:0;">`:''}<div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#1a1a2e;">${ht.name}</div><div style="color:#f59e0b;font-size:13px;margin-top:3px;">${'★'.repeat(ht.stars||0)}</div>${ht.rating?`<div style="font-size:12px;color:#64748b;margin-top:2px;">${ht.rating}/10</div>`:''}</div></div>
+<div class="res-bottom"><div class="res-price"><div class="amt">$${ht.price}</div><div class="pp">${t('pn')}</div></div>
+<a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
         }).join('');
     });
 }
