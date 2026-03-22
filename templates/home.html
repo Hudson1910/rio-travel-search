@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rio Travel — Passagens Aereas, Hoteis & Cruzeiros</title>
     <meta name="description" content="Encontre as melhores ofertas de voos, hoteis e cruzeiros. Atendimento em portugues para brasileiros nos EUA.">
+    <!-- Mobile optimization -->
+    <meta name="theme-color" content="#05070e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Rio Travel">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="/static/manifest.json">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
     <style>
@@ -237,28 +244,73 @@
         .footer-copy p { font-size:11px; color:var(--gray-700); }
 
         /* ===== RESPONSIVE ===== */
+        /* iPad landscape (1024px) */
+        @media (max-width:1024px) {
+            .hero h1 { font-size:48px; }
+            .search-form { flex-wrap:wrap; }
+            .search-field { min-width:calc(50% - 6px); }
+            .search-btn { width:100%; justify-content:center; margin-top:4px; }
+        }
+
+        /* iPad portrait + tablets (768px-900px) */
         @media (max-width:900px) {
-            .hero h1 { font-size:40px; letter-spacing:-2px; }
-            .search-form { flex-direction:column; }
-            .search-btn { padding:18px; justify-content:center; }
-            .result-inner { flex-direction:column; gap:16px; text-align:center; }
+            .hero { padding:90px 20px 40px; min-height:auto; }
+            .hero h1 { font-size:36px; letter-spacing:-1.5px; }
+            .hero-sub { font-size:16px; }
+            .search-form { flex-direction:column; gap:8px; }
+            .search-field { min-width:100% !important; flex:1 1 100% !important; }
+            .search-btn { padding:18px; justify-content:center; width:100%; }
+            .trip-type { flex-wrap:wrap; }
+            .trip-type-btn { flex:1; min-width:auto; font-size:11px; padding:8px 12px; }
+            .result-inner { flex-direction:column; gap:14px; text-align:center; }
             .result-airline { min-width:auto; justify-content:center; }
-            .result-route { flex-direction:column; gap:8px; padding:0; }
-            .result-pricing { min-width:auto; border-left:none; padding-left:0; border-top:1px solid rgba(255,255,255,0.04); padding-top:16px; }
-            .features-grid { grid-template-columns:1fr; }
-            .routes-grid { grid-template-columns:repeat(2,1fr); }
-            .agent-inner { flex-direction:column; text-align:center; }
-            .agent-actions { justify-content:center; }
+            .result-route { flex-direction:column; gap:10px; padding:0; width:100%; }
+            .result-path { padding:0 30px; }
+            .result-pricing { min-width:auto; border-left:none; padding-left:0; border-top:1px solid rgba(255,255,255,0.04); padding-top:16px; width:100%; }
+            .result-pricing .cta { width:100%; justify-content:center; padding:12px; font-size:14px; }
+            .features-grid { grid-template-columns:1fr; gap:12px; }
+            .routes-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+            .agent-inner { flex-direction:column; text-align:center; padding:32px 24px; }
+            .agent-actions { justify-content:center; flex-wrap:wrap; }
+            .agent-actions a { flex:1; justify-content:center; min-width:140px; }
+            .nav { padding:0 16px; }
             .nav-links { display:none; }
             .nav-phone { display:none; }
+            .nav-brand span { font-size:17px; }
             .footer-inner { flex-direction:column; gap:16px; text-align:center; }
+            .footer-links { flex-wrap:wrap; justify-content:center; }
+            .search-box { border-radius:20px; padding:4px; }
+            .search-tabs { gap:2px; }
+            .search-tab { padding:10px 8px; font-size:12px; gap:4px; }
+            .search-tab i { font-size:16px; }
+            /* Swap button hidden on mobile, not needed */
+            .swap-btn-wrap { display:none; }
+            .pax-dropdown { min-width:280px; left:auto; right:0; }
+            .airport-ac { max-height:240px; }
+            .section-header h2 { font-size:28px; }
         }
+
+        /* Small phones (480px) */
         @media (max-width:480px) {
-            .hero { padding:80px 16px 40px; }
-            .hero h1 { font-size:32px; }
-            .routes-grid { grid-template-columns:1fr 1fr; }
+            .hero { padding:76px 14px 30px; }
+            .hero h1 { font-size:28px; letter-spacing:-1px; }
+            .hero-sub { font-size:14px; margin-bottom:28px; }
+            .hero-pill { font-size:10px; padding:4px 10px 4px 12px; }
+            .hero-pill-badge { font-size:9px; padding:2px 8px; }
+            .search-wrapper { margin-top:0; }
+            .routes-grid { grid-template-columns:1fr; }
+            .route-card { padding:18px 16px; }
+            .feat-card { padding:24px 20px; }
             .wa-float .wa-text { display:none; }
-            .wa-float { padding:14px; border-radius:50%; }
+            .wa-float { width:52px; height:52px; border-radius:50%; padding:0; justify-content:center; }
+            .wa-float i { font-size:24px; }
+            .result-card { border-radius:16px; }
+            .result-endpoint .time { font-size:20px; }
+            .result-pricing .price { font-size:24px; }
+            .pax-dropdown { min-width:calc(100vw - 40px); right:-60px; }
+            .lang-dropdown { right:-20px; }
+            .section-header h2 { font-size:24px; }
+            .section-header p { font-size:14px; }
         }
     </style>
 </head>
@@ -338,7 +390,7 @@
                     <input type="text" id="origin" placeholder="Salt Lake City (SLC)" autocomplete="off" oninput="searchAirport(this,'originAC')" onfocus="searchAirport(this,'originAC')">
                     <div class="airport-ac" id="originAC"></div>
                 </div>
-                <div style="display:flex;align-items:center;margin:0 -4px;z-index:1;">
+                <div class="swap-btn-wrap" style="display:flex;align-items:center;margin:0 -4px;z-index:1;">
                     <button onclick="swapAirports()" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);background:var(--bg3);color:var(--gray-400);cursor:pointer;font-size:14px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.color='var(--coral)'" onmouseout="this.style.color='var(--gray-400)'"><i class="bi bi-arrow-left-right"></i></button>
                 </div>
                 <div class="search-field" style="flex:1.3;position:relative;">
