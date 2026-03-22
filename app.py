@@ -14,23 +14,41 @@ def home():
 
 @app.route('/api/flights')
 def api_flights():
-    """Search flights."""
+    """Search flights via Google Flights."""
     origin = request.args.get('origin', '').strip().upper()
     destination = request.args.get('destination', '').strip().upper()
     departure = request.args.get('departure', '')
     ret = request.args.get('return', '')
     adults = int(request.args.get('adults', 1))
+    children = int(request.args.get('children', 0))
+    infants = int(request.args.get('infants', 0))
+    cabin = request.args.get('cabin', 'ECONOMY').upper()
+    lang = request.args.get('lang', 'en-US')
+    currency = request.args.get('currency', 'USD')
+    stops = request.args.get('stops', None)
+    if stops is not None:
+        stops = int(stops)
 
     if not origin or not destination or not departure:
         return jsonify({'error': 'Missing required fields', 'flights': []})
 
-    results = search.search_flights(origin, destination, departure, ret or None, adults)
+    results = search.search_flights(
+        origin, destination, departure,
+        return_date=ret or None,
+        adults=adults,
+        children=children,
+        infants=infants,
+        cabin=cabin,
+        lang=lang,
+        currency=currency,
+        stops=stops,
+    )
     return jsonify(results)
 
 
 @app.route('/api/hotels')
 def api_hotels():
-    """Search hotels."""
+    """Search hotels via Booking COM."""
     destination = request.args.get('destination', '').strip()
     checkin = request.args.get('checkin', '')
     checkout = request.args.get('checkout', '')

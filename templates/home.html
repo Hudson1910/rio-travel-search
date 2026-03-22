@@ -217,6 +217,15 @@
         .res-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,82,82,.3);}
         .res-cta i{font-size:16px;}
         .best{position:absolute;top:0;right:0;padding:5px 14px;background:var(--green);color:#fff;font-size:10px;font-weight:800;letter-spacing:.5px;border-radius:0 20px 0 12px;text-transform:uppercase;z-index:1;}
+        /* Layover info */
+        .res-layover{display:flex;align-items:center;gap:6px;margin-top:10px;padding:8px 12px;border-radius:8px;background:rgba(255,179,71,.06);font-size:11px;color:#ffb347;font-weight:500;}
+        .res-layover i{font-size:13px;}
+        [data-theme="light"] .res-layover{background:rgba(245,158,11,.06);color:#d97706;}
+        /* Detail tags */
+        .res-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+        .res-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);background:rgba(255,255,255,.05);}
+        .res-tag i{font-size:11px;}
+        [data-theme="light"] .res-tag{color:#64748b;background:rgba(0,0,0,.04);}
         .skel{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:18px;height:90px;margin-bottom:10px;}
         @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
@@ -1294,15 +1303,24 @@ function doSearch(){
     list.innerHTML='<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
     document.getElementById('resTitle').textContent=`${f} → ${tt}`;
     document.getElementById('resCount').textContent=t('searching');
-    let url=`/api/flights?origin=${f}&destination=${tt}&departure=${d}&adults=${paxA}`;
+    const cabinMap={economy:'ECONOMY',premium:'PREMIUM_ECONOMY',business:'BUSINESS',first:'FIRST'};
+    const langMap={pt:'pt-BR',en:'en-US',es:'es-MX'};
+    let url=`/api/flights?origin=${f}&destination=${tt}&departure=${d}&adults=${paxA}&children=${paxC}&infants=${paxI}&cabin=${cabinMap[cabin]||'ECONOMY'}&lang=${langMap[lang]||'en-US'}&currency=USD`;
     const r=document.getElementById('ret').value;
     if(trip==='rt'&&r)url+=`&return=${r}`;
     fetch(url).then(r=>r.json()).then(data=>{
         btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('search')}`;
         const flights=data.flights||[];
-        if(!flights.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--t3);"><i class="bi bi-airplane" style="font-size:32px;"></i><p style="margin-top:12px;">${t('noFlights')}</p></div>`;document.getElementById('resCount').textContent='';return;}
+        if(!flights.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--t3);"><i class="bi bi-airplane" style="font-size:32px;"></i><p style="margin-top:12px;">${t('noFlights')}</p>${data.error?`<p style="font-size:11px;margin-top:8px;color:var(--t4);">${data.error}</p>`:''}</div>`;document.getElementById('resCount').textContent='';return;}
         document.getElementById('resCount').textContent=`${flights.length} ${t('found')}`;
-        list.innerHTML=flights.map((fl,i)=>{
+        // Price insight badge
+        const pi=data.priceInsight||{};
+        let piBadge='';
+        if(pi.current && pi.low && pi.low.length){
+            const lowVal=pi.low[0]?.value||0;
+            if(pi.current < lowVal) piBadge=`<div style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:8px;background:rgba(6,214,160,.1);color:#06d6a0;font-size:11px;font-weight:700;margin-bottom:10px;"><i class="bi bi-graph-down-arrow"></i> ${lang==='pt'?'Precos abaixo do normal':lang==='es'?'Precios debajo de lo normal':'Prices are below average'}</div>`;
+        }
+        list.innerHTML=(piBadge?`<div style="text-align:center;">${piBadge}</div>`:'')+flights.map((fl,i)=>{
             const stops=fl.stops===0?t('direct'):fl.stops===1?t('stop1'):`${fl.stops} ${t('stops')}`;
             const stopsColor=fl.stops===0?'#06d6a0':fl.stops===1?'#ffb347':'#94a3b8';
             const tripLabel=trip==='rt'?t('rt'):t('ow');
@@ -1312,45 +1330,62 @@ function doSearch(){
             if(paxC>0)paxParts.push(paxC+' '+t('wamsg_children'));
             if(paxI>0)paxParts.push(paxI+' '+t('wamsg_infants'));
             const paxLabel=paxParts.join(', ');
-            const bagParts=[];
-            if(paxCB>0)bagParts.push(paxCB+' '+t('wamsg_carry'));
-            if(paxDB>0)bagParts.push(paxDB+' '+t('wamsg_checked'));
+            // Layover info
+            const layoverTxt=(fl.layovers||[]).map(l=>`${l.city} (${l.durationLabel})`).join(' → ');
+            // Bags info
+            const bagsInfo=[];
+            if(fl.bagsCarryOn!==null&&fl.bagsCarryOn!==undefined) bagsInfo.push(fl.bagsCarryOn>0?'<i class="bi bi-bag-check-fill" style="color:#06d6a0;"></i>':'<i class="bi bi-bag-x-fill" style="color:#ff5252;"></i>');
+            if(fl.bagsChecked!==null&&fl.bagsChecked!==undefined) bagsInfo.push(fl.bagsChecked>0?'<i class="bi bi-luggage-fill" style="color:#06d6a0;"></i>':'<i class="bi bi-luggage-fill" style="color:#ff5252;"></i>');
+            // CO2
+            const co2kg=fl.co2?Math.round(fl.co2/1000):0;
+            const co2diff=fl.co2Diff||0;
+            const co2Color=co2diff<=0?'#06d6a0':'#ff5252';
+            // WhatsApp message
             const retDate=document.getElementById('ret').value;
             const msgLines=[
                 t('wamsg_head'),
                 '',
-                '✈️ '+t('wamsg_airline')+': '+fl.airline+(fl.airlineCode?' ('+fl.airlineCode+')':''),
-                '🛫 '+t('wamsg_route')+': '+(fl.originCity||f)+' ('+( fl.origin||f)+') → '+(fl.destinationCity||tt)+' ('+(fl.destination||tt)+')',
+                '✈️ '+t('wamsg_airline')+': '+fl.airline+(fl.flightNumber?' | '+fl.flightNumber:''),
+                '✈️ '+(fl.aircraft||''),
+                '🛫 '+t('wamsg_route')+': '+(fl.originAirport||fl.origin||f)+' ('+( fl.origin||f)+') → '+(fl.destinationAirport||fl.destination||tt)+' ('+(fl.destination||tt)+')',
                 '📅 '+t('wamsg_date')+': '+(fl.departureDate||d)+(trip==='rt'&&retDate?' → '+retDate:''),
                 '🕐 '+t('wamsg_dep')+': '+(fl.departureTime||'--:--')+' | '+t('wamsg_arr')+': '+(fl.arrivalTime||'--:--'),
                 '⏱️ '+t('wamsg_dur')+': '+(fl.duration||'N/A'),
-                '📍 '+t('wamsg_stops')+': '+stops,
-                '💺 '+t('wamsg_class')+': '+cabinLabel,
+                '📍 '+t('wamsg_stops')+': '+stops+(layoverTxt?' ('+layoverTxt+')':''),
+                '💺 '+t('wamsg_class')+': '+cabinLabel+(fl.legroom?' | Legroom: '+fl.legroom:''),
                 '🎫 '+t('wamsg_trip')+': '+tripLabel,
                 '👥 '+t('wamsg_pax')+': '+paxLabel,
-                bagParts.length?'🧳 '+t('wamsg_bags')+': '+bagParts.join(', '):'',
                 '',
                 '💰 '+t('wamsg_price')+': $'+fl.price+' '+t('pp'),
-            ].filter(l=>l!==undefined).join('\n');
+            ].filter(l=>l!==undefined&&l!=='✈️ ').join('\n');
             const msg=encodeURIComponent(msgLines);
-            const logoHQ=fl.airlineCode?`https://pics.avs.io/200/200/${fl.airlineCode}.png`:fl.airlineLogo||'';
             const originCity=fl.originCity||f;
             const destCity=fl.destinationCity||tt;
+            // Detail tags row
+            const tags=[];
+            if(fl.flightNumber)tags.push(`<span class="res-tag"><i class="bi bi-hash"></i> ${fl.flightNumber}</span>`);
+            if(fl.aircraft)tags.push(`<span class="res-tag"><i class="bi bi-airplane-engines"></i> ${fl.aircraft}</span>`);
+            if(fl.legroom)tags.push(`<span class="res-tag"><i class="bi bi-arrows-expand"></i> ${fl.legroom}</span>`);
+            if(bagsInfo.length)tags.push(`<span class="res-tag">${bagsInfo.join(' ')}</span>`);
+            if(co2kg)tags.push(`<span class="res-tag" style="color:${co2Color};"><i class="bi bi-leaf"></i> ${co2kg}kg CO₂ (${co2diff>0?'+':''}${co2diff}%)</span>`);
             return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
-<div class="res-header"><i class="bi bi-airplane-fill"></i><div><div class="res-header-txt">${originCity} → ${destCity} · ${tripLabel}</div><div class="res-header-sub">${fl.departureDate||d} · ${paxLabel} pax</div></div></div>
+<div class="res-header"><i class="bi bi-airplane-fill"></i><div><div class="res-header-txt">${originCity} → ${destCity} · ${tripLabel}</div><div class="res-header-sub">${fl.departureDate||d} · ${paxLabel}</div></div></div>
 <div class="res-inner">
 <div class="res-airline-row">${fl.airline} <span class="cabin-tag">· ${cabinLabel}</span></div>
 <div class="res-flight">
-<img class="res-air-logo" src="${logoHQ}" alt="${fl.airline}" onerror="this.src='${fl.airlineLogo||''}';this.onerror=null;">
+<img class="res-air-logo" src="${fl.airlineLogo||''}" alt="${fl.airline}" onerror="this.style.display='none'">
 <div class="res-times">
 <div class="res-ep"><div class="time">${fl.departureTime||'--:--'}</div><div class="code">${fl.origin||f}</div></div>
 <div class="res-line"><div class="res-line-bar"></div><div class="res-dur">${fl.duration||''}</div><div class="res-stops" style="color:${stopsColor};">${stops}</div></div>
 <div class="res-ep"><div class="time">${fl.arrivalTime||'--:--'}</div><div class="code">${fl.destination||tt}</div></div>
-</div></div></div>
+</div></div>
+${layoverTxt?`<div class="res-layover"><i class="bi bi-clock-history"></i> ${layoverTxt}</div>`:''}
+${tags.length?`<div class="res-tags">${tags.join('')}</div>`:''}
+</div>
 <div class="res-bottom"><div class="res-price"><div class="amt">$${fl.price}</div><div class="pp">${t('pp')}</div></div>
 <a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
         }).join('');
-    }).catch(()=>{btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('search')}`;list.innerHTML='<div style="text-align:center;padding:40px;color:var(--coral);">Error</div>';});
+    }).catch(e=>{btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('search')}`;list.innerHTML='<div style="text-align:center;padding:40px;color:var(--coral);">Error: '+e.message+'</div>';});
 }
 
 // ========== SEARCH HOTELS ==========
