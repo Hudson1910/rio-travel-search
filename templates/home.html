@@ -4,226 +4,309 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rio Travel — Passagens Aereas, Hoteis & Cruzeiros</title>
-    <meta name="description" content="Encontre as melhores ofertas de voos, hoteis e cruzeiros. Atendimento personalizado em portugues.">
+    <meta name="description" content="Encontre as melhores ofertas de voos, hoteis e cruzeiros. Atendimento em portugues para brasileiros nos EUA.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --navy: #0a0e1a; --navy-light: #131830; --navy-mid: #1a2040;
-            --coral: #ff6b6b; --coral-dark: #e55a5a; --yellow: #feca57; --sky: #48dbfb; --purple: #a29bfe;
-            --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0; --slate-300: #cbd5e1;
-            --slate-400: #94a3b8; --slate-500: #64748b; --slate-600: #475569; --slate-700: #334155;
-            --white: #ffffff;
+            --bg: #05070e; --bg2: #0a0f1e; --bg3: #101628; --bg4: #161d35;
+            --coral: #ff5757; --coral-glow: rgba(255,87,87,0.15); --orange: #ff8c42; --yellow: #ffd166;
+            --sky: #4cc9f0; --blue: #4361ee; --purple: #7b2ff7; --pink: #f72585;
+            --green: #06d6a0; --green-glow: rgba(6,214,160,0.12);
+            --white: #ffffff; --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1; --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569;
+            --gray-700: #334155; --gray-800: #1e293b; --gray-900: #0f172a;
+            --text: #e2e8f0; --text-muted: #64748b;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-        h1,h2,h3,h4 { font-family: 'Outfit', sans-serif; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        h1,h2,h3,h4,h5 { font-family: 'Outfit', sans-serif; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+        @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+        @keyframes shimmer { 0% { background-position:200% 0; } 100% { background-position:-200% 0; } }
+        @keyframes glow { 0%,100% { box-shadow:0 0 20px var(--coral-glow); } 50% { box-shadow:0 0 40px var(--coral-glow),0 0 80px rgba(255,87,87,0.05); } }
+        @keyframes slideRight { from { width:0; } to { width:100%; } }
+        .fade-up { opacity:0; transform:translateY(24px); transition:all 0.8s cubic-bezier(0.22,1,0.36,1); }
+        .fade-up.visible { opacity:1; transform:translateY(0); }
 
-        /* Navbar */
-        .navbar { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 14px 32px; display: flex; align-items: center; justify-content: space-between; background: rgba(10,14,26,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.04); }
-        .nav-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .nav-brand i { font-size: 24px; color: var(--coral); }
-        .nav-brand span { font-family: 'Outfit'; font-weight: 700; font-size: 20px; color: var(--white); }
-        .nav-brand .dot { color: var(--yellow); }
-        .nav-links { display: flex; align-items: center; gap: 24px; }
-        .nav-links a { color: var(--slate-400); text-decoration: none; font-size: 14px; font-weight: 500; transition: color 0.2s; }
-        .nav-links a:hover { color: var(--white); }
-        .nav-contact { display: flex; align-items: center; gap: 8px; padding: 8px 18px; background: linear-gradient(135deg, var(--coral), #ff8e53); border-radius: 10px; color: var(--white); text-decoration: none; font-size: 13px; font-weight: 600; transition: all 0.3s; }
-        .nav-contact:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,107,107,0.3); }
+        /* ===== NAVBAR ===== */
+        .nav { position:fixed; top:0; left:0; right:0; z-index:200; padding:0 40px; height:64px; display:flex; align-items:center; justify-content:space-between; transition:all 0.4s; }
+        .nav.scrolled { background:rgba(5,7,14,0.92); backdrop-filter:blur(24px) saturate(180%); border-bottom:1px solid rgba(255,255,255,0.04); }
+        .nav-brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
+        .nav-brand-icon { width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,var(--coral),var(--orange)); display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff; }
+        .nav-brand span { font-family:'Outfit'; font-weight:800; font-size:20px; color:#fff; letter-spacing:-0.5px; }
+        .nav-brand .accent { color:var(--coral); }
+        .nav-links { display:flex; gap:28px; align-items:center; }
+        .nav-links a { color:var(--gray-400); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:0.3px; transition:color 0.2s; position:relative; }
+        .nav-links a:hover { color:#fff; }
+        .nav-links a.active { color:#fff; }
+        .nav-links a.active::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--coral); border-radius:1px; }
+        .nav-right { display:flex; align-items:center; gap:12px; }
+        .nav-phone { color:var(--gray-400); font-size:13px; font-weight:500; text-decoration:none; display:flex; align-items:center; gap:6px; }
+        .nav-phone:hover { color:#fff; }
+        .nav-cta { padding:8px 20px; border-radius:10px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.3s; border:none; cursor:pointer; }
+        .nav-cta:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(255,87,87,0.25); }
 
-        /* Hero */
-        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 100px 20px 60px; position: relative; overflow: hidden; }
-        .hero::before { content: ''; position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(255,107,107,0.06) 0%, transparent 70%); }
-        .hero::after { content: ''; position: absolute; bottom: -150px; left: -150px; width: 500px; height: 500px; border-radius: 50%; background: radial-gradient(circle, rgba(72,219,251,0.04) 0%, transparent 70%); }
-        .hero-content { text-align: center; position: relative; z-index: 1; max-width: 800px; }
-        .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.15); border-radius: 50px; font-size: 12px; font-weight: 600; color: var(--coral); margin-bottom: 24px; }
-        .hero h1 { font-size: 56px; font-weight: 800; line-height: 1.1; letter-spacing: -2px; margin-bottom: 16px; }
-        .hero h1 .highlight { background: linear-gradient(135deg, var(--coral), var(--yellow), var(--sky)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .hero p { font-size: 18px; color: var(--slate-400); max-width: 560px; margin: 0 auto 40px; line-height: 1.6; }
+        /* ===== HERO ===== */
+        .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:100px 24px 60px; position:relative; overflow:hidden; }
+        /* Ambient light effects */
+        .hero-glow-1 { position:absolute; top:-20%; right:-10%; width:700px; height:700px; border-radius:50%; background:radial-gradient(circle,rgba(255,87,87,0.07) 0%,transparent 70%); pointer-events:none; }
+        .hero-glow-2 { position:absolute; bottom:-30%; left:-15%; width:800px; height:800px; border-radius:50%; background:radial-gradient(circle,rgba(76,201,240,0.05) 0%,transparent 70%); pointer-events:none; }
+        .hero-glow-3 { position:absolute; top:30%; left:40%; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,247,0.04) 0%,transparent 70%); pointer-events:none; }
+        /* Grid pattern */
+        .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px); background-size:80px 80px; mask-image:radial-gradient(ellipse 60% 60% at 50% 40%,black 30%,transparent 100%); pointer-events:none; }
 
-        /* Search Box */
-        .search-box { background: var(--white); border-radius: 24px; padding: 8px; max-width: 900px; width: 100%; margin: 0 auto; box-shadow: 0 20px 60px rgba(0,0,0,0.3); position: relative; z-index: 2; }
-        .search-tabs { display: flex; gap: 4px; padding: 4px; background: var(--slate-100); border-radius: 18px; margin-bottom: 8px; }
-        .search-tab { flex: 1; padding: 12px 16px; border-radius: 14px; border: none; background: transparent; font-family: 'DM Sans'; font-size: 14px; font-weight: 600; color: var(--slate-500); cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .search-tab.active { background: var(--white); color: var(--navy); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .search-tab:hover:not(.active) { color: var(--navy); }
-        .search-tab i { font-size: 18px; }
+        .hero-content { text-align:center; position:relative; z-index:2; max-width:820px; animation:fadeUp 0.8s ease-out; }
+        .hero-pill { display:inline-flex; align-items:center; gap:8px; padding:5px 6px 5px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:100px; font-size:12px; font-weight:500; color:var(--gray-400); margin-bottom:28px; backdrop-filter:blur(10px); }
+        .hero-pill-badge { padding:3px 10px; border-radius:100px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-size:10px; font-weight:800; letter-spacing:0.5px; }
+        .hero h1 { font-size:64px; font-weight:900; line-height:1.05; letter-spacing:-3px; margin-bottom:20px; color:#fff; }
+        .hero h1 .gradient { background:linear-gradient(135deg,var(--coral),var(--orange),var(--yellow)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .hero-sub { font-size:18px; color:var(--gray-400); max-width:540px; margin:0 auto 44px; line-height:1.7; font-weight:400; }
+        .hero-sub strong { color:var(--text); font-weight:600; }
 
-        .search-form { display: flex; gap: 6px; padding: 8px; align-items: center; }
-        .search-field { flex: 1; position: relative; }
-        .search-field label { position: absolute; top: 8px; left: 14px; font-size: 10px; font-weight: 700; color: var(--slate-400); text-transform: uppercase; letter-spacing: 0.5px; }
-        .search-field input, .search-field select { width: 100%; padding: 28px 14px 10px; border: 2px solid var(--slate-200); border-radius: 14px; font-size: 15px; font-family: 'DM Sans'; font-weight: 600; color: var(--navy); background: var(--slate-50); transition: all 0.2s; }
-        .search-field input:focus, .search-field select:focus { outline: none; border-color: var(--coral); background: var(--white); }
-        .search-field input::placeholder { color: var(--slate-300); font-weight: 400; }
-        .search-btn { padding: 20px 32px; border: none; border-radius: 14px; background: linear-gradient(135deg, var(--coral), #ff8e53); color: var(--white); font-family: 'Outfit'; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
-        .search-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(255,107,107,0.4); }
-        .search-btn:disabled { opacity: 0.5; cursor: default; transform: none; }
+        /* ===== SEARCH BOX ===== */
+        .search-wrapper { width:100%; max-width:920px; position:relative; z-index:10; animation:fadeUp 1s ease-out 0.2s both; }
+        .search-box { background:rgba(16,22,40,0.7); backdrop-filter:blur(40px) saturate(150%); border:1px solid rgba(255,255,255,0.06); border-radius:28px; padding:6px; box-shadow:0 24px 80px rgba(0,0,0,0.4),0 0 0 1px rgba(255,255,255,0.02); }
+        .search-tabs { display:flex; gap:3px; padding:4px; margin-bottom:6px; }
+        .search-tab { flex:1; padding:14px 16px; border-radius:22px; border:none; background:transparent; font-family:'Outfit'; font-size:14px; font-weight:600; color:var(--gray-500); cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; gap:8px; letter-spacing:0.2px; }
+        .search-tab i { font-size:18px; }
+        .search-tab.active { background:rgba(255,255,255,0.06); color:#fff; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06); }
+        .search-tab:hover:not(.active) { color:var(--gray-300); background:rgba(255,255,255,0.02); }
 
-        /* Results */
-        .results-section { display: none; max-width: 900px; width: 100%; margin: 40px auto 0; position: relative; z-index: 1; }
-        .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .results-header h2 { font-size: 22px; font-weight: 700; }
-        .results-count { color: var(--slate-400); font-size: 14px; }
-        .result-card { background: var(--navy-mid); border: 1px solid rgba(255,255,255,0.06); border-radius: 18px; padding: 24px; margin-bottom: 12px; transition: all 0.3s; cursor: pointer; display: flex; align-items: center; gap: 20px; }
-        .result-card:hover { border-color: rgba(255,107,107,0.2); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
-        .result-airline { display: flex; align-items: center; gap: 12px; min-width: 140px; }
-        .result-airline img { width: 40px; height: 40px; border-radius: 10px; object-fit: contain; background: rgba(255,255,255,0.06); padding: 4px; }
-        .result-airline .name { font-size: 13px; font-weight: 600; }
-        .result-airline .code { font-size: 11px; color: var(--slate-400); }
-        .result-route { flex: 1; display: flex; align-items: center; gap: 16px; }
-        .result-time { text-align: center; }
-        .result-time .time { font-family: 'Outfit'; font-size: 22px; font-weight: 700; }
-        .result-time .airport { font-size: 12px; color: var(--slate-400); }
-        .result-line { flex: 1; position: relative; height: 2px; background: rgba(255,255,255,0.08); }
-        .result-line::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--coral); background: var(--navy-mid); }
-        .result-line .stops { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--slate-400); white-space: nowrap; }
-        .result-line .duration { position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%); font-size: 10px; color: var(--slate-500); white-space: nowrap; }
-        .result-price { text-align: right; min-width: 120px; }
-        .result-price .amount { font-family: 'Outfit'; font-size: 26px; font-weight: 800; color: var(--coral); }
-        .result-price .per { font-size: 11px; color: var(--slate-400); }
-        .result-price .cta { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; padding: 8px 16px; background: linear-gradient(135deg, #25d366, #128c7e); border-radius: 10px; color: var(--white); font-size: 12px; font-weight: 700; text-decoration: none; transition: all 0.2s; }
-        .result-price .cta:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(37,211,102,0.3); }
-        .best-deal { position: absolute; top: -1px; right: 20px; background: linear-gradient(135deg, var(--yellow), #ffb347); color: var(--navy); font-size: 10px; font-weight: 800; padding: 4px 12px; border-radius: 0 0 8px 8px; letter-spacing: 0.5px; }
+        .search-form { display:flex; gap:6px; padding:6px; align-items:stretch; }
+        .search-field { flex:1; position:relative; min-width:0; }
+        .search-field label { position:absolute; top:10px; left:16px; font-size:10px; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:1px; z-index:1; }
+        .search-field input, .search-field select { width:100%; padding:32px 16px 12px; border:1px solid rgba(255,255,255,0.06); border-radius:18px; font-size:15px; font-family:'DM Sans'; font-weight:600; color:#fff; background:rgba(255,255,255,0.03); transition:all 0.3s; appearance:none; }
+        .search-field input:focus, .search-field select:focus { outline:none; border-color:var(--coral); background:rgba(255,87,87,0.04); box-shadow:0 0 0 3px rgba(255,87,87,0.08); }
+        .search-field input::placeholder { color:var(--gray-600); font-weight:400; }
+        .search-field select option { background:var(--bg3); color:#fff; }
+        .search-btn { padding:0 36px; border:none; border-radius:18px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-family:'Outfit'; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; gap:8px; white-space:nowrap; letter-spacing:0.3px; animation:glow 3s infinite; }
+        .search-btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(255,87,87,0.3); }
+        .search-btn:disabled { opacity:0.4; cursor:default; transform:none; animation:none; }
+        .search-btn i { font-size:18px; }
 
-        /* Loading skeleton */
-        .skeleton { background: linear-gradient(90deg, var(--navy-mid) 25%, var(--navy-light) 50%, var(--navy-mid) 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 18px; height: 90px; margin-bottom: 12px; }
-        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        /* ===== RESULTS ===== */
+        .results-section { display:none; max-width:920px; width:100%; margin:48px auto 0; position:relative; z-index:1; }
+        .results-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding:0 4px; }
+        .results-header h2 { font-size:20px; font-weight:700; color:#fff; display:flex; align-items:center; gap:10px; }
+        .results-header h2 .route-badge { padding:4px 12px; border-radius:8px; background:rgba(255,87,87,0.1); color:var(--coral); font-size:12px; font-weight:700; }
+        .results-count { color:var(--gray-500); font-size:13px; }
+        .results-sort { display:flex; gap:6px; margin-bottom:16px; }
+        .sort-btn { padding:6px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:var(--gray-500); font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans'; transition:all 0.2s; }
+        .sort-btn.active, .sort-btn:hover { background:rgba(255,255,255,0.06); color:#fff; border-color:rgba(255,255,255,0.1); }
 
-        /* Features */
-        .features { padding: 80px 20px; max-width: 900px; margin: 0 auto; }
-        .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .feat-card { background: var(--navy-light); border: 1px solid rgba(255,255,255,0.04); border-radius: 18px; padding: 28px; text-align: center; transition: all 0.3s; }
-        .feat-card:hover { border-color: rgba(255,255,255,0.08); transform: translateY(-4px); }
-        .feat-card i { font-size: 28px; margin-bottom: 14px; }
-        .feat-card h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
-        .feat-card p { font-size: 13px; color: var(--slate-400); line-height: 1.5; }
+        .result-card { background:var(--bg3); border:1px solid rgba(255,255,255,0.04); border-radius:20px; padding:0; margin-bottom:10px; transition:all 0.35s cubic-bezier(0.22,1,0.36,1); cursor:pointer; overflow:hidden; position:relative; }
+        .result-card:hover { border-color:rgba(255,87,87,0.15); transform:translateY(-3px); box-shadow:0 12px 40px rgba(0,0,0,0.25); }
+        .result-inner { display:flex; align-items:center; gap:0; padding:22px 24px; }
+        .result-airline { display:flex; align-items:center; gap:14px; min-width:160px; }
+        .result-airline-logo { width:44px; height:44px; border-radius:12px; object-fit:contain; background:rgba(255,255,255,0.04); padding:6px; }
+        .result-airline-info .airline-name { font-size:14px; font-weight:700; color:#fff; }
+        .result-airline-info .airline-code { font-size:11px; color:var(--gray-500); margin-top:2px; }
+        .result-route { flex:1; display:flex; align-items:center; gap:0; padding:0 20px; }
+        .result-endpoint { text-align:center; min-width:70px; }
+        .result-endpoint .time { font-family:'Outfit'; font-size:24px; font-weight:800; color:#fff; letter-spacing:-0.5px; }
+        .result-endpoint .code { font-size:11px; color:var(--gray-500); font-weight:600; margin-top:2px; letter-spacing:1px; }
+        .result-path { flex:1; position:relative; padding:0 16px; display:flex; flex-direction:column; align-items:center; }
+        .result-path-line { width:100%; height:1px; background:linear-gradient(90deg,transparent,var(--gray-600),transparent); position:relative; }
+        .result-path-line::before { content:''; position:absolute; left:0; top:-3px; width:7px; height:7px; border-radius:50%; background:var(--gray-600); }
+        .result-path-line::after { content:''; position:absolute; right:0; top:-3px; width:7px; height:7px; border-radius:50%; background:var(--gray-600); }
+        .result-path-plane { position:absolute; top:-10px; left:50%; transform:translateX(-50%); font-size:14px; color:var(--coral); background:var(--bg3); padding:0 6px; }
+        .result-path .stops-text { font-size:10px; color:var(--gray-500); margin-top:8px; font-weight:600; letter-spacing:0.5px; }
+        .result-path .duration-text { font-size:10px; color:var(--gray-600); margin-top:2px; }
+        .result-pricing { text-align:right; min-width:150px; padding-left:20px; border-left:1px solid rgba(255,255,255,0.04); }
+        .result-pricing .price { font-family:'Outfit'; font-size:30px; font-weight:800; color:#fff; letter-spacing:-1px; }
+        .result-pricing .price-currency { font-size:16px; font-weight:600; color:var(--gray-500); }
+        .result-pricing .per-person { font-size:11px; color:var(--gray-500); margin-top:2px; }
+        .result-pricing .cta { display:inline-flex; align-items:center; gap:6px; margin-top:10px; padding:8px 18px; background:linear-gradient(135deg,#25d366,#128c7e); border-radius:10px; color:#fff; font-size:12px; font-weight:700; text-decoration:none; transition:all 0.2s; font-family:'DM Sans'; }
+        .result-pricing .cta:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(37,211,102,0.3); }
+        .best-badge { position:absolute; top:0; right:0; padding:6px 16px; background:linear-gradient(135deg,var(--green),#0ead8c); color:#fff; font-size:10px; font-weight:800; letter-spacing:1px; border-radius:0 20px 0 14px; text-transform:uppercase; }
 
-        /* WhatsApp floating */
-        .whatsapp-float { position: fixed; bottom: 24px; right: 24px; z-index: 999; width: 60px; height: 60px; border-radius: 50%; background: #25d366; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(37,211,102,0.4); cursor: pointer; transition: all 0.3s; text-decoration: none; }
-        .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.5); }
-        .whatsapp-float i { font-size: 30px; color: var(--white); }
+        /* Skeleton */
+        .skeleton { background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:20px; height:96px; margin-bottom:10px; }
 
-        /* Footer */
-        .footer { padding: 40px 20px; text-align: center; border-top: 1px solid rgba(255,255,255,0.04); margin-top: 40px; }
-        .footer-brand { font-family: 'Outfit'; font-size: 18px; font-weight: 700; margin-bottom: 8px; }
-        .footer p { color: var(--slate-500); font-size: 12px; }
+        /* ===== FEATURES ===== */
+        .features { padding:100px 24px; position:relative; }
+        .features::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent); }
+        .features-inner { max-width:1000px; margin:0 auto; }
+        .section-label { display:inline-flex; align-items:center; gap:8px; padding:5px 14px; background:rgba(255,87,87,0.06); border:1px solid rgba(255,87,87,0.1); border-radius:100px; font-size:11px; font-weight:700; color:var(--coral); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:16px; }
+        .section-header { text-align:center; margin-bottom:56px; }
+        .section-header h2 { font-size:38px; font-weight:800; color:#fff; letter-spacing:-1px; margin-bottom:12px; }
+        .section-header p { font-size:16px; color:var(--gray-500); max-width:480px; margin:0 auto; line-height:1.6; }
+        .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+        .feat-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.03); border-radius:22px; padding:32px 28px; transition:all 0.4s cubic-bezier(0.22,1,0.36,1); position:relative; overflow:hidden; }
+        .feat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent); }
+        .feat-card:hover { border-color:rgba(255,255,255,0.06); transform:translateY(-4px); box-shadow:0 16px 48px rgba(0,0,0,0.2); }
+        .feat-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:20px; }
+        .feat-card h3 { font-size:17px; font-weight:700; color:#fff; margin-bottom:8px; }
+        .feat-card p { font-size:13px; color:var(--gray-500); line-height:1.6; }
 
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 34px; }
-            .search-form { flex-direction: column; }
-            .search-field { width: 100%; }
-            .search-btn { width: 100%; justify-content: center; }
-            .result-card { flex-direction: column; text-align: center; gap: 12px; }
-            .result-airline { min-width: auto; }
-            .result-route { flex-direction: column; }
-            .result-price { min-width: auto; }
-            .features-grid { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
+        /* ===== POPULAR ROUTES ===== */
+        .routes { padding:80px 24px; }
+        .routes-inner { max-width:1000px; margin:0 auto; }
+        .routes-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+        .route-card { background:var(--bg3); border:1px solid rgba(255,255,255,0.03); border-radius:18px; padding:24px 20px; text-align:center; transition:all 0.3s; cursor:pointer; text-decoration:none; }
+        .route-card:hover { border-color:rgba(255,87,87,0.12); transform:translateY(-3px); box-shadow:0 8px 32px rgba(0,0,0,0.15); }
+        .route-card .emoji { font-size:32px; margin-bottom:12px; display:block; }
+        .route-card .route-name { font-family:'Outfit'; font-size:15px; font-weight:700; color:#fff; margin-bottom:4px; }
+        .route-card .route-from { font-size:11px; color:var(--gray-500); margin-bottom:10px; }
+        .route-card .route-price { font-family:'Outfit'; font-size:20px; font-weight:800; color:var(--coral); }
+        .route-card .route-price span { font-size:12px; font-weight:500; color:var(--gray-500); }
+
+        /* ===== AGENT SECTION ===== */
+        .agent { padding:80px 24px; }
+        .agent-inner { max-width:720px; margin:0 auto; background:linear-gradient(135deg,var(--bg3),var(--bg4)); border:1px solid rgba(255,255,255,0.04); border-radius:28px; padding:48px; display:flex; align-items:center; gap:36px; position:relative; overflow:hidden; }
+        .agent-inner::before { content:''; position:absolute; top:-50%; right:-20%; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(255,87,87,0.04) 0%,transparent 70%); }
+        .agent-photo { width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid rgba(255,255,255,0.08); flex-shrink:0; }
+        .agent-info h3 { font-size:22px; font-weight:800; color:#fff; margin-bottom:4px; }
+        .agent-info .role { font-size:13px; color:var(--coral); font-weight:600; margin-bottom:12px; }
+        .agent-info p { font-size:14px; color:var(--gray-400); line-height:1.6; margin-bottom:16px; }
+        .agent-actions { display:flex; gap:10px; }
+        .agent-actions a { padding:10px 20px; border-radius:12px; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; display:flex; align-items:center; gap:6px; font-family:'DM Sans'; }
+        .agent-wa { background:#25d366; color:#fff; }
+        .agent-wa:hover { box-shadow:0 4px 16px rgba(37,211,102,0.3); transform:translateY(-1px); }
+        .agent-call { background:rgba(255,255,255,0.06); color:#fff; border:1px solid rgba(255,255,255,0.08); }
+        .agent-call:hover { background:rgba(255,255,255,0.1); }
+
+        /* ===== WHATSAPP FLOAT ===== */
+        .wa-float { position:fixed; bottom:24px; right:24px; z-index:999; display:flex; align-items:center; gap:10px; padding:12px 20px 12px 14px; border-radius:100px; background:#25d366; color:#fff; text-decoration:none; font-size:14px; font-weight:700; box-shadow:0 6px 24px rgba(37,211,102,0.35); transition:all 0.3s; font-family:'DM Sans'; }
+        .wa-float:hover { transform:translateY(-3px); box-shadow:0 10px 32px rgba(37,211,102,0.45); }
+        .wa-float i { font-size:22px; }
+        .wa-float .wa-text { }
+
+        /* ===== FOOTER ===== */
+        .footer { padding:48px 24px 32px; border-top:1px solid rgba(255,255,255,0.03); }
+        .footer-inner { max-width:1000px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; }
+        .footer-brand { display:flex; align-items:center; gap:8px; }
+        .footer-brand span { font-family:'Outfit'; font-weight:700; font-size:16px; color:var(--gray-400); }
+        .footer-links { display:flex; gap:20px; }
+        .footer-links a { color:var(--gray-600); text-decoration:none; font-size:12px; transition:color 0.2s; }
+        .footer-links a:hover { color:var(--gray-400); }
+        .footer-copy { text-align:center; margin-top:24px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.03); max-width:1000px; margin-left:auto; margin-right:auto; }
+        .footer-copy p { font-size:11px; color:var(--gray-700); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width:900px) {
+            .hero h1 { font-size:40px; letter-spacing:-2px; }
+            .search-form { flex-direction:column; }
+            .search-btn { padding:18px; justify-content:center; }
+            .result-inner { flex-direction:column; gap:16px; text-align:center; }
+            .result-airline { min-width:auto; justify-content:center; }
+            .result-route { flex-direction:column; gap:8px; padding:0; }
+            .result-pricing { min-width:auto; border-left:none; padding-left:0; border-top:1px solid rgba(255,255,255,0.04); padding-top:16px; }
+            .features-grid { grid-template-columns:1fr; }
+            .routes-grid { grid-template-columns:repeat(2,1fr); }
+            .agent-inner { flex-direction:column; text-align:center; }
+            .agent-actions { justify-content:center; }
+            .nav-links { display:none; }
+            .nav-phone { display:none; }
+            .footer-inner { flex-direction:column; gap:16px; text-align:center; }
+        }
+        @media (max-width:480px) {
+            .hero { padding:80px 16px 40px; }
+            .hero h1 { font-size:32px; }
+            .routes-grid { grid-template-columns:1fr 1fr; }
+            .wa-float .wa-text { display:none; }
+            .wa-float { padding:14px; border-radius:50%; }
         }
     </style>
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar">
+<nav class="nav" id="navbar">
     <a href="/" class="nav-brand">
-        <i class="bi bi-airplane-engines-fill"></i>
-        <span>Rio Travel<span class="dot">.</span></span>
+        <div class="nav-brand-icon"><i class="bi bi-airplane-fill"></i></div>
+        <span>Rio<span class="accent">Travel</span></span>
     </a>
     <div class="nav-links">
-        <a href="#flights">Voos</a>
-        <a href="#hotels">Hoteis</a>
-        <a href="#cruises">Cruzeiros</a>
+        <a href="#" class="active">Voos</a>
+        <a href="#">Hoteis</a>
+        <a href="#">Cruzeiros</a>
+        <a href="#">Ofertas</a>
     </div>
-    <a href="https://wa.me/14352146939" target="_blank" class="nav-contact">
-        <i class="bi bi-whatsapp"></i> Fale Conosco
-    </a>
+    <div class="nav-right">
+        <a href="tel:+14352146939" class="nav-phone"><i class="bi bi-telephone-fill"></i> (435) 214-6939</a>
+        <a href="https://wa.me/14352146939" target="_blank" class="nav-cta"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+    </div>
 </nav>
 
 <!-- Hero -->
 <section class="hero">
+    <div class="hero-glow-1"></div>
+    <div class="hero-glow-2"></div>
+    <div class="hero-glow-3"></div>
+    <div class="hero-grid"></div>
+
     <div class="hero-content">
-        <div class="hero-badge"><i class="bi bi-stars"></i> Atendimento em Portugues</div>
-        <h1>Encontre Voos com os <span class="highlight">Melhores Precos</span></h1>
-        <p>Compare passagens aereas, hoteis e cruzeiros. Atendimento personalizado para brasileiros nos EUA.</p>
+        <div class="hero-pill">
+            <span>Atendimento em Portugues para brasileiros nos EUA</span>
+            <span class="hero-pill-badge">NOVO</span>
+        </div>
+        <h1>Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span></h1>
+        <p class="hero-sub">Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.</p>
     </div>
 
-    <!-- Search Box -->
-    <div class="search-box">
-        <div class="search-tabs">
-            <button class="search-tab active" onclick="switchTab('flights')"><i class="bi bi-airplane"></i> Voos</button>
-            <button class="search-tab" onclick="switchTab('hotels')"><i class="bi bi-building"></i> Hoteis</button>
-            <button class="search-tab" onclick="switchTab('cruises')"><i class="bi bi-water"></i> Cruzeiros</button>
-        </div>
+    <!-- Search -->
+    <div class="search-wrapper">
+        <div class="search-box">
+            <div class="search-tabs">
+                <button class="search-tab active" onclick="switchTab('flights')"><i class="bi bi-airplane-fill"></i> Voos</button>
+                <button class="search-tab" onclick="switchTab('hotels')"><i class="bi bi-building"></i> Hoteis</button>
+                <button class="search-tab" onclick="switchTab('cruises')"><i class="bi bi-water"></i> Cruzeiros</button>
+            </div>
 
-        <!-- Flight search form -->
-        <div id="flightForm" class="search-form">
-            <div class="search-field">
-                <label>Origem</label>
-                <input type="text" id="origin" placeholder="Ex: SLC, JFK, MIA" maxlength="3" style="text-transform:uppercase;">
+            <div id="flightForm" class="search-form">
+                <div class="search-field" style="flex:1.2;">
+                    <label>Origem</label>
+                    <input type="text" id="origin" placeholder="SLC, JFK, MIA..." maxlength="3" style="text-transform:uppercase;">
+                </div>
+                <div class="search-field" style="flex:1.2;">
+                    <label>Destino</label>
+                    <input type="text" id="destination" placeholder="GRU, GIG, LIS..." maxlength="3" style="text-transform:uppercase;">
+                </div>
+                <div class="search-field">
+                    <label>Ida</label>
+                    <input type="date" id="departure">
+                </div>
+                <div class="search-field">
+                    <label>Volta</label>
+                    <input type="date" id="returnDate">
+                </div>
+                <div class="search-field" style="flex:0.5;">
+                    <label>Passageiros</label>
+                    <select id="adults"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                </div>
+                <button class="search-btn" id="searchBtn" onclick="searchFlights()"><i class="bi bi-search"></i> Buscar</button>
             </div>
-            <div class="search-field">
-                <label>Destino</label>
-                <input type="text" id="destination" placeholder="Ex: GRU, GIG, LIS" maxlength="3" style="text-transform:uppercase;">
-            </div>
-            <div class="search-field">
-                <label>Ida</label>
-                <input type="date" id="departure">
-            </div>
-            <div class="search-field">
-                <label>Volta</label>
-                <input type="date" id="returnDate">
-            </div>
-            <div class="search-field" style="max-width:100px;">
-                <label>Passageiros</label>
-                <select id="adults">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                </select>
-            </div>
-            <button class="search-btn" id="searchBtn" onclick="searchFlights()">
-                <i class="bi bi-search"></i> Buscar
-            </button>
-        </div>
 
-        <!-- Hotel search form (hidden by default) -->
-        <div id="hotelForm" class="search-form" style="display:none;">
-            <div class="search-field">
-                <label>Destino</label>
-                <input type="text" id="hotelDest" placeholder="Ex: Miami, New York, Rio">
+            <div id="hotelForm" class="search-form" style="display:none;">
+                <div class="search-field" style="flex:1.5;">
+                    <label>Destino</label>
+                    <input type="text" id="hotelDest" placeholder="Miami, New York, Rio de Janeiro...">
+                </div>
+                <div class="search-field">
+                    <label>Check-in</label>
+                    <input type="date" id="checkin">
+                </div>
+                <div class="search-field">
+                    <label>Check-out</label>
+                    <input type="date" id="checkout">
+                </div>
+                <div class="search-field" style="flex:0.5;">
+                    <label>Hospedes</label>
+                    <select id="hotelAdults"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option></select>
+                </div>
+                <button class="search-btn" onclick="searchHotels()"><i class="bi bi-search"></i> Buscar</button>
             </div>
-            <div class="search-field">
-                <label>Check-in</label>
-                <input type="date" id="checkin">
-            </div>
-            <div class="search-field">
-                <label>Check-out</label>
-                <input type="date" id="checkout">
-            </div>
-            <div class="search-field" style="max-width:110px;">
-                <label>Hospedes</label>
-                <select id="hotelAdults">
-                    <option value="1">1</option>
-                    <option value="2" selected>2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-            </div>
-            <button class="search-btn" onclick="searchHotels()">
-                <i class="bi bi-search"></i> Buscar
-            </button>
-        </div>
 
-        <!-- Cruise form -->
-        <div id="cruiseForm" class="search-form" style="display:none;">
-            <div style="padding:20px;text-align:center;width:100%;">
-                <i class="bi bi-water" style="font-size:28px;color:var(--sky);"></i>
-                <p style="color:var(--slate-500);margin:12px 0;">Para cruzeiros, fale diretamente com nosso agente para as melhores ofertas.</p>
-                <a href="https://wa.me/14352146939?text=Oi!%20Gostaria%20de%20informacoes%20sobre%20cruzeiros." target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:#25d366;color:#fff;border-radius:12px;text-decoration:none;font-weight:700;font-size:14px;"><i class="bi bi-whatsapp"></i> Consultar Cruzeiros</a>
+            <div id="cruiseForm" class="search-form" style="display:none;">
+                <div style="padding:32px;text-align:center;width:100%;">
+                    <i class="bi bi-water" style="font-size:36px;color:var(--sky);margin-bottom:12px;display:block;"></i>
+                    <p style="color:var(--gray-400);margin-bottom:20px;font-size:15px;">Para cruzeiros, fale diretamente com nosso agente para as melhores ofertas exclusivas.</p>
+                    <a href="https://wa.me/14352146939?text=Oi!%20Gostaria%20de%20informacoes%20sobre%20cruzeiros." target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#25d366;color:#fff;border-radius:14px;text-decoration:none;font-weight:700;font-size:14px;font-family:Outfit;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'"><i class="bi bi-whatsapp"></i> Consultar Cruzeiros</a>
+                </div>
             </div>
         </div>
     </div>
@@ -231,184 +314,252 @@
     <!-- Results -->
     <div class="results-section" id="results">
         <div class="results-header">
-            <h2 id="resultsTitle">Resultados</h2>
+            <h2><i class="bi bi-airplane-fill" style="color:var(--coral);font-size:18px;"></i> <span id="resultsTitle">Resultados</span></h2>
             <span class="results-count" id="resultsCount"></span>
         </div>
         <div id="resultsList"></div>
     </div>
 </section>
 
+<!-- Popular Routes -->
+<section class="routes fade-up">
+    <div class="routes-inner">
+        <div class="section-header">
+            <div class="section-label"><i class="bi bi-fire"></i> Rotas Populares</div>
+            <h2>Destinos Mais Buscados</h2>
+            <p>Voos frequentes de brasileiros nos EUA</p>
+        </div>
+        <div class="routes-grid">
+            <a class="route-card" onclick="quickSearch('MIA','GRU')">
+                <span class="emoji">&#127463;&#127479;</span>
+                <div class="route-name">Miami → Sao Paulo</div>
+                <div class="route-from">MIA → GRU</div>
+                <div class="route-price">$420+ <span>ida</span></div>
+            </a>
+            <a class="route-card" onclick="quickSearch('JFK','GIG')">
+                <span class="emoji">&#127463;&#127479;</span>
+                <div class="route-name">New York → Rio</div>
+                <div class="route-from">JFK → GIG</div>
+                <div class="route-price">$480+ <span>ida</span></div>
+            </a>
+            <a class="route-card" onclick="quickSearch('SLC','CUN')">
+                <span class="emoji">&#127474;&#127485;</span>
+                <div class="route-name">Salt Lake → Cancun</div>
+                <div class="route-from">SLC → CUN</div>
+                <div class="route-price">$280+ <span>ida</span></div>
+            </a>
+            <a class="route-card" onclick="quickSearch('SLC','LIS')">
+                <span class="emoji">&#127477;&#127481;</span>
+                <div class="route-name">Salt Lake → Lisboa</div>
+                <div class="route-from">SLC → LIS</div>
+                <div class="route-price">$520+ <span>ida</span></div>
+            </a>
+        </div>
+    </div>
+</section>
+
 <!-- Features -->
-<section class="features">
-    <div class="features-grid">
-        <div class="feat-card">
-            <i class="bi bi-translate" style="color:var(--coral);"></i>
-            <h3>Atendimento em Portugues</h3>
-            <p>Suporte completo no seu idioma. Sem barreiras de comunicacao.</p>
+<section class="features fade-up" id="features">
+    <div class="features-inner">
+        <div class="section-header">
+            <div class="section-label"><i class="bi bi-stars"></i> Por que Rio Travel</div>
+            <h2>Viaje com Confianca</h2>
+            <p>Mais do que busca de voos — uma experiencia completa de viagem.</p>
         </div>
-        <div class="feat-card">
-            <i class="bi bi-shield-check" style="color:var(--yellow);"></i>
-            <h3>Agente Certificado</h3>
-            <p>Agencia licenciada nos EUA. Seguranca e confianca na sua viagem.</p>
+        <div class="features-grid">
+            <div class="feat-card">
+                <div class="feat-icon" style="background:rgba(255,87,87,0.08);color:var(--coral);"><i class="bi bi-translate"></i></div>
+                <h3>Atendimento em Portugues</h3>
+                <p>Fale no seu idioma. Suporte completo para brasileiros morando nos EUA.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon" style="background:rgba(6,214,160,0.08);color:var(--green);"><i class="bi bi-shield-check"></i></div>
+                <h3>Agente Certificado</h3>
+                <p>Agencia licenciada e certificada nos EUA. Seguranca total para sua viagem.</p>
+            </div>
+            <div class="feat-card">
+                <div class="feat-icon" style="background:rgba(76,201,240,0.08);color:var(--sky);"><i class="bi bi-lightning-charge-fill"></i></div>
+                <h3>Precos em Tempo Real</h3>
+                <p>Busca direto nas companhias aereas. Precos atualizados a cada segundo.</p>
+            </div>
         </div>
-        <div class="feat-card">
-            <i class="bi bi-whatsapp" style="color:#25d366;"></i>
-            <h3>WhatsApp Direto</h3>
-            <p>Tire duvidas e faca reservas pelo WhatsApp. Rapido e facil.</p>
+    </div>
+</section>
+
+<!-- Agent -->
+<section class="agent fade-up">
+    <div class="agent-inner">
+        <img src="/static/hudson-photo.jpg" class="agent-photo" alt="Hudson" onerror="this.style.display='none'">
+        <div class="agent-info">
+            <h3>Hudson Valeriano</h3>
+            <div class="role">Travel Advisor — Rio Travel LLC</div>
+            <p>40+ paises visitados. Especialista em voos internacionais e viagens para o Brasil. Atendimento personalizado via WhatsApp.</p>
+            <div class="agent-actions">
+                <a href="https://wa.me/14352146939?text=Oi%20Hudson!%20Vi%20o%20site%20e%20preciso%20de%20ajuda%20com%20viagem." target="_blank" class="agent-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                <a href="tel:+14352146939" class="agent-call"><i class="bi bi-telephone-fill"></i> Ligar</a>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- Footer -->
 <footer class="footer">
-    <div class="footer-brand">Rio Travel LLC</div>
-    <p>{{ config.COMPANY_CITY }} &middot; {{ config.AGENT_PHONE }}</p>
-    <p style="margin-top:8px;">&copy; 2026 Rio Travel LLC. Todos os direitos reservados.</p>
+    <div class="footer-inner">
+        <div class="footer-brand">
+            <span>Rio Travel LLC</span>
+        </div>
+        <div class="footer-links">
+            <a href="#">Voos</a>
+            <a href="#">Hoteis</a>
+            <a href="#">Cruzeiros</a>
+            <a href="mailto:contactus@riotravelpc.com">Contato</a>
+        </div>
+    </div>
+    <div class="footer-copy">
+        <p>Park City, Utah &middot; &copy; 2026 Rio Travel LLC. Todos os direitos reservados.</p>
+    </div>
 </footer>
 
 <!-- WhatsApp Float -->
-<a href="https://wa.me/14352146939?text=Oi!%20Vi%20seu%20site%20e%20gostaria%20de%20ajuda%20com%20viagens." target="_blank" class="whatsapp-float">
+<a href="https://wa.me/14352146939?text=Oi!%20Vi%20o%20site%20e%20preciso%20de%20ajuda%20com%20viagem." target="_blank" class="wa-float">
     <i class="bi bi-whatsapp"></i>
+    <span class="wa-text">Fale Conosco</span>
 </a>
 
 <script>
-// Tab switching
-function switchTab(tab) {
-    document.querySelectorAll('.search-tab').forEach((t,i) => {
-        t.classList.toggle('active', ['flights','hotels','cruises'][i] === tab);
-    });
-    document.getElementById('flightForm').style.display = tab === 'flights' ? 'flex' : 'none';
-    document.getElementById('hotelForm').style.display = tab === 'hotels' ? 'flex' : 'none';
-    document.getElementById('cruiseForm').style.display = tab === 'cruises' ? 'flex' : 'none';
-    document.getElementById('results').style.display = 'none';
+// Nav scroll
+window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40));
+
+// Scroll animations
+const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');}),{threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+// Tabs
+function switchTab(t){
+    document.querySelectorAll('.search-tab').forEach((b,i)=>b.classList.toggle('active',['flights','hotels','cruises'][i]===t));
+    document.getElementById('flightForm').style.display=t==='flights'?'flex':'none';
+    document.getElementById('hotelForm').style.display=t==='hotels'?'flex':'none';
+    document.getElementById('cruiseForm').style.display=t==='cruises'?'flex':'none';
+    document.getElementById('results').style.display='none';
 }
 
-// Set min date to today
-const today = new Date().toISOString().split('T')[0];
-document.getElementById('departure').min = today;
-document.getElementById('returnDate').min = today;
-document.getElementById('checkin').min = today;
-document.getElementById('checkout').min = today;
+// Min dates
+const today=new Date().toISOString().split('T')[0];
+['departure','returnDate','checkin','checkout'].forEach(id=>{const el=document.getElementById(id);if(el)el.min=today;});
+
+// Quick search
+function quickSearch(from,to){
+    document.getElementById('origin').value=from;
+    document.getElementById('destination').value=to;
+    const d=new Date();d.setDate(d.getDate()+30);
+    document.getElementById('departure').value=d.toISOString().split('T')[0];
+    switchTab('flights');
+    searchFlights();
+    window.scrollTo({top:0,behavior:'smooth'});
+}
 
 // Flight search
-function searchFlights() {
-    const origin = document.getElementById('origin').value.trim().toUpperCase();
-    const dest = document.getElementById('destination').value.trim().toUpperCase();
-    const dep = document.getElementById('departure').value;
-    const ret = document.getElementById('returnDate').value;
-    const adults = document.getElementById('adults').value;
+function searchFlights(){
+    const origin=document.getElementById('origin').value.trim().toUpperCase();
+    const dest=document.getElementById('destination').value.trim().toUpperCase();
+    const dep=document.getElementById('departure').value;
+    const ret=document.getElementById('returnDate').value;
+    const adults=document.getElementById('adults').value;
+    if(!origin||!dest||!dep){alert('Preencha origem, destino e data.');return;}
 
-    if (!origin || !dest || !dep) { alert('Preencha origem, destino e data de ida.'); return; }
+    const btn=document.getElementById('searchBtn');
+    btn.disabled=true;btn.innerHTML='<i class="bi bi-hourglass-split"></i> Buscando...';
 
-    const btn = document.getElementById('searchBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Buscando...';
+    const results=document.getElementById('results');
+    const list=document.getElementById('resultsList');
+    results.style.display='block';
+    list.innerHTML='<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
+    document.getElementById('resultsTitle').innerHTML=`<span class="route-badge">${origin} → ${dest}</span>`;
+    document.getElementById('resultsCount').textContent='Buscando melhores precos...';
 
-    const results = document.getElementById('results');
-    const list = document.getElementById('resultsList');
-    results.style.display = 'block';
-    list.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
-    document.getElementById('resultsTitle').textContent = `${origin} → ${dest}`;
-    document.getElementById('resultsCount').textContent = 'Buscando melhores precos...';
+    let url=`/api/flights?origin=${origin}&destination=${dest}&departure=${dep}&adults=${adults}`;
+    if(ret)url+=`&return=${ret}`;
 
-    let url = `/api/flights?origin=${origin}&destination=${dest}&departure=${dep}&adults=${adults}`;
-    if (ret) url += `&return=${ret}`;
-
-    fetch(url).then(r => r.json()).then(data => {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-search"></i> Buscar';
-
-        if (data.error) {
-            list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--slate-400);"><i class="bi bi-exclamation-circle" style="font-size:32px;"></i><p style="margin-top:12px;">${data.error}</p></div>`;
-            document.getElementById('resultsCount').textContent = '';
-            return;
+    fetch(url).then(r=>r.json()).then(data=>{
+        btn.disabled=false;btn.innerHTML='<i class="bi bi-search"></i> Buscar';
+        if(data.error){
+            list.innerHTML=`<div style="text-align:center;padding:48px;"><i class="bi bi-exclamation-circle" style="font-size:36px;color:var(--coral);"></i><p style="margin-top:16px;color:var(--gray-400);">${data.error}</p></div>`;
+            document.getElementById('resultsCount').textContent='';return;
         }
-
-        const flights = data.flights || data.data || data.results || [];
-        if (flights.length === 0) {
-            list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--slate-400);"><i class="bi bi-airplane" style="font-size:32px;"></i><p style="margin-top:12px;">Nenhum voo encontrado. Tente outras datas.</p></div>';
-            document.getElementById('resultsCount').textContent = '0 voos';
-            return;
+        const flights=data.flights||[];
+        if(!flights.length){
+            list.innerHTML='<div style="text-align:center;padding:48px;"><i class="bi bi-airplane" style="font-size:36px;color:var(--gray-600);"></i><p style="margin-top:16px;color:var(--gray-500);">Nenhum voo encontrado. Tente outras datas.</p></div>';
+            document.getElementById('resultsCount').textContent='0 voos';return;
         }
-
-        document.getElementById('resultsCount').textContent = `${flights.length} voos encontrados`;
-
-        let html = '';
-        flights.forEach((f, i) => {
-            const price = f.price || f.fare || f.total || '--';
-            const airline = f.airline || f.carrier || f.airlines || '';
-            const airlineCode = f.airlineCode || f.airline_code || f.carrier_code || '';
-            const depTime = f.departureTime || f.dep_time || f.departure || '--:--';
-            const arrTime = f.arrivalTime || f.arr_time || f.arrival || '--:--';
-            const stops = f.stops || f.stopCount || 0;
-            const duration = f.duration || f.flight_time || '';
-            const stopsText = stops === 0 ? 'Direto' : stops === 1 ? '1 parada' : `${stops} paradas`;
-            const whatsappMsg = encodeURIComponent(`Oi! Vi no site um voo ${origin} → ${dest} em ${dep} por $${price}. Gostaria de reservar!`);
-
-            html += `<div class="result-card" style="position:relative;">
-                ${i === 0 ? '<div class="best-deal">MELHOR PRECO</div>' : ''}
-                <div class="result-airline">
-                    <img src="${f.airlineLogo || 'https://pics.avs.io/80/80/'+(airlineCode||'XX')+'.png'}" onerror="this.src='https://pics.avs.io/80/80/'+(airlineCode||'XX')+'.png'">
-                    <div><div class="name">${airline}</div><div class="code">${airlineCode}</div></div>
-                </div>
-                <div class="result-route">
-                    <div class="result-time"><div class="time">${depTime}</div><div class="airport">${origin}</div></div>
-                    <div class="result-line"><span class="stops">${stopsText}</span><span class="duration">${duration}</span></div>
-                    <div class="result-time"><div class="time">${arrTime}</div><div class="airport">${dest}</div></div>
-                </div>
-                <div class="result-price">
-                    <div class="amount">$${price}</div>
-                    <div class="per">por pessoa</div>
-                    <a href="https://wa.me/14352146939?text=${whatsappMsg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> Reservar</a>
+        document.getElementById('resultsCount').textContent=`${flights.length} voos encontrados`;
+        let html='';
+        flights.forEach((f,i)=>{
+            const stopsText=f.stops===0?'Direto':f.stops===1?'1 parada':`${f.stops} paradas`;
+            const stopsColor=f.stops===0?'var(--green)':f.stops===1?'var(--yellow)':'var(--gray-500)';
+            const wMsg=encodeURIComponent(`Oi Hudson! Vi no site um voo ${origin} → ${dest} em ${dep} por $${f.price}. Gostaria de reservar!`);
+            html+=`<div class="result-card">
+                ${i===0?'<div class="best-badge"><i class="bi bi-trophy-fill"></i> Melhor Preco</div>':''}
+                <div class="result-inner">
+                    <div class="result-airline">
+                        <img class="result-airline-logo" src="${f.airlineLogo||'https://pics.avs.io/80/80/'+(f.airlineCode||'XX')+'.png'}" onerror="this.style.display='none'">
+                        <div class="result-airline-info"><div class="airline-name">${f.airline}</div><div class="airline-code">${f.airlineCode||''}</div></div>
+                    </div>
+                    <div class="result-route">
+                        <div class="result-endpoint"><div class="time">${f.departureTime||'--:--'}</div><div class="code">${f.origin||origin}</div></div>
+                        <div class="result-path">
+                            <div class="result-path-line"><span class="result-path-plane"><i class="bi bi-airplane-fill"></i></span></div>
+                            <div class="stops-text" style="color:${stopsColor};">${stopsText}</div>
+                            <div class="duration-text">${f.duration||''}</div>
+                        </div>
+                        <div class="result-endpoint"><div class="time">${f.arrivalTime||'--:--'}</div><div class="code">${f.destination||dest}</div></div>
+                    </div>
+                    <div class="result-pricing">
+                        <div class="price"><span class="price-currency">US$ </span>${f.price}</div>
+                        <div class="per-person">por pessoa</div>
+                        <a href="https://wa.me/14352146939?text=${wMsg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> Reservar</a>
+                    </div>
                 </div>
             </div>`;
         });
-        list.innerHTML = html;
-    }).catch(() => {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="bi bi-search"></i> Buscar';
-        list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);"><i class="bi bi-wifi-off" style="font-size:32px;"></i><p style="margin-top:12px;">Erro de conexao. Tente novamente.</p></div>';
+        list.innerHTML=html;
+    }).catch(()=>{
+        btn.disabled=false;btn.innerHTML='<i class="bi bi-search"></i> Buscar';
+        list.innerHTML='<div style="text-align:center;padding:48px;color:var(--coral);"><i class="bi bi-wifi-off" style="font-size:36px;"></i><p style="margin-top:16px;">Erro de conexao. Tente novamente.</p></div>';
     });
 }
 
 // Hotel search
-function searchHotels() {
-    const dest = document.getElementById('hotelDest').value.trim();
-    const checkin = document.getElementById('checkin').value;
-    const checkout = document.getElementById('checkout').value;
-    if (!dest || !checkin || !checkout) { alert('Preencha destino e datas.'); return; }
-
-    const results = document.getElementById('results');
-    const list = document.getElementById('resultsList');
-    results.style.display = 'block';
-    list.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div>';
-    document.getElementById('resultsTitle').textContent = `Hoteis em ${dest}`;
-    document.getElementById('resultsCount').textContent = 'Buscando...';
-
-    fetch(`/api/hotels?destination=${dest}&checkin=${checkin}&checkout=${checkout}&adults=${document.getElementById('hotelAdults').value}`)
-        .then(r => r.json()).then(data => {
-            const hotels = data.hotels || data.data || data.results || [];
-            document.getElementById('resultsCount').textContent = `${hotels.length} hoteis`;
-            if (hotels.length === 0) {
-                list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--slate-400);"><p>Nenhum hotel encontrado.</p></div>';
-                return;
-            }
-            let html = '';
-            hotels.forEach(h => {
-                const name = h.name || h.hotel_name || 'Hotel';
-                const price = h.price || h.rate || h.total || '--';
-                const stars = h.stars || h.rating || 0;
-                const whatsappMsg = encodeURIComponent(`Oi! Vi no site o hotel ${name} em ${dest} por $${price}. Gostaria de reservar!`);
-                html += `<div class="result-card">
-                    <div style="flex:1;"><div style="font-size:16px;font-weight:700;">${name}</div><div style="font-size:12px;color:var(--yellow);margin-top:4px;">${'&#9733;'.repeat(stars)}</div></div>
-                    <div class="result-price"><div class="amount">$${price}</div><div class="per">por noite</div>
-                    <a href="https://wa.me/14352146939?text=${whatsappMsg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> Reservar</a></div>
-                </div>`;
-            });
-            list.innerHTML = html;
-        }).catch(() => {
-            list.innerHTML = '<div style="text-align:center;padding:40px;color:var(--coral);"><p>Erro. Tente novamente.</p></div>';
+function searchHotels(){
+    const dest=document.getElementById('hotelDest').value.trim();
+    const ci=document.getElementById('checkin').value;
+    const co=document.getElementById('checkout').value;
+    if(!dest||!ci||!co){alert('Preencha destino e datas.');return;}
+    const results=document.getElementById('results');
+    const list=document.getElementById('resultsList');
+    results.style.display='block';
+    list.innerHTML='<div class="skeleton"></div><div class="skeleton"></div>';
+    document.getElementById('resultsTitle').innerHTML=`Hoteis em ${dest}`;
+    document.getElementById('resultsCount').textContent='Buscando...';
+    fetch(`/api/hotels?destination=${dest}&checkin=${ci}&checkout=${co}&adults=${document.getElementById('hotelAdults').value}`)
+    .then(r=>r.json()).then(data=>{
+        const hotels=data.hotels||[];
+        document.getElementById('resultsCount').textContent=`${hotels.length} hoteis`;
+        if(!hotels.length){list.innerHTML='<div style="text-align:center;padding:48px;color:var(--gray-500);"><p>Nenhum hotel encontrado.</p></div>';return;}
+        let html='';
+        hotels.forEach((h,i)=>{
+            const wMsg=encodeURIComponent(`Oi! Vi no site o hotel ${h.name} em ${dest} por $${h.price}/noite. Gostaria de reservar!`);
+            html+=`<div class="result-card">
+                ${i===0?'<div class="best-badge"><i class="bi bi-trophy-fill"></i> Melhor Preco</div>':''}
+                <div class="result-inner">
+                    ${h.photo?`<img src="${h.photo}" style="width:80px;height:60px;border-radius:12px;object-fit:cover;">`:''}
+                    <div style="flex:1;"><div style="font-size:16px;font-weight:700;color:#fff;">${h.name}</div><div style="color:var(--yellow);font-size:12px;margin-top:4px;">${'&#9733;'.repeat(h.stars||0)}</div>${h.rating?`<div style="font-size:11px;color:var(--gray-500);margin-top:2px;">Nota ${h.rating}/10 (${h.reviewCount} avaliacoes)</div>`:''}</div>
+                    <div class="result-pricing"><div class="price"><span class="price-currency">US$ </span>${h.price}</div><div class="per-person">por noite</div>
+                    <a href="https://wa.me/14352146939?text=${wMsg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> Reservar</a></div>
+                </div>
+            </div>`;
         });
+        list.innerHTML=html;
+    }).catch(()=>{list.innerHTML='<div style="text-align:center;padding:48px;color:var(--coral);"><p>Erro. Tente novamente.</p></div>';});
 }
 </script>
 </body>
