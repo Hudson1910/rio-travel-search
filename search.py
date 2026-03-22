@@ -192,6 +192,81 @@ def search_flights(origin, destination, depart_date, return_date=None,
         return {'flights': [], 'error': str(e)}
 
 
+def get_price_graph(origin, destination, date, currency='USD'):
+    """Get price calendar — cheapest price for each day of the month."""
+    try:
+        params = {
+            'departure_id': origin,
+            'arrival_id': destination,
+            'outbound_date': date,
+            'currency': currency,
+        }
+        resp = requests.get(f'{GF_BASE}/getPriceGraph', headers=GF_HEADERS,
+                            params=params, timeout=30)
+        data = resp.json()
+
+        if not data.get('status'):
+            return {'prices': [], 'error': str(data.get('message', 'API error'))}
+
+        prices = data.get('data', [])
+        result = []
+        for p in prices:
+            result.append({
+                'date': p.get('departure', ''),
+                'price': p.get('price', 0),
+            })
+
+        # Find cheapest
+        if result:
+            min_price = min(r['price'] for r in result if r['price'] > 0)
+            for r in result:
+                r['isCheapest'] = r['price'] == min_price
+
+        return {'prices': result, 'total': len(result)}
+
+    except Exception as e:
+        print(f"[Search] Price graph error: {e}")
+        return {'prices': [], 'error': str(e)}
+
+
+def search_airport(query):
+    """Search airports via Google Flights."""
+    try:
+        resp = requests.get(f'{GF_BASE}/searchAirport', headers=GF_HEADERS,
+                            params={'query': query}, timeout=10)
+        data = resp.json()
+
+        if not data.get('status'):
+            return {'results': []}
+
+        raw = data.get('data', [])
+        results = []
+        for item in raw:
+            # City-level result with sub-airports
+            if item.get('list'):
+                for sub in item['list']:
+                    if sub.get('type') == 'airport':
+                        results.append({
+                            'code': sub.get('id', ''),
+                            'name': sub.get('title', ''),
+                            'city': item.get('city', ''),
+                            'distance': sub.get('distance', ''),
+                        })
+            elif item.get('type') == 'airport':
+                results.append({
+                    'code': item.get('id', ''),
+                    'name': item.get('title', ''),
+                    'city': item.get('city', ''),
+                    'distance': '',
+                })
+
+        return {'results': results}
+
+    except Exception as e:
+        print(f"[Search] Airport search error: {e}")
+        return {'results': []}
+
+
 def search_hotels(destination, checkin, checkout, adults=2):
     """Search hotels via Booking COM API."""
     try:

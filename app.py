@@ -46,6 +46,31 @@ def api_flights():
     return jsonify(results)
 
 
+@app.route('/api/priceGraph')
+def api_price_graph():
+    """Get price calendar for a route."""
+    origin = request.args.get('origin', '').strip().upper()
+    destination = request.args.get('destination', '').strip().upper()
+    date = request.args.get('date', '')
+    currency = request.args.get('currency', 'USD')
+
+    if not origin or not destination or not date:
+        return jsonify({'error': 'Missing required fields', 'prices': []})
+
+    results = search.get_price_graph(origin, destination, date, currency)
+    return jsonify(results)
+
+
+@app.route('/api/searchAirport')
+def api_search_airport():
+    """Search airports via Google Flights."""
+    query = request.args.get('q', '').strip()
+    if not query:
+        return jsonify({'results': []})
+    results = search.search_airport(query)
+    return jsonify(results)
+
+
 @app.route('/api/hotels')
 def api_hotels():
     """Search hotels via Booking COM."""

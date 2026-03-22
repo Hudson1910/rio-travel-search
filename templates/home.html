@@ -250,6 +250,27 @@
         .pi-range-marker{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transform:translateX(-50%);}
         .pi-chart{width:100%;height:50px;position:relative;}
         .pi-chart canvas{width:100%!important;height:50px!important;}
+        /* Price Calendar */
+        .pcal{margin-top:12px;}
+        .pcal-title{font-size:12px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+        .pcal-title i{font-size:14px;}
+        [data-theme="light"] .pcal-title{color:#64748b;}
+        .pcal-grid{display:flex;gap:3px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;}
+        .pcal-grid::-webkit-scrollbar{height:4px;}
+        .pcal-grid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
+        .pcal-day{display:flex;flex-direction:column;align-items:center;min-width:48px;padding:6px 4px;border-radius:8px;cursor:pointer;transition:all .15s;border:1px solid transparent;flex-shrink:0;}
+        .pcal-day:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);}
+        [data-theme="light"] .pcal-day:hover{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06);}
+        .pcal-day.cheapest{background:rgba(6,214,160,.08);border-color:rgba(6,214,160,.2);}
+        .pcal-day.selected{background:rgba(255,82,82,.08);border-color:var(--coral);}
+        .pcal-d{font-size:10px;color:rgba(255,255,255,.35);font-weight:500;}
+        .pcal-p{font-size:12px;font-weight:800;color:rgba(255,255,255,.7);font-family:Outfit;margin-top:2px;}
+        .pcal-day.cheapest .pcal-p{color:#06d6a0;}
+        .pcal-day.selected .pcal-p{color:var(--coral);}
+        [data-theme="light"] .pcal-d{color:#94a3b8;}
+        [data-theme="light"] .pcal-p{color:#475569;}
+        [data-theme="light"] .pcal-day.cheapest .pcal-p{color:#06d6a0;}
+        [data-theme="light"] .pcal-day.selected .pcal-p{color:var(--coral);}
         .skel{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:18px;height:90px;margin-bottom:10px;}
         @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
@@ -1365,6 +1386,10 @@ function doSearch(){
 <div class="pi-range-marker" style="left:${markerPos}%;background:${markerColor};"></div>
 </div><span>$${tHi||'?'}</span></div>
 <div class="pi-chart"><canvas id="piChart"></canvas></div>
+<div class="pcal" style="margin-top:14px;">
+<div class="pcal-title"><i class="bi bi-calendar3"></i> ${lang==='pt'?'Precos por dia':lang==='es'?'Precios por dia':'Prices by date'}</div>
+<div class="pcal-grid" id="piCalendar"></div>
+</div>
 </div>`;
         }
         list.innerHTML=piHTML+flights.map((fl,i)=>{
@@ -1432,6 +1457,31 @@ ${tags.length?`<div class="res-tags">${tags.join('')}</div>`:''}
 <div class="res-bottom"><div class="res-price"><div class="amt">$${fl.price}</div><div class="pp">${t('pp')}</div></div>
 <a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
         }).join('');
+        // Fetch price calendar (async, appends when ready)
+        fetch(`/api/priceGraph?origin=${f}&destination=${tt}&date=${d}&currency=USD`).then(r=>r.json()).then(pg=>{
+            const prices=pg.prices||[];
+            if(!prices.length)return;
+            const calEl=document.getElementById('piCalendar');
+            if(!calEl)return;
+            const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+            const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+            calEl.innerHTML=prices.map(p=>{
+                const dt=new Date(p.date+'T12:00:00');
+                const dayName=days[dt.getDay()];
+                const dayNum=dt.getDate();
+                const mon=months[dt.getMonth()];
+                const isSelected=p.date===d;
+                const cls=p.isCheapest?'cheapest':isSelected?'selected':'';
+                return `<div class="pcal-day ${cls}" onclick="switchDate('${p.date}')" title="${p.date}">
+<div class="pcal-d">${dayName}<br>${mon} ${dayNum}</div>
+<div class="pcal-p">$${p.price}</div>
+</div>`;
+            }).join('');
+            // Scroll to selected date
+            const sel=calEl.querySelector('.selected')||calEl.querySelector('.cheapest');
+            if(sel)sel.scrollIntoView({inline:'center',behavior:'smooth',block:'nearest'});
+        }).catch(()=>{});
+
         // Draw price history chart
         if(pi.history&&pi.history.length>1){
             setTimeout(()=>{
@@ -1534,6 +1584,13 @@ function searchTours(){
 }
 
 // ========== QUICK SEARCH ==========
+// Switch date from price calendar and re-search
+function switchDate(newDate){
+    window.fpDep.setDate(newDate,true);
+    document.getElementById('dep').value=newDate;
+    doSearch();
+}
+
 function qSearch(f,tt){
     document.getElementById('from').value=AP.find(a=>a.c===f)?.ci+' ('+f+')';
     document.getElementById('from').dataset.code=f;
