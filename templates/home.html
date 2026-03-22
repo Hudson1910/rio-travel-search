@@ -27,8 +27,8 @@
         nav{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:background .3s;}
         nav.scrolled{background:rgba(6,8,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
         .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-        .logo img{height:72px;}
-        .logo span{font-family:Outfit;font-weight:900;font-size:28px;color:var(--w);letter-spacing:-1px;}
+        .logo img{height:54px;border-radius:12px;background:rgba(255,255,255,.95);padding:4px;}
+        .logo span{font-family:Outfit;font-weight:900;font-size:32px;color:var(--w);letter-spacing:-1px;text-shadow:0 2px 8px rgba(0,0,0,.3);}
         .logo .a{color:var(--coral);}
         .nav-r{display:flex;align-items:center;gap:10px;}
         /* LANG */
@@ -607,39 +607,104 @@ function setLang(l){
     document.getElementById('langL').textContent=fl[l][1];
     document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('on',o.dataset.l===l));
     document.getElementById('langDD').classList.remove('open');
-    // Apply translations
+    document.documentElement.lang=l;
+
+    // ---- HERO ----
     document.getElementById('heroTitle').innerHTML=t('heroT');
     document.getElementById('heroSub').textContent=t('heroS');
-    // Tabs
-    document.querySelectorAll('.sb-tab span.tl').forEach((s,i)=>s.textContent=t(['flights','hotels','tours','cruises'][i]));
-    // Options
+
+    // ---- TABS ----
+    const tabKeys=['flights','hotels','tours','cruises'];
+    document.querySelectorAll('.sb-tab span.tl').forEach((s,i)=>s.textContent=t(tabKeys[i]));
+
+    // ---- TRIP TYPE ----
     document.getElementById('optRT').querySelector('.tl').textContent=t('rt');
     document.getElementById('optOW').querySelector('.tl').textContent=t('ow');
-    document.getElementById('classTxt').textContent=t({economy:'eco',premium:'premium',business:'biz',first:'first'}[cabin]||'eco');
-    // Fields labels
-    const labels=document.querySelectorAll('#fFields .sf label.tl');
-    if(labels[0])labels[0].textContent=t('from');
-    if(labels[1])labels[1].textContent=t('to');
-    if(labels[2])labels[2].textContent=t('dep');
-    if(labels[3])labels[3].textContent=t('ret');
-    // Buttons
-    document.querySelectorAll('.sb-btn .tl').forEach(s=>{if(s.closest('#tFields'))s.textContent=t('searchTours');else s.textContent=t('search');});
-    // Pax
+
+    // ---- CABIN CLASS (button + dropdown items) ----
+    const classMap={economy:'eco',premium:'premium',business:'biz',first:'first'};
+    document.getElementById('classTxt').textContent=t(classMap[cabin]||'eco');
+    const classItems=document.querySelectorAll('#classDD .dd-item .tl');
+    if(classItems[0])classItems[0].textContent=t('eco');
+    if(classItems[1])classItems[1].textContent='Premium Economy';
+    if(classItems[2])classItems[2].textContent=t('biz');
+    if(classItems[3])classItems[3].textContent=t('first');
+
+    // ---- PASSENGERS (all labels in dropdown) ----
+    const paxNames=document.querySelectorAll('#paxDD .pax-name.tl');
+    const paxAges=document.querySelectorAll('#paxDD .pax-age.tl');
+    if(paxNames[0])paxNames[0].textContent=t('adults');
+    if(paxNames[1])paxNames[1].textContent=t('children');
+    if(paxNames[2])paxNames[2].textContent=t('infants');
+    if(paxNames[3])paxNames[3].textContent=t('cabin');
+    if(paxNames[4])paxNames[4].textContent=t('checked');
+    if(paxAges[0])paxAges[0].textContent=t('adultsAge');
+    if(paxAges[1])paxAges[1].textContent=t('childrenAge');
+    if(paxAges[2])paxAges[2].textContent=t('infantsAge');
+    const paxSec=document.querySelector('#paxDD .pax-sec.tl');
+    if(paxSec)paxSec.textContent=t('bags');
+    const paxDone=document.querySelector('#paxDD .pax-done.tl');
+    if(paxDone)paxDone.textContent=t('done');
     updatePax();
-    // Sections
-    document.querySelectorAll('.sec-tag .tl').forEach((s,i)=>s.textContent=t(i===0?'destLabel':'whyLabel'));
-    document.querySelectorAll('.sec-h h2.tl').forEach((s,i)=>s.textContent=t(i===0?'destTitle':'whyTitle'));
-    document.querySelectorAll('.sec-h p.tl').forEach(s=>s.textContent=t('destSub'));
-    // Features
+
+    // ---- SEARCH FIELD LABELS ----
+    const fLabels=document.querySelectorAll('#fFields .sf label.tl');
+    if(fLabels[0])fLabels[0].textContent=t('from');
+    if(fLabels[1])fLabels[1].textContent=t('to');
+    if(fLabels[2])fLabels[2].textContent=t('dep');
+    if(fLabels[3])fLabels[3].textContent=t('ret');
+    // Hotel labels
+    const hLabel=document.querySelector('#hFields .sf label.tl');
+    if(hLabel)hLabel.textContent=t('hotelDest');
+    // Tour labels
+    const tLabel=document.querySelector('#tFields .sf label.tl');
+    if(tLabel)tLabel.textContent=t('tourDest');
+
+    // ---- SEARCH BUTTONS ----
+    document.querySelectorAll('.sb-btn .tl').forEach(s=>{
+        if(s.closest('#tFields'))s.textContent=t('searchTours');
+        else s.textContent=t('search');
+    });
+
+    // ---- PLACEHOLDERS ----
+    document.getElementById('from').placeholder=l==='en'?'City or airport...':l==='es'?'Ciudad o aeropuerto...':'Cidade ou aeroporto...';
+    document.getElementById('to').placeholder=l==='en'?'Where to?':l==='es'?'A donde?':'Para onde?';
+
+    // ---- SECTIONS ----
+    const secTags=document.querySelectorAll('.sec-tag .tl');
+    if(secTags[0])secTags[0].textContent=t('destLabel');
+    if(secTags[1])secTags[1].textContent=t('whyLabel');
+    const secTitles=document.querySelectorAll('.sec-h h2.tl');
+    if(secTitles[0])secTitles[0].textContent=t('destTitle');
+    if(secTitles[1])secTitles[1].textContent=t('whyTitle');
+    const secSubs=document.querySelectorAll('.sec-h p.tl');
+    if(secSubs[0])secSubs[0].textContent=t('destSub');
+
+    // ---- FEATURES ----
     const fts=document.querySelectorAll('.feat');
     if(fts[0]){fts[0].querySelector('h3').textContent=t('f1');fts[0].querySelector('p').textContent=t('f1d');}
     if(fts[1]){fts[1].querySelector('h3').textContent=t('f2');fts[1].querySelector('p').textContent=t('f2d');}
     if(fts[2]){fts[2].querySelector('h3').textContent=t('f3');fts[2].querySelector('p').textContent=t('f3d');}
-    // WA float
-    document.querySelector('.wa-float span').textContent=t('wa');
-    // Flatpickr locale
-    if(window.fpDep)window.fpDep.set('locale',l==='es'?'es':l==='pt'?'pt':'default');
-    if(window.fpRet)window.fpRet.set('locale',l==='es'?'es':l==='pt'?'pt':'default');
+
+    // ---- AGENT BIO ----
+    const agentP=document.querySelector('.agent-box p.tl');
+    if(agentP)agentP.textContent=t('agentBio');
+
+    // ---- CRUISE TAB ----
+    const cruiseP=document.querySelector('#cFields p.tl');
+    if(cruiseP)cruiseP.textContent=t('cruise');
+    const cruiseBtn=document.querySelector('#cFields a span.tl');
+    if(cruiseBtn)cruiseBtn.textContent=t('cruiseBtn');
+
+    // ---- WA FLOAT ----
+    const waSpan=document.querySelector('.wa-float span.tl');
+    if(waSpan)waSpan.textContent=t('wa');
+
+    // ---- FLATPICKR LOCALE ----
+    const fpLocale=l==='es'?'es':l==='pt'?'pt':'default';
+    if(window.fpDep)window.fpDep.set('locale',fpLocale);
+    if(window.fpRet)window.fpRet.set('locale',fpLocale);
+    document.querySelectorAll('.flatpickr-input').forEach(fp=>{if(fp._flatpickr)fp._flatpickr.set('locale',fpLocale);});
 }
 
 // ========== CLOSE ALL DROPDOWNS ==========
