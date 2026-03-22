@@ -75,7 +75,7 @@ def search_flights(origin, destination, depart_date, return_date=None,
             duration = fl.get('duration', {})
             bags = fl.get('bags', {})
             carbon = fl.get('carbon_emissions', {})
-            layovers = fl.get('layovers', [])
+            layovers = fl.get('layovers') or []
 
             # Parse departure/arrival times
             dep_time_raw = dep.get('time', '')
@@ -100,8 +100,8 @@ def search_flights(origin, destination, depart_date, return_date=None,
                 'destination': arr.get('airport_code', destination),
                 'originAirport': dep.get('airport_name', ''),
                 'destinationAirport': arr.get('airport_name', ''),
-                'originCity': dep.get('airport_name', '').split(' International')[0].split(' Airport')[0] if dep.get('airport_name') else '',
-                'destinationCity': arr.get('airport_name', '').split(' International')[0].split(' Airport')[0] if arr.get('airport_name') else '',
+                'originCity': (dep.get('airport_name') or '').split(' International')[0].split(' Airport')[0],
+                'destinationCity': (arr.get('airport_name') or '').split(' International')[0].split(' Airport')[0],
                 'stops': len(legs) - 1,
                 'duration': duration.get('text', ''),
                 'durationMin': duration.get('raw', 0),
@@ -136,7 +136,7 @@ def search_flights(origin, destination, depart_date, return_date=None,
                 } for l in legs],
                 'isTopFlight': fl in top,
                 'bookingToken': fl.get('booking_token', ''),
-                'extensions': first_leg.get('extensions', []),
+                'extensions': first_leg.get('extensions') or [],
             })
 
         flights.sort(key=lambda x: x['price'])
@@ -187,7 +187,8 @@ def search_flights(origin, destination, depart_date, return_date=None,
         }
 
     except Exception as e:
-        print(f"[Search] Flight error: {e}")
+        import traceback
+        traceback.print_exc()
         return {'flights': [], 'error': str(e)}
 
 
