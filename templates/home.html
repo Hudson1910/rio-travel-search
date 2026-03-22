@@ -3,1277 +3,759 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rio Travel — Passagens Aereas, Hoteis & Cruzeiros</title>
-    <meta name="description" content="Encontre as melhores ofertas de voos, hoteis e cruzeiros. Atendimento em portugues para brasileiros nos EUA.">
-    <!-- Mobile optimization -->
-    <meta name="theme-color" content="#05070e">
+    <title>Rio Travel — Voos, Hoteis, Tours & Cruzeiros</title>
+    <meta name="theme-color" content="#0a0e1a">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Rio Travel">
-    <meta name="mobile-web-app-capable" content="yes">
-    <link rel="manifest" href="/static/manifest.json">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     <style>
-        :root {
-            --bg: #05070e; --bg2: #0a0f1e; --bg3: #101628; --bg4: #161d35;
-            --coral: #ff5757; --coral-glow: rgba(255,87,87,0.15); --orange: #ff8c42; --yellow: #ffd166;
-            --sky: #4cc9f0; --blue: #4361ee; --purple: #7b2ff7; --pink: #f72585;
-            --green: #06d6a0; --green-glow: rgba(6,214,160,0.12);
-            --white: #ffffff; --gray-50: #f8fafc; --gray-100: #f1f5f9; --gray-200: #e2e8f0;
-            --gray-300: #cbd5e1; --gray-400: #94a3b8; --gray-500: #64748b; --gray-600: #475569;
-            --gray-700: #334155; --gray-800: #1e293b; --gray-900: #0f172a;
-            --text: #e2e8f0; --text-muted: #64748b;
+        :root{--bg:#06080f;--bg2:#0c1018;--bg3:#121826;--bg4:#1a2236;--card:#141a2e;
+        --coral:#ff5252;--orange:#ff7b42;--gold:#ffb347;--sky:#38bdf8;--green:#06d6a0;--purple:#a78bfa;
+        --w:#fff;--t1:#e2e8f0;--t2:#94a3b8;--t3:#64748b;--t4:#475569;--t5:#334155;--border:rgba(255,255,255,0.06);}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        html{scroll-behavior:smooth;}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+        h1,h2,h3,h4{font-family:'Outfit',sans-serif;}
+        @keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+        @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,82,82,0.3);}70%{box-shadow:0 0 0 12px rgba(255,82,82,0);}}
+        .ani{opacity:0;transform:translateY(16px);transition:all .6s ease;}
+        .ani.v{opacity:1;transform:translateY(0);}
+
+        /* NAV */
+        nav{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:background .3s;}
+        nav.scrolled{background:rgba(6,8,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+        .logo img{height:56px;}
+        .logo span{font-family:Outfit;font-weight:800;font-size:22px;color:var(--w);letter-spacing:-.8px;}
+        .logo .a{color:var(--coral);}
+        .nav-r{display:flex;align-items:center;gap:10px;}
+        /* LANG */
+        .lang{position:relative;}
+        .lang-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--t2);font-size:13px;font-weight:600;cursor:pointer;font-family:Inter;}
+        .lang-btn .f{font-size:20px;line-height:1;}
+        .lang-dd{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:6px;min-width:170px;box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:300;}
+        .lang-dd.open{display:block;animation:fadeIn .15s;}
+        .lang-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;cursor:pointer;font-size:14px;color:var(--t2);font-weight:500;transition:background .15s;}
+        .lang-opt:hover{background:rgba(255,255,255,.04);color:var(--w);}
+        .lang-opt.on{background:rgba(255,82,82,.08);color:var(--w);}
+        .lang-opt .f{font-size:22px;}
+        .nav-wa{display:flex;align-items:center;gap:6px;padding:9px 18px;border-radius:10px;background:linear-gradient(135deg,var(--coral),var(--orange));color:var(--w);font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;font-family:Inter;}
+        .nav-wa:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,82,82,.25);}
+
+        /* HERO */
+        .hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:90px 20px 50px;position:relative;overflow:hidden;}
+        .hero::before{content:'';position:absolute;top:-30%;right:-15%;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(255,82,82,.06),transparent 70%);}
+        .hero::after{content:'';position:absolute;bottom:-20%;left:-10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,.04),transparent 70%);}
+        .hero-text{text-align:center;max-width:700px;margin:0 auto 36px;position:relative;z-index:1;}
+        .hero h1{font-size:52px;font-weight:900;letter-spacing:-2.5px;line-height:1.08;margin-bottom:14px;color:var(--w);}
+        .hero h1 b{background:linear-gradient(135deg,var(--coral),var(--orange),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+        .hero p{font-size:17px;color:var(--t3);line-height:1.6;max-width:520px;margin:0 auto;}
+
+        /* SEARCH */
+        .sb{width:100%;max-width:880px;position:relative;z-index:10;}
+        .sb-box{background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+        .sb-tabs{display:flex;border-bottom:1px solid var(--border);}
+        .sb-tab{flex:1;padding:16px;border:none;background:none;color:var(--t3);font-size:13px;font-weight:600;cursor:pointer;font-family:Inter;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;border-bottom:2px solid transparent;}
+        .sb-tab:hover{color:var(--t1);}
+        .sb-tab.on{color:var(--coral);border-bottom-color:var(--coral);background:rgba(255,82,82,.03);}
+        .sb-tab i{font-size:18px;}
+        /* Options row */
+        .sb-opts{display:flex;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap;align-items:center;}
+        .opt-btn{padding:7px 14px;border-radius:9px;border:1px solid var(--border);background:none;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:Inter;display:flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap;}
+        .opt-btn:hover,.opt-btn.on{background:rgba(255,255,255,.04);color:var(--w);border-color:rgba(255,255,255,.1);}
+        .opt-btn i{font-size:14px;}
+        /* Dropdown generic */
+        .dd{display:none;position:absolute;top:calc(100% + 6px);left:0;background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:8px;box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:500;min-width:240px;}
+        .dd.open{display:block;animation:fadeIn .15s;}
+        .dd-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--t2);font-weight:500;transition:background .15s;}
+        .dd-item:hover{background:rgba(255,255,255,.04);color:var(--w);}
+        .dd-item.on{color:var(--coral);}
+        .dd-item .dot{width:8px;height:8px;border-radius:50%;border:2px solid var(--t5);flex-shrink:0;}
+        .dd-item.on .dot{background:var(--coral);border-color:var(--coral);}
+        /* Pax dropdown */
+        .pax-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;}
+        .pax-row+.pax-row{border-top:1px solid var(--border);}
+        .pax-l{display:flex;align-items:center;gap:10px;}
+        .pax-l i{font-size:20px;color:var(--t3);width:24px;text-align:center;}
+        .pax-name{font-size:14px;font-weight:600;color:var(--w);}
+        .pax-age{font-size:11px;color:var(--t3);}
+        .pax-ctrls{display:flex;align-items:center;gap:10px;}
+        .pax-b{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);background:none;color:var(--t3);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+        .pax-b:hover{border-color:var(--coral);color:var(--coral);}
+        .pax-n{font-family:Outfit;font-size:18px;font-weight:700;color:var(--w);min-width:24px;text-align:center;}
+        .pax-done{width:100%;padding:12px;border:none;border-radius:12px;background:var(--coral);color:var(--w);font-family:Outfit;font-size:14px;font-weight:700;cursor:pointer;margin-top:6px;}
+        .pax-sec{padding:6px 14px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;border-top:1px solid var(--border);margin-top:4px;}
+        /* Search fields */
+        .sb-fields{display:flex;padding:12px;gap:6px;align-items:stretch;}
+        .sf{flex:1;position:relative;}
+        .sf label{position:absolute;top:10px;left:14px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;z-index:1;pointer-events:none;}
+        .sf input,.sf select{width:100%;padding:30px 14px 10px;border:1.5px solid var(--border);border-radius:14px;font-size:14px;font-family:Inter;font-weight:600;color:var(--w);background:rgba(255,255,255,.02);transition:all .2s;min-height:60px;}
+        .sf input:focus,.sf select:focus{outline:none;border-color:var(--coral);background:rgba(255,82,82,.03);}
+        .sf input::placeholder{color:var(--t5);font-weight:400;}
+        .sf select{appearance:none;cursor:pointer;}
+        .sf select option{background:var(--bg3);color:var(--w);}
+        /* Flatpickr override */
+        .sf .flatpickr-input{cursor:pointer;}
+        /* Swap */
+        .swap{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg3);color:var(--t3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;align-self:center;margin:0 -2px;z-index:1;}
+        .swap:hover{border-color:var(--coral);color:var(--coral);}
+        /* Search btn */
+        .sb-btn{padding:0 28px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--coral),var(--orange));color:var(--w);font-family:Outfit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:all .2s;min-height:60px;animation:pulse 2s infinite;}
+        .sb-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,82,82,.3);}
+        .sb-btn:disabled{opacity:.4;animation:none;cursor:default;transform:none;}
+        /* Autocomplete */
+        .ac{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:14px;max-height:280px;overflow-y:auto;z-index:500;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:6px;}
+        .ac.open{display:block;animation:fadeIn .12s;}
+        .ac-i{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;cursor:pointer;transition:background .12s;}
+        .ac-i:hover{background:rgba(255,82,82,.06);}
+        .ac-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,82,82,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Outfit;font-weight:800;font-size:13px;color:var(--coral);}
+        .ac-city{font-size:14px;font-weight:600;color:var(--w);}
+        .ac-name{font-size:11px;color:var(--t3);margin-top:1px;}
+        .ac-ctry{font-size:10px;color:var(--t4);background:rgba(255,255,255,.03);padding:2px 8px;border-radius:6px;flex-shrink:0;}
+
+        /* RESULTS */
+        .results{display:none;max-width:880px;width:100%;margin:36px auto 0;position:relative;z-index:1;}
+        .res-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:0 4px;}
+        .res-head h2{font-size:18px;font-weight:700;color:var(--w);}
+        .res-count{font-size:13px;color:var(--t3);}
+        .res-card{background:var(--card);border:1px solid var(--border);border-radius:18px;margin-bottom:10px;transition:all .3s;overflow:hidden;position:relative;}
+        .res-card:hover{border-color:rgba(255,82,82,.12);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.2);}
+        .res-inner{display:flex;align-items:center;padding:20px;gap:16px;}
+        .res-air{display:flex;align-items:center;gap:12px;min-width:140px;}
+        .res-air img{width:40px;height:40px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,.03);padding:4px;}
+        .res-air-name{font-size:13px;font-weight:700;color:var(--w);}
+        .res-air-code{font-size:11px;color:var(--t3);}
+        .res-route{flex:1;display:flex;align-items:center;gap:12px;}
+        .res-ep{text-align:center;min-width:60px;}
+        .res-ep .time{font-family:Outfit;font-size:22px;font-weight:800;color:var(--w);}
+        .res-ep .code{font-size:11px;color:var(--t3);font-weight:600;letter-spacing:.5px;}
+        .res-line{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 8px;}
+        .res-line-bar{width:100%;height:1px;background:var(--t5);position:relative;}
+        .res-line-bar::before,.res-line-bar::after{content:'';position:absolute;top:-3px;width:7px;height:7px;border-radius:50%;background:var(--t5);}
+        .res-line-bar::before{left:0;}
+        .res-line-bar::after{right:0;}
+        .res-line .plane{color:var(--coral);font-size:12px;margin-top:-10px;background:var(--card);padding:0 4px;}
+        .res-stops{font-size:10px;color:var(--t3);font-weight:600;}
+        .res-dur{font-size:10px;color:var(--t4);}
+        .res-price{text-align:right;min-width:130px;padding-left:16px;border-left:1px solid var(--border);}
+        .res-price .amt{font-family:Outfit;font-size:28px;font-weight:800;color:var(--w);}
+        .res-price .cur{font-size:14px;color:var(--t3);}
+        .res-price .pp{font-size:11px;color:var(--t3);}
+        .res-price .cta{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:9px 16px;background:#25d366;border-radius:10px;color:var(--w);font-size:12px;font-weight:700;text-decoration:none;transition:all .2s;}
+        .res-price .cta:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(37,211,102,.3);}
+        .best{position:absolute;top:0;right:0;padding:5px 14px;background:var(--green);color:var(--w);font-size:10px;font-weight:800;letter-spacing:.5px;border-radius:0 18px 0 12px;text-transform:uppercase;}
+        .skel{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:18px;height:90px;margin-bottom:10px;}
+        @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+        /* DESTINATIONS */
+        .dests{padding:80px 20px;max-width:1100px;margin:0 auto;}
+        .sec-h{text-align:center;margin-bottom:48px;}
+        .sec-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+        .sec-h h2{font-size:34px;font-weight:800;color:var(--w);letter-spacing:-1px;margin-bottom:8px;}
+        .sec-h p{font-size:15px;color:var(--t3);}
+        .dest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+        .dest-card{position:relative;border-radius:18px;overflow:hidden;cursor:pointer;display:block;text-decoration:none;aspect-ratio:4/3;transition:all .35s;}
+        .dest-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.3);}
+        .dest-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
+        .dest-card:hover img{transform:scale(1.06);}
+        .dest-ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.7));}
+        .dest-info{position:absolute;bottom:0;left:0;right:0;padding:18px;}
+        .dest-name{font-family:Outfit;font-size:20px;font-weight:800;color:var(--w);}
+        .dest-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
+        .dest-price{font-family:Outfit;font-size:14px;font-weight:700;color:var(--gold);margin-top:4px;}
+        .dest-arrow{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:var(--w);font-size:14px;transition:background .2s;}
+        .dest-card:hover .dest-arrow{background:var(--coral);}
+        .dest-lg{grid-column:span 2;aspect-ratio:2/1;}
+        .dest-lg .dest-name{font-size:28px;}
+
+        /* FEATURES */
+        .feats{padding:80px 20px;max-width:1000px;margin:0 auto;}
+        .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+        .feat{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:28px 24px;transition:all .3s;}
+        .feat:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.08);}
+        .feat i{font-size:24px;margin-bottom:14px;display:block;}
+        .feat h3{font-size:16px;font-weight:700;color:var(--w);margin-bottom:6px;}
+        .feat p{font-size:13px;color:var(--t3);line-height:1.5;}
+
+        /* AGENT */
+        .agent{padding:60px 20px;max-width:680px;margin:0 auto;}
+        .agent-box{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:40px;display:flex;align-items:center;gap:28px;}
+        .agent-box img{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.06);flex-shrink:0;}
+        .agent-box h3{font-size:20px;font-weight:800;color:var(--w);}
+        .agent-box .role{font-size:12px;color:var(--coral);font-weight:600;margin-top:2px;}
+        .agent-box p{font-size:13px;color:var(--t3);line-height:1.5;margin-top:8px;}
+        .agent-btns{display:flex;gap:8px;margin-top:14px;}
+        .agent-btns a{padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;display:flex;align-items:center;gap:6px;transition:all .2s;}
+        .btn-wa{background:#25d366;color:var(--w);}
+        .btn-wa:hover{box-shadow:0 4px 16px rgba(37,211,102,.3);}
+        .btn-call{background:rgba(255,255,255,.05);color:var(--w);border:1px solid var(--border);}
+
+        /* FOOTER */
+        footer{padding:40px 20px 28px;border-top:1px solid var(--border);text-align:center;}
+        footer .fb{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;}
+        footer .fb img{height:28px;}
+        footer .fb span{font-family:Outfit;font-weight:700;font-size:15px;color:var(--t3);}
+        footer .fl{display:flex;gap:20px;justify-content:center;margin-bottom:16px;}
+        footer .fl a{color:var(--t4);text-decoration:none;font-size:12px;}
+        footer .fl a:hover{color:var(--t2);}
+        footer .copy{font-size:11px;color:var(--t5);}
+
+        /* WA FLOAT */
+        .wa-float{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:50px;background:#25d366;color:var(--w);text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 6px 24px rgba(37,211,102,.35);transition:all .3s;font-family:Inter;}
+        .wa-float:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(37,211,102,.45);}
+        .wa-float i{font-size:22px;}
+
+        /* RESPONSIVE */
+        @media(max-width:900px){
+            .hero h1{font-size:36px;}
+            .sb-fields{flex-direction:column;gap:8px;}
+            .sf{min-width:100%!important;flex:1 1 100%!important;}
+            .sb-btn{width:100%;justify-content:center;min-height:54px;}
+            .swap{display:none;}
+            .sb-opts{gap:4px;}
+            .opt-btn{font-size:11px;padding:6px 10px;}
+            .res-inner{flex-direction:column;text-align:center;gap:12px;}
+            .res-air{min-width:auto;justify-content:center;}
+            .res-route{flex-direction:column;gap:8px;width:100%;}
+            .res-price{min-width:auto;border-left:none;padding-left:0;border-top:1px solid var(--border);padding-top:12px;width:100%;}
+            .res-price .cta{width:100%;justify-content:center;padding:12px;}
+            .dest-grid{grid-template-columns:1fr 1fr;}
+            .dest-lg{grid-column:span 2;}
+            .feat-grid{grid-template-columns:1fr;}
+            .agent-box{flex-direction:column;text-align:center;}
+            .agent-btns{justify-content:center;}
+            nav .nav-links{display:none;}
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
-        h1,h2,h3,h4,h5 { font-family: 'Outfit', sans-serif; }
-        @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-8px); } }
-        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
-        @keyframes shimmer { 0% { background-position:200% 0; } 100% { background-position:-200% 0; } }
-        @keyframes glow { 0%,100% { box-shadow:0 0 20px var(--coral-glow); } 50% { box-shadow:0 0 40px var(--coral-glow),0 0 80px rgba(255,87,87,0.05); } }
-        @keyframes slideRight { from { width:0; } to { width:100%; } }
-        .fade-up { opacity:0; transform:translateY(24px); transition:all 0.8s cubic-bezier(0.22,1,0.36,1); }
-        .fade-up.visible { opacity:1; transform:translateY(0); }
-
-        /* ===== NAVBAR ===== */
-        .nav { position:fixed; top:0; left:0; right:0; z-index:200; padding:0 40px; height:64px; display:flex; align-items:center; justify-content:space-between; transition:all 0.4s; }
-        .nav.scrolled { background:rgba(5,7,14,0.92); backdrop-filter:blur(24px) saturate(180%); border-bottom:1px solid rgba(255,255,255,0.04); }
-        .nav-brand { display:flex; align-items:center; gap:10px; text-decoration:none; }
-        .nav-brand-icon { width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,var(--coral),var(--orange)); display:flex; align-items:center; justify-content:center; font-size:18px; color:#fff; }
-        .nav-brand span { font-family:'Outfit'; font-weight:800; font-size:20px; color:#fff; letter-spacing:-0.5px; }
-        .nav-brand .accent { color:var(--coral); }
-        .nav-links { display:flex; gap:28px; align-items:center; }
-        .nav-links a { color:var(--gray-400); text-decoration:none; font-size:13px; font-weight:500; letter-spacing:0.3px; transition:color 0.2s; position:relative; }
-        .nav-links a:hover { color:#fff; }
-        .nav-links a.active { color:#fff; }
-        .nav-links a.active::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--coral); border-radius:1px; }
-        .nav-right { display:flex; align-items:center; gap:12px; }
-        .lang-switch { position:relative; }
-        .lang-current { display:flex; align-items:center; gap:6px; padding:6px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); cursor:pointer; transition:all 0.2s; font-size:13px; color:#fff; font-weight:600; }
-        .lang-current:hover { background:rgba(255,255,255,0.08); }
-        .lang-current .flag { font-size:18px; }
-        .lang-current .arrow { font-size:10px; color:var(--gray-500); transition:transform 0.2s; }
-        .lang-dropdown { position:absolute; top:calc(100% + 8px); right:0; background:var(--bg3); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:6px; min-width:160px; display:none; box-shadow:0 16px 48px rgba(0,0,0,0.4); z-index:300; }
-        .lang-dropdown.show { display:block; }
-        .lang-option { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; cursor:pointer; transition:all 0.2s; font-size:13px; color:var(--gray-400); font-weight:500; }
-        .lang-option:hover { background:rgba(255,255,255,0.06); color:#fff; }
-        .lang-option.active { background:rgba(255,87,87,0.08); color:#fff; }
-        .lang-option .flag { font-size:20px; }
-
-        /* Trip type toggle */
-        .trip-type { display:flex; gap:4px; padding:4px; background:rgba(255,255,255,0.03); border-radius:12px; margin-bottom:8px; border:1px solid rgba(255,255,255,0.04); }
-        .trip-type-btn { padding:8px 18px; border-radius:9px; border:none; background:transparent; color:var(--gray-500); font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans'; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
-        .trip-type-btn.active { background:rgba(255,255,255,0.06); color:#fff; }
-        .trip-type-btn i { font-size:14px; }
-
-        /* Airport autocomplete */
-        .airport-ac { position:absolute; top:calc(100% + 4px); left:0; right:0; background:#131830; border:1px solid rgba(255,255,255,0.1); border-radius:16px; max-height:280px; overflow-y:auto; display:none; z-index:500; box-shadow:0 20px 60px rgba(0,0,0,0.6); padding:6px; }
-        .airport-ac.show { display:block; animation:fadeUp 0.15s ease-out; }
-        .airport-ac::-webkit-scrollbar { width:4px; }
-        .airport-ac::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:2px; }
-        .airport-item { display:flex; align-items:center; gap:14px; padding:14px 16px; cursor:pointer; transition:all 0.15s; border-radius:12px; margin-bottom:2px; }
-        .airport-item:hover { background:rgba(255,87,87,0.08); }
-        .airport-item .ac-icon { width:40px; height:40px; border-radius:10px; background:rgba(255,87,87,0.08); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-        .airport-item .ac-code { font-family:'Outfit'; font-weight:800; font-size:14px; color:var(--coral); }
-        .airport-item .ac-info { flex:1; min-width:0; }
-        .airport-item .ac-city { font-size:14px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-        .airport-item .ac-name { font-size:11px; color:var(--gray-500); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
-        .airport-item .ac-country { font-size:11px; color:var(--gray-600); background:rgba(255,255,255,0.04); padding:2px 8px; border-radius:6px; white-space:nowrap; flex-shrink:0; }
-
-        /* Passenger dropdown */
-        .pax-dropdown { position:absolute; top:calc(100% + 6px); right:0; background:#131830; border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:12px; display:none; z-index:500; box-shadow:0 20px 60px rgba(0,0,0,0.6); min-width:300px; }
-        .pax-dropdown.show { display:block; animation:fadeUp 0.15s ease-out; }
-        .pax-row { display:flex; align-items:center; justify-content:space-between; padding:16px 14px; border-bottom:1px solid rgba(255,255,255,0.04); }
-        .pax-info { }
-        .pax-icon { font-size:20px; margin-right:10px; }
-        .pax-label { font-size:15px; font-weight:700; color:#fff; display:flex; align-items:center; }
-        .pax-age { font-size:11px; color:var(--gray-500); margin-top:3px; }
-        .pax-controls { display:flex; align-items:center; gap:14px; }
-        .pax-btn { width:36px; height:36px; border-radius:12px; border:1.5px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); color:var(--gray-400); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
-        .pax-btn:hover { border-color:var(--coral); color:var(--coral); background:rgba(255,87,87,0.08); }
-        .pax-count { font-family:'Outfit'; font-size:20px; font-weight:800; color:#fff; min-width:28px; text-align:center; }
-        .pax-done { width:100%; padding:14px; border:none; border-radius:14px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-family:'Outfit'; font-size:15px; font-weight:700; cursor:pointer; margin-top:8px; transition:all 0.2s; letter-spacing:0.3px; }
-        .pax-done:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(255,87,87,0.3); }
-
-        /* Date picker - modern */
-        .search-field input[type="date"] { color-scheme:dark; font-size:15px !important; padding-top:30px !important; padding-bottom:12px !important; min-height:62px; }
-        .search-field input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(0.7); cursor:pointer; font-size:20px; padding:4px; }
-        .nav-phone { color:var(--gray-400); font-size:13px; font-weight:500; text-decoration:none; display:flex; align-items:center; gap:6px; }
-        .nav-phone:hover { color:#fff; }
-        .nav-cta { padding:8px 20px; border-radius:10px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.3s; border:none; cursor:pointer; }
-        .nav-cta:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(255,87,87,0.25); }
-
-        /* ===== HERO ===== */
-        .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:100px 24px 60px; position:relative; overflow:hidden; }
-        /* Ambient light effects */
-        .hero-glow-1 { position:absolute; top:-20%; right:-10%; width:700px; height:700px; border-radius:50%; background:radial-gradient(circle,rgba(255,87,87,0.07) 0%,transparent 70%); pointer-events:none; }
-        .hero-glow-2 { position:absolute; bottom:-30%; left:-15%; width:800px; height:800px; border-radius:50%; background:radial-gradient(circle,rgba(76,201,240,0.05) 0%,transparent 70%); pointer-events:none; }
-        .hero-glow-3 { position:absolute; top:30%; left:40%; width:400px; height:400px; border-radius:50%; background:radial-gradient(circle,rgba(123,47,247,0.04) 0%,transparent 70%); pointer-events:none; }
-        /* Grid pattern */
-        .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px); background-size:80px 80px; mask-image:radial-gradient(ellipse 60% 60% at 50% 40%,black 30%,transparent 100%); pointer-events:none; }
-
-        .hero-content { text-align:center; position:relative; z-index:2; max-width:820px; animation:fadeUp 0.8s ease-out; }
-        .hero-pill { display:inline-flex; align-items:center; gap:8px; padding:5px 6px 5px 14px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:100px; font-size:12px; font-weight:500; color:var(--gray-400); margin-bottom:28px; backdrop-filter:blur(10px); }
-        .hero-pill-badge { padding:3px 10px; border-radius:100px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-size:10px; font-weight:800; letter-spacing:0.5px; }
-        .hero h1 { font-size:64px; font-weight:900; line-height:1.05; letter-spacing:-3px; margin-bottom:20px; color:#fff; }
-        .hero h1 .gradient { background:linear-gradient(135deg,var(--coral),var(--orange),var(--yellow)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-        .hero-sub { font-size:18px; color:var(--gray-400); max-width:540px; margin:0 auto 44px; line-height:1.7; font-weight:400; }
-        .hero-sub strong { color:var(--text); font-weight:600; }
-
-        /* ===== SEARCH BOX ===== */
-        .search-wrapper { width:100%; max-width:920px; position:relative; z-index:10; animation:fadeUp 1s ease-out 0.2s both; }
-        .search-box { background:rgba(16,22,40,0.7); backdrop-filter:blur(40px) saturate(150%); border:1px solid rgba(255,255,255,0.06); border-radius:28px; padding:6px; box-shadow:0 24px 80px rgba(0,0,0,0.4),0 0 0 1px rgba(255,255,255,0.02); }
-        .search-tabs { display:flex; gap:3px; padding:4px; margin-bottom:6px; }
-        .search-tab { flex:1; padding:14px 16px; border-radius:22px; border:none; background:transparent; font-family:'Outfit'; font-size:14px; font-weight:600; color:var(--gray-500); cursor:pointer; transition:all 0.3s; display:flex; align-items:center; justify-content:center; gap:8px; letter-spacing:0.2px; }
-        .search-tab i { font-size:18px; }
-        .search-tab.active { background:rgba(255,255,255,0.06); color:#fff; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.06); }
-        .search-tab:hover:not(.active) { color:var(--gray-300); background:rgba(255,255,255,0.02); }
-
-        .search-form { display:flex; gap:6px; padding:6px; align-items:stretch; }
-        .search-field { flex:1; position:relative; min-width:0; }
-        .search-field label { position:absolute; top:10px; left:16px; font-size:10px; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:1px; z-index:1; }
-        .search-field input, .search-field select { width:100%; padding:34px 16px 14px; border:1px solid rgba(255,255,255,0.06); border-radius:18px; font-size:15px; font-family:'DM Sans'; font-weight:600; color:#fff; background:rgba(255,255,255,0.03); transition:all 0.3s; appearance:none; min-height:66px; }
-        .search-field input:focus, .search-field select:focus { outline:none; border-color:var(--coral); background:rgba(255,87,87,0.04); box-shadow:0 0 0 3px rgba(255,87,87,0.08); }
-        .search-field input::placeholder { color:var(--gray-600); font-weight:400; }
-        .search-field select option { background:var(--bg3); color:#fff; }
-        .search-btn { padding:0 36px; border:none; border-radius:18px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-family:'Outfit'; font-size:15px; font-weight:700; cursor:pointer; transition:all 0.3s; display:flex; align-items:center; gap:8px; white-space:nowrap; letter-spacing:0.3px; animation:glow 3s infinite; }
-        .search-btn:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(255,87,87,0.3); }
-        .search-btn:disabled { opacity:0.4; cursor:default; transform:none; animation:none; }
-        .search-btn i { font-size:18px; }
-
-        /* ===== RESULTS ===== */
-        .results-section { display:none; max-width:920px; width:100%; margin:48px auto 0; position:relative; z-index:1; }
-        .results-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; padding:0 4px; }
-        .results-header h2 { font-size:20px; font-weight:700; color:#fff; display:flex; align-items:center; gap:10px; }
-        .results-header h2 .route-badge { padding:4px 12px; border-radius:8px; background:rgba(255,87,87,0.1); color:var(--coral); font-size:12px; font-weight:700; }
-        .results-count { color:var(--gray-500); font-size:13px; }
-        .results-sort { display:flex; gap:6px; margin-bottom:16px; }
-        .sort-btn { padding:6px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); background:transparent; color:var(--gray-500); font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans'; transition:all 0.2s; }
-        .sort-btn.active, .sort-btn:hover { background:rgba(255,255,255,0.06); color:#fff; border-color:rgba(255,255,255,0.1); }
-
-        .result-card { background:var(--bg3); border:1px solid rgba(255,255,255,0.04); border-radius:20px; padding:0; margin-bottom:10px; transition:all 0.35s cubic-bezier(0.22,1,0.36,1); cursor:pointer; overflow:hidden; position:relative; }
-        .result-card:hover { border-color:rgba(255,87,87,0.15); transform:translateY(-3px); box-shadow:0 12px 40px rgba(0,0,0,0.25); }
-        .result-inner { display:flex; align-items:center; gap:0; padding:22px 24px; }
-        .result-airline { display:flex; align-items:center; gap:14px; min-width:160px; }
-        .result-airline-logo { width:44px; height:44px; border-radius:12px; object-fit:contain; background:rgba(255,255,255,0.04); padding:6px; }
-        .result-airline-info .airline-name { font-size:14px; font-weight:700; color:#fff; }
-        .result-airline-info .airline-code { font-size:11px; color:var(--gray-500); margin-top:2px; }
-        .result-route { flex:1; display:flex; align-items:center; gap:0; padding:0 20px; }
-        .result-endpoint { text-align:center; min-width:70px; }
-        .result-endpoint .time { font-family:'Outfit'; font-size:24px; font-weight:800; color:#fff; letter-spacing:-0.5px; }
-        .result-endpoint .code { font-size:11px; color:var(--gray-500); font-weight:600; margin-top:2px; letter-spacing:1px; }
-        .result-path { flex:1; position:relative; padding:0 16px; display:flex; flex-direction:column; align-items:center; }
-        .result-path-line { width:100%; height:1px; background:linear-gradient(90deg,transparent,var(--gray-600),transparent); position:relative; }
-        .result-path-line::before { content:''; position:absolute; left:0; top:-3px; width:7px; height:7px; border-radius:50%; background:var(--gray-600); }
-        .result-path-line::after { content:''; position:absolute; right:0; top:-3px; width:7px; height:7px; border-radius:50%; background:var(--gray-600); }
-        .result-path-plane { position:absolute; top:-10px; left:50%; transform:translateX(-50%); font-size:14px; color:var(--coral); background:var(--bg3); padding:0 6px; }
-        .result-path .stops-text { font-size:10px; color:var(--gray-500); margin-top:8px; font-weight:600; letter-spacing:0.5px; }
-        .result-path .duration-text { font-size:10px; color:var(--gray-600); margin-top:2px; }
-        .result-pricing { text-align:right; min-width:150px; padding-left:20px; border-left:1px solid rgba(255,255,255,0.04); }
-        .result-pricing .price { font-family:'Outfit'; font-size:30px; font-weight:800; color:#fff; letter-spacing:-1px; }
-        .result-pricing .price-currency { font-size:16px; font-weight:600; color:var(--gray-500); }
-        .result-pricing .per-person { font-size:11px; color:var(--gray-500); margin-top:2px; }
-        .result-pricing .cta { display:inline-flex; align-items:center; gap:6px; margin-top:10px; padding:8px 18px; background:linear-gradient(135deg,#25d366,#128c7e); border-radius:10px; color:#fff; font-size:12px; font-weight:700; text-decoration:none; transition:all 0.2s; font-family:'DM Sans'; }
-        .result-pricing .cta:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(37,211,102,0.3); }
-        .best-badge { position:absolute; top:0; right:0; padding:6px 16px; background:linear-gradient(135deg,var(--green),#0ead8c); color:#fff; font-size:10px; font-weight:800; letter-spacing:1px; border-radius:0 20px 0 14px; text-transform:uppercase; }
-
-        /* Skeleton */
-        .skeleton { background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%); background-size:200% 100%; animation:shimmer 1.5s infinite; border-radius:20px; height:96px; margin-bottom:10px; }
-
-        /* ===== FEATURES ===== */
-        .features { padding:100px 24px; position:relative; }
-        .features::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent); }
-        .features-inner { max-width:1000px; margin:0 auto; }
-        .section-label { display:inline-flex; align-items:center; gap:8px; padding:5px 14px; background:rgba(255,87,87,0.06); border:1px solid rgba(255,87,87,0.1); border-radius:100px; font-size:11px; font-weight:700; color:var(--coral); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:16px; }
-        .section-header { text-align:center; margin-bottom:56px; }
-        .section-header h2 { font-size:38px; font-weight:800; color:#fff; letter-spacing:-1px; margin-bottom:12px; }
-        .section-header p { font-size:16px; color:var(--gray-500); max-width:480px; margin:0 auto; line-height:1.6; }
-        .features-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-        .feat-card { background:var(--bg2); border:1px solid rgba(255,255,255,0.03); border-radius:22px; padding:32px 28px; transition:all 0.4s cubic-bezier(0.22,1,0.36,1); position:relative; overflow:hidden; }
-        .feat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent); }
-        .feat-card:hover { border-color:rgba(255,255,255,0.06); transform:translateY(-4px); box-shadow:0 16px 48px rgba(0,0,0,0.2); }
-        .feat-icon { width:48px; height:48px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:22px; margin-bottom:20px; }
-        .feat-card h3 { font-size:17px; font-weight:700; color:#fff; margin-bottom:8px; }
-        .feat-card p { font-size:13px; color:var(--gray-500); line-height:1.6; }
-
-        /* ===== POPULAR ROUTES ===== */
-        .routes { padding:80px 24px; }
-        .routes-inner { max-width:1100px; margin:0 auto; }
-        .routes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
-        .route-card { position:relative; border-radius:20px; overflow:hidden; cursor:pointer; text-decoration:none; display:block; aspect-ratio:4/3; transition:all 0.4s cubic-bezier(0.22,1,0.36,1); }
-        .route-card:hover { transform:translateY(-6px); box-shadow:0 16px 48px rgba(0,0,0,0.3); }
-        .route-card img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s; }
-        .route-card:hover img { transform:scale(1.05); }
-        .route-card .route-overlay { position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.75) 100%); }
-        .route-card .route-info { position:absolute; bottom:0; left:0; right:0; padding:20px; }
-        .route-card .route-name { font-family:'Outfit'; font-size:22px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px; }
-        .route-card .route-flag { font-size:16px; }
-        .route-card .route-from { font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px; }
-        .route-card .route-price { font-family:'Outfit'; font-size:16px; font-weight:700; color:var(--coral); margin-top:6px; }
-        .route-card .route-arrow { position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.15); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; transition:all 0.3s; }
-        .route-card:hover .route-arrow { background:var(--coral); }
-        .route-lg { grid-column:span 2; aspect-ratio:2/1; }
-        .route-lg .route-name { font-size:28px; }
-
-        /* ===== AGENT SECTION ===== */
-        .agent { padding:80px 24px; }
-        .agent-inner { max-width:720px; margin:0 auto; background:linear-gradient(135deg,var(--bg3),var(--bg4)); border:1px solid rgba(255,255,255,0.04); border-radius:28px; padding:48px; display:flex; align-items:center; gap:36px; position:relative; overflow:hidden; }
-        .agent-inner::before { content:''; position:absolute; top:-50%; right:-20%; width:300px; height:300px; border-radius:50%; background:radial-gradient(circle,rgba(255,87,87,0.04) 0%,transparent 70%); }
-        .agent-photo { width:100px; height:100px; border-radius:50%; object-fit:cover; border:3px solid rgba(255,255,255,0.08); flex-shrink:0; }
-        .agent-info h3 { font-size:22px; font-weight:800; color:#fff; margin-bottom:4px; }
-        .agent-info .role { font-size:13px; color:var(--coral); font-weight:600; margin-bottom:12px; }
-        .agent-info p { font-size:14px; color:var(--gray-400); line-height:1.6; margin-bottom:16px; }
-        .agent-actions { display:flex; gap:10px; }
-        .agent-actions a { padding:10px 20px; border-radius:12px; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.2s; display:flex; align-items:center; gap:6px; font-family:'DM Sans'; }
-        .agent-wa { background:#25d366; color:#fff; }
-        .agent-wa:hover { box-shadow:0 4px 16px rgba(37,211,102,0.3); transform:translateY(-1px); }
-        .agent-call { background:rgba(255,255,255,0.06); color:#fff; border:1px solid rgba(255,255,255,0.08); }
-        .agent-call:hover { background:rgba(255,255,255,0.1); }
-
-        /* ===== WHATSAPP FLOAT ===== */
-        .wa-float { position:fixed; bottom:24px; right:24px; z-index:999; display:flex; align-items:center; gap:10px; padding:12px 20px 12px 14px; border-radius:100px; background:#25d366; color:#fff; text-decoration:none; font-size:14px; font-weight:700; box-shadow:0 6px 24px rgba(37,211,102,0.35); transition:all 0.3s; font-family:'DM Sans'; }
-        .wa-float:hover { transform:translateY(-3px); box-shadow:0 10px 32px rgba(37,211,102,0.45); }
-        .wa-float i { font-size:22px; }
-        .wa-float .wa-text { }
-
-        /* ===== FOOTER ===== */
-        .footer { padding:48px 24px 32px; border-top:1px solid rgba(255,255,255,0.03); }
-        .footer-inner { max-width:1000px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; }
-        .footer-brand { display:flex; align-items:center; gap:8px; }
-        .footer-brand span { font-family:'Outfit'; font-weight:700; font-size:16px; color:var(--gray-400); }
-        .footer-links { display:flex; gap:20px; }
-        .footer-links a { color:var(--gray-600); text-decoration:none; font-size:12px; transition:color 0.2s; }
-        .footer-links a:hover { color:var(--gray-400); }
-        .footer-copy { text-align:center; margin-top:24px; padding-top:20px; border-top:1px solid rgba(255,255,255,0.03); max-width:1000px; margin-left:auto; margin-right:auto; }
-        .footer-copy p { font-size:11px; color:var(--gray-700); }
-
-        /* ===== RESPONSIVE ===== */
-        /* iPad landscape (1024px) */
-        @media (max-width:1024px) {
-            .hero h1 { font-size:48px; }
-            .search-form { flex-wrap:wrap; }
-            .search-field { min-width:calc(50% - 6px); }
-            .search-btn { width:100%; justify-content:center; margin-top:4px; }
-        }
-
-        /* iPad portrait + tablets (768px-900px) */
-        @media (max-width:900px) {
-            .hero { padding:90px 20px 40px; min-height:auto; }
-            .hero h1 { font-size:36px; letter-spacing:-1.5px; }
-            .hero-sub { font-size:16px; }
-            .search-form { flex-direction:column; gap:8px; }
-            .search-field { min-width:100% !important; flex:1 1 100% !important; }
-            .search-btn { padding:18px; justify-content:center; width:100%; }
-            .trip-type { flex-wrap:wrap; }
-            .trip-type-btn { flex:1; min-width:auto; font-size:11px; padding:8px 12px; }
-            .result-inner { flex-direction:column; gap:14px; text-align:center; }
-            .result-airline { min-width:auto; justify-content:center; }
-            .result-route { flex-direction:column; gap:10px; padding:0; width:100%; }
-            .result-path { padding:0 30px; }
-            .result-pricing { min-width:auto; border-left:none; padding-left:0; border-top:1px solid rgba(255,255,255,0.04); padding-top:16px; width:100%; }
-            .result-pricing .cta { width:100%; justify-content:center; padding:12px; font-size:14px; }
-            .features-grid { grid-template-columns:1fr; gap:12px; }
-            .routes-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
-            .agent-inner { flex-direction:column; text-align:center; padding:32px 24px; }
-            .agent-actions { justify-content:center; flex-wrap:wrap; }
-            .agent-actions a { flex:1; justify-content:center; min-width:140px; }
-            .nav { padding:0 16px; }
-            .nav-links { display:none; }
-            .nav-phone { display:none; }
-            .nav-brand span { font-size:17px; }
-            .footer-inner { flex-direction:column; gap:16px; text-align:center; }
-            .footer-links { flex-wrap:wrap; justify-content:center; }
-            .search-box { border-radius:20px; padding:4px; }
-            .search-tabs { gap:2px; }
-            .search-tab { padding:10px 8px; font-size:12px; gap:4px; }
-            .search-tab i { font-size:16px; }
-            /* Swap button hidden on mobile, not needed */
-            .swap-btn-wrap { display:none; }
-            .pax-dropdown { min-width:280px; left:auto; right:0; }
-            .airport-ac { max-height:240px; }
-            .section-header h2 { font-size:28px; }
-        }
-
-        /* Small phones (480px) */
-        @media (max-width:480px) {
-            .hero { padding:76px 14px 30px; }
-            .hero h1 { font-size:28px; letter-spacing:-1px; }
-            .hero-sub { font-size:14px; margin-bottom:28px; }
-            .hero-pill { font-size:10px; padding:4px 10px 4px 12px; }
-            .hero-pill-badge { font-size:9px; padding:2px 8px; }
-            .search-wrapper { margin-top:0; }
-            .routes-grid { grid-template-columns:1fr; }
-            .route-card { padding:18px 16px; }
-            .feat-card { padding:24px 20px; }
-            .wa-float .wa-text { display:none; }
-            .wa-float { width:52px; height:52px; border-radius:50%; padding:0; justify-content:center; }
-            .wa-float i { font-size:24px; }
-            .result-card { border-radius:16px; }
-            .result-endpoint .time { font-size:20px; }
-            .result-pricing .price { font-size:24px; }
-            .pax-dropdown { min-width:calc(100vw - 40px); right:-60px; }
-            .lang-dropdown { right:-20px; }
-            .section-header h2 { font-size:24px; }
-            .section-header p { font-size:14px; }
+        @media(max-width:480px){
+            .hero{padding:80px 14px 30px;}
+            .hero h1{font-size:28px;letter-spacing:-1px;}
+            .dest-grid{grid-template-columns:1fr;}
+            .dest-lg{grid-column:span 1;aspect-ratio:4/3;}
+            .wa-float span{display:none;}
+            .wa-float{padding:14px;border-radius:50%;}
         }
     </style>
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="nav" id="navbar">
-    <a href="/" class="nav-brand">
-        <img src="/static/logo-riotravel.png" alt="Rio Travel" style="height:52px;width:auto;object-fit:contain;">
-        <span style="font-family:Outfit;font-weight:800;font-size:24px;letter-spacing:-1px;">Rio<span class="accent">Travel</span></span>
+<!-- NAV -->
+<nav id="nav">
+    <a href="/" class="logo">
+        <img src="/static/logo-riotravel.png" alt="Rio Travel">
+        <span>Rio<span class="a">Travel</span></span>
     </a>
-    <div class="nav-links">
-        <a href="#" class="active" data-i18n="nav_flights">Voos</a>
-        <a href="#" data-i18n="nav_hotels">Hoteis</a>
-        <a href="#" data-i18n="nav_tours">Tours</a>
-        <a href="#" data-i18n="nav_cruises">Cruzeiros</a>
-    </div>
-    <div class="nav-right">
-        <div class="lang-switch" id="langSwitch">
-            <div class="lang-current" onclick="document.getElementById('langDropdown').classList.toggle('show')">
-                <span class="flag" id="langFlag">&#127463;&#127479;</span>
-                <span id="langLabel">PT</span>
-                <i class="bi bi-chevron-down arrow"></i>
-            </div>
-            <div class="lang-dropdown" id="langDropdown">
-                <div class="lang-option active" data-lang="pt" onmousedown="event.stopPropagation();setLang('pt')">
-                    <span class="flag">&#127463;&#127479;</span> Portugues
-                </div>
-                <div class="lang-option" data-lang="en" onmousedown="event.stopPropagation();setLang('en')">
-                    <span class="flag">&#127482;&#127480;</span> English
-                </div>
-                <div class="lang-option" data-lang="es" onmousedown="event.stopPropagation();setLang('es')">
-                    <span class="flag">&#127474;&#127485;</span> Espanol
-                </div>
+    <div class="nav-r">
+        <div class="lang">
+            <button class="lang-btn" id="langBtn"><span class="f" id="langF">&#127463;&#127479;</span> <span id="langL">PT</span> <i class="bi bi-chevron-down" style="font-size:10px;"></i></button>
+            <div class="lang-dd" id="langDD">
+                <div class="lang-opt on" data-l="pt"><span class="f">&#127463;&#127479;</span> Portugues</div>
+                <div class="lang-opt" data-l="en"><span class="f">&#127482;&#127480;</span> English</div>
+                <div class="lang-opt" data-l="es"><span class="f">&#127474;&#127485;</span> Espanol</div>
             </div>
         </div>
-        <a href="tel:+14352146939" class="nav-phone"><i class="bi bi-telephone-fill"></i> (435) 214-6939</a>
-        <a href="https://wa.me/14352146939" target="_blank" class="nav-cta"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+        <a href="https://wa.me/14352146939" target="_blank" class="nav-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
     </div>
 </nav>
 
-<!-- Hero -->
+<!-- HERO -->
 <section class="hero">
-    <div class="hero-glow-1"></div>
-    <div class="hero-glow-2"></div>
-    <div class="hero-glow-3"></div>
-    <div class="hero-grid"></div>
-
-    <div class="hero-content">
-        <div class="hero-pill">
-            <span data-i18n="hero_pill">As melhores ofertas de viagem em um so lugar</span>
-            <span class="hero-pill-badge" data-i18n="hero_new">NOVO</span>
-        </div>
-        <h1 data-i18n-html="hero_title">Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span></h1>
-        <p class="hero-sub" data-i18n-html="hero_sub">Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.</p>
+    <div class="hero-text ani">
+        <h1 id="heroTitle">Encontre as Melhores<br><b>Ofertas de Voos</b></h1>
+        <p id="heroSub">Compare precos de passagens, hoteis e cruzeiros em tempo real. Agente certificado nos EUA.</p>
     </div>
 
-    <!-- Search -->
-    <div class="search-wrapper">
-        <div class="search-box">
-            <div class="search-tabs">
-                <button class="search-tab active" onclick="switchTab('flights')"><i class="bi bi-airplane-fill"></i> <span data-i18n="nav_flights">Voos</span></button>
-                <button class="search-tab" onclick="switchTab('hotels')"><i class="bi bi-building"></i> <span data-i18n="nav_hotels">Hoteis</span></button>
-                <button class="search-tab" onclick="switchTab('tours')"><i class="bi bi-compass"></i> <span data-i18n="nav_tours">Tours</span></button>
-                <button class="search-tab" onclick="switchTab('cruises')"><i class="bi bi-water"></i> <span data-i18n="nav_cruises">Cruzeiros</span></button>
+    <!-- SEARCH BOX -->
+    <div class="sb ani">
+        <div class="sb-box">
+            <!-- Tabs -->
+            <div class="sb-tabs" id="sbTabs">
+                <button class="sb-tab on" data-t="flights"><i class="bi bi-airplane-fill"></i> <span data-t="flights" class="tl">Voos</span></button>
+                <button class="sb-tab" data-t="hotels"><i class="bi bi-building"></i> <span data-t="hotels" class="tl">Hoteis</span></button>
+                <button class="sb-tab" data-t="tours"><i class="bi bi-compass-fill"></i> <span data-t="tours" class="tl">Tours</span></button>
+                <button class="sb-tab" data-t="cruises"><i class="bi bi-water"></i> <span data-t="cruises" class="tl">Cruzeiros</span></button>
             </div>
-
-            <!-- Options Bar: Trip Type + Class + Passengers -->
-            <div style="display:flex;gap:6px;padding:6px 10px;flex-wrap:wrap;align-items:center;">
-                <!-- Trip Type -->
-                <div class="trip-type" id="tripTypeBar" style="margin:0;">
-                    <button class="trip-type-btn active" onclick="setTripType('roundtrip')" id="btnRoundtrip"><i class="bi bi-arrow-left-right"></i> <span data-i18n="trip_roundtrip">Ida e Volta</span></button>
-                    <button class="trip-type-btn" onclick="setTripType('oneway')" id="btnOneway"><i class="bi bi-arrow-right"></i> <span data-i18n="trip_oneway">Somente Ida</span></button>
-                    <button class="trip-type-btn" onclick="setTripType('multi')" id="btnMulti"><i class="bi bi-signpost-split"></i> <span data-i18n="trip_multi">Multi-destinos</span></button>
+            <!-- Options -->
+            <div class="sb-opts" id="sbOpts">
+                <div style="display:flex;gap:3px;background:rgba(255,255,255,.02);border-radius:8px;padding:2px;">
+                    <button class="opt-btn on" id="optRT" onclick="setTrip('rt')"><i class="bi bi-arrow-left-right"></i> <span class="tl">Ida e Volta</span></button>
+                    <button class="opt-btn" id="optOW" onclick="setTrip('ow')"><i class="bi bi-arrow-right"></i> <span class="tl">Somente Ida</span></button>
                 </div>
-                <!-- Cabin Class -->
                 <div style="position:relative;">
-                    <button class="trip-type-btn" onclick="document.getElementById('classDropdown').classList.toggle('show')" id="classDisplay" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:8px 14px;">
-                        <i class="bi bi-star"></i> <span id="classText" data-i18n="class_economy">Economica</span> <i class="bi bi-chevron-down" style="font-size:9px;margin-left:2px;"></i>
-                    </button>
-                    <div class="pax-dropdown" id="classDropdown" style="min-width:200px;left:0;right:auto;top:calc(100% + 6px);">
-                        <div class="pax-row" style="cursor:pointer;" onclick="setCabinClass('economy')"><div class="pax-label" style="width:100%;"><i class="bi bi-circle-fill" id="classEco" style="font-size:8px;color:var(--coral);margin-right:8px;"></i> <span data-i18n="class_economy">Economica</span></div></div>
-                        <div class="pax-row" style="cursor:pointer;" onclick="setCabinClass('premium')"><div class="pax-label" style="width:100%;"><i class="bi bi-circle" id="classPrem" style="font-size:8px;color:var(--gray-500);margin-right:8px;"></i> <span data-i18n="class_premium">Premium Economy</span></div></div>
-                        <div class="pax-row" style="cursor:pointer;" onclick="setCabinClass('business')"><div class="pax-label" style="width:100%;"><i class="bi bi-circle" id="classBiz" style="font-size:8px;color:var(--gray-500);margin-right:8px;"></i> <span data-i18n="class_business">Executiva</span></div></div>
-                        <div class="pax-row" style="cursor:pointer;border-bottom:none;" onclick="setCabinClass('first')"><div class="pax-label" style="width:100%;"><i class="bi bi-circle" id="classFirst" style="font-size:8px;color:var(--gray-500);margin-right:8px;"></i> <span data-i18n="class_first">Primeira Classe</span></div></div>
+                    <button class="opt-btn" id="classBtn"><i class="bi bi-star"></i> <span id="classTxt" class="tl">Economica</span></button>
+                    <div class="dd" id="classDD">
+                        <div class="dd-item on" data-c="economy"><span class="dot"></span> <span class="tl">Economica</span></div>
+                        <div class="dd-item" data-c="premium"><span class="dot"></span> Premium Economy</div>
+                        <div class="dd-item" data-c="business"><span class="dot"></span> <span class="tl">Executiva</span></div>
+                        <div class="dd-item" data-c="first"><span class="dot"></span> <span class="tl">Primeira Classe</span></div>
                     </div>
-                    <input type="hidden" id="cabinClass" value="economy">
                 </div>
-                <!-- Passengers trigger -->
                 <div style="position:relative;">
-                    <button class="trip-type-btn" onclick="document.getElementById('paxDropdown').classList.toggle('show')" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:8px 14px;">
-                        <i class="bi bi-person-fill"></i> <span id="paxText">1 Adulto</span> <i class="bi bi-chevron-down" style="font-size:9px;margin-left:2px;"></i>
-                    </button>
-                    <input type="hidden" id="adults" value="1">
-                    <input type="hidden" id="children" value="0">
-                    <input type="hidden" id="infants" value="0">
-                    <div class="pax-dropdown" id="paxDropdown" style="left:0;right:auto;">
-                        <div style="padding:10px 14px 6px;font-family:Outfit;font-weight:700;font-size:14px;color:#fff;" data-i18n="lbl_pax">Passageiros</div>
+                    <button class="opt-btn" id="paxBtn"><i class="bi bi-person-fill"></i> <span id="paxTxt">1 Adulto</span></button>
+                    <div class="dd" id="paxDD" style="min-width:280px;">
                         <div class="pax-row">
-                            <div class="pax-info">
-                                <div class="pax-label"><i class="bi bi-person-fill" style="margin-right:8px;font-size:18px;color:var(--gray-400);"></i> <span data-i18n="pax_adults">Adultos</span></div>
-                                <div class="pax-age" style="padding-left:28px;" data-i18n="pax_adults_age">12+ anos</div>
-                            </div>
-                            <div class="pax-controls">
-                                <button class="pax-btn" onclick="changePax('adults',-1)"><i class="bi bi-dash-lg"></i></button>
-                                <span class="pax-count" id="adultsCount">1</span>
-                                <button class="pax-btn" onclick="changePax('adults',1)"><i class="bi bi-plus-lg"></i></button>
-                            </div>
+                            <div class="pax-l"><i class="bi bi-person-fill"></i><div><div class="pax-name tl">Adultos</div><div class="pax-age tl">12+ anos</div></div></div>
+                            <div class="pax-ctrls"><button class="pax-b" onclick="pax('a',-1)"><i class="bi bi-dash"></i></button><span class="pax-n" id="pA">1</span><button class="pax-b" onclick="pax('a',1)"><i class="bi bi-plus"></i></button></div>
                         </div>
                         <div class="pax-row">
-                            <div class="pax-info">
-                                <div class="pax-label"><i class="bi bi-emoji-smile" style="margin-right:8px;font-size:18px;color:var(--gray-400);"></i> <span data-i18n="pax_children">Criancas</span></div>
-                                <div class="pax-age" style="padding-left:28px;" data-i18n="pax_children_age">2-11 anos</div>
-                            </div>
-                            <div class="pax-controls">
-                                <button class="pax-btn" onclick="changePax('children',-1)"><i class="bi bi-dash-lg"></i></button>
-                                <span class="pax-count" id="childrenCount">0</span>
-                                <button class="pax-btn" onclick="changePax('children',1)"><i class="bi bi-plus-lg"></i></button>
-                            </div>
+                            <div class="pax-l"><i class="bi bi-emoji-smile"></i><div><div class="pax-name tl">Criancas</div><div class="pax-age tl">2-11 anos</div></div></div>
+                            <div class="pax-ctrls"><button class="pax-b" onclick="pax('c',-1)"><i class="bi bi-dash"></i></button><span class="pax-n" id="pC">0</span><button class="pax-b" onclick="pax('c',1)"><i class="bi bi-plus"></i></button></div>
                         </div>
                         <div class="pax-row">
-                            <div class="pax-info">
-                                <div class="pax-label"><i class="bi bi-balloon-heart" style="margin-right:8px;font-size:18px;color:var(--gray-400);"></i> <span data-i18n="pax_infants">Bebes</span></div>
-                                <div class="pax-age" style="padding-left:28px;" data-i18n="pax_infants_age">0-23 meses</div>
-                            </div>
-                            <div class="pax-controls">
-                                <button class="pax-btn" onclick="changePax('infants',-1)"><i class="bi bi-dash-lg"></i></button>
-                                <span class="pax-count" id="infantsCount">0</span>
-                                <button class="pax-btn" onclick="changePax('infants',1)"><i class="bi bi-plus-lg"></i></button>
-                            </div>
+                            <div class="pax-l"><i class="bi bi-balloon-heart"></i><div><div class="pax-name tl">Bebes</div><div class="pax-age tl">0-23 meses</div></div></div>
+                            <div class="pax-ctrls"><button class="pax-b" onclick="pax('i',-1)"><i class="bi bi-dash"></i></button><span class="pax-n" id="pI">0</span><button class="pax-b" onclick="pax('i',1)"><i class="bi bi-plus"></i></button></div>
                         </div>
-                        <div style="padding:8px 14px 6px;font-family:Outfit;font-weight:700;font-size:13px;color:var(--gray-400);border-top:1px solid rgba(255,255,255,0.04);margin-top:4px;" data-i18n="pax_bags">Bagagem</div>
+                        <div class="pax-sec tl">Bagagem</div>
                         <div class="pax-row">
-                            <div class="pax-info">
-                                <div class="pax-label"><i class="bi bi-bag" style="margin-right:8px;font-size:18px;color:var(--gray-400);"></i> <span data-i18n="pax_cabin_bag">Mao</span></div>
-                            </div>
-                            <div class="pax-controls">
-                                <button class="pax-btn" onclick="changePax('cabinBag',-1)"><i class="bi bi-dash-lg"></i></button>
-                                <span class="pax-count" id="cabinBagCount">0</span>
-                                <button class="pax-btn" onclick="changePax('cabinBag',1)"><i class="bi bi-plus-lg"></i></button>
-                            </div>
+                            <div class="pax-l"><i class="bi bi-bag"></i><div><div class="pax-name tl">Mao</div></div></div>
+                            <div class="pax-ctrls"><button class="pax-b" onclick="pax('cb',-1)"><i class="bi bi-dash"></i></button><span class="pax-n" id="pCB">0</span><button class="pax-b" onclick="pax('cb',1)"><i class="bi bi-plus"></i></button></div>
                         </div>
-                        <div class="pax-row" style="border-bottom:none;">
-                            <div class="pax-info">
-                                <div class="pax-label"><i class="bi bi-luggage" style="margin-right:8px;font-size:18px;color:var(--gray-400);"></i> <span data-i18n="pax_checked_bag">Despachada</span></div>
-                            </div>
-                            <div class="pax-controls">
-                                <button class="pax-btn" onclick="changePax('checkedBag',-1)"><i class="bi bi-dash-lg"></i></button>
-                                <span class="pax-count" id="checkedBagCount">0</span>
-                                <button class="pax-btn" onclick="changePax('checkedBag',1)"><i class="bi bi-plus-lg"></i></button>
-                            </div>
+                        <div class="pax-row">
+                            <div class="pax-l"><i class="bi bi-luggage-fill"></i><div><div class="pax-name tl">Despachada</div></div></div>
+                            <div class="pax-ctrls"><button class="pax-b" onclick="pax('db',-1)"><i class="bi bi-dash"></i></button><span class="pax-n" id="pDB">0</span><button class="pax-b" onclick="pax('db',1)"><i class="bi bi-plus"></i></button></div>
                         </div>
-                        <input type="hidden" id="cabinBag" value="0">
-                        <input type="hidden" id="checkedBag" value="0">
-                        <button class="pax-done" onclick="document.getElementById('paxDropdown').classList.remove('show')" data-i18n="pax_done">Pronto</button>
+                        <button class="pax-done tl" onclick="closeAll()">Pronto</button>
                     </div>
                 </div>
             </div>
-
-            <!-- Flight Search Fields -->
-            <div id="flightForm" class="search-form" style="flex-wrap:wrap;">
-                <div class="search-field" style="flex:1.4;position:relative;">
-                    <label data-i18n="lbl_origin">Origem</label>
-                    <input type="text" id="origin" placeholder="Salt Lake City (SLC)" autocomplete="off" oninput="searchAirport(this,'originAC')" onfocus="searchAirport(this,'originAC')">
-                    <div class="airport-ac" id="originAC"></div>
+            <!-- FLIGHT FIELDS -->
+            <div id="fFields" class="sb-fields">
+                <div class="sf" style="flex:1.4;position:relative;">
+                    <label class="tl">Origem</label>
+                    <input type="text" id="from" placeholder="Salt Lake City (SLC)" autocomplete="off">
+                    <div class="ac" id="fromAC"></div>
                 </div>
-                <div class="swap-btn-wrap" style="display:flex;align-items:center;margin:0 -4px;z-index:1;">
-                    <button onclick="swapAirports()" style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);background:var(--bg3);color:var(--gray-400);cursor:pointer;font-size:16px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.color='var(--coral)';this.style.borderColor='var(--coral)'" onmouseout="this.style.color='var(--gray-400)';this.style.borderColor='rgba(255,255,255,0.08)'"><i class="bi bi-arrow-left-right"></i></button>
+                <button class="swap" onclick="swp()"><i class="bi bi-arrow-left-right"></i></button>
+                <div class="sf" style="flex:1.4;position:relative;">
+                    <label class="tl">Destino</label>
+                    <input type="text" id="to" placeholder="Sao Paulo (GRU)" autocomplete="off">
+                    <div class="ac" id="toAC"></div>
                 </div>
-                <div class="search-field" style="flex:1.4;position:relative;">
-                    <label data-i18n="lbl_dest">Destino</label>
-                    <input type="text" id="destination" placeholder="Sao Paulo (GRU)" autocomplete="off" oninput="searchAirport(this,'destAC')" onfocus="searchAirport(this,'destAC')">
-                    <div class="airport-ac" id="destAC"></div>
+                <div class="sf" style="flex:.9;">
+                    <label class="tl">Ida</label>
+                    <input type="text" id="dep" placeholder="Selecionar" readonly>
                 </div>
-                <div class="search-field" style="flex:1;">
-                    <label data-i18n="lbl_depart">Ida</label>
-                    <input type="date" id="departure">
+                <div class="sf" id="retWrap" style="flex:.9;">
+                    <label class="tl">Volta</label>
+                    <input type="text" id="ret" placeholder="Selecionar" readonly>
                 </div>
-                <div class="search-field" id="returnField" style="flex:1;">
-                    <label data-i18n="lbl_return">Volta</label>
-                    <input type="date" id="returnDate">
-                </div>
-                <button class="search-btn" id="searchBtn" onclick="searchFlights()"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
+                <button class="sb-btn" id="searchBtn" onclick="doSearch()"><i class="bi bi-search"></i> <span class="tl">Buscar</span></button>
             </div>
-
-            <!-- Multi-destination form (hidden by default) -->
-            <div id="multiForm" style="display:none;padding:12px;">
-                <div id="multiLegs">
-                    <div class="search-form" style="margin-bottom:6px;">
-                        <div class="search-field" style="flex:1;position:relative;">
-                            <label>Voo 1 - Origem</label>
-                            <input type="text" class="multi-origin" placeholder="Cidade ou aeroporto" autocomplete="off">
-                        </div>
-                        <div class="search-field" style="flex:1;position:relative;">
-                            <label>Destino</label>
-                            <input type="text" class="multi-dest" placeholder="Cidade ou aeroporto" autocomplete="off">
-                        </div>
-                        <div class="search-field" style="flex:0.7;">
-                            <label>Data</label>
-                            <input type="date" class="multi-date" style="font-size:14px;padding-top:30px;">
-                        </div>
-                    </div>
-                    <div class="search-form" style="margin-bottom:6px;">
-                        <div class="search-field" style="flex:1;position:relative;">
-                            <label>Voo 2 - Origem</label>
-                            <input type="text" class="multi-origin" placeholder="Cidade ou aeroporto" autocomplete="off">
-                        </div>
-                        <div class="search-field" style="flex:1;position:relative;">
-                            <label>Destino</label>
-                            <input type="text" class="multi-dest" placeholder="Cidade ou aeroporto" autocomplete="off">
-                        </div>
-                        <div class="search-field" style="flex:0.7;">
-                            <label>Data</label>
-                            <input type="date" class="multi-date" style="font-size:14px;padding-top:30px;">
-                        </div>
-                    </div>
+            <!-- HOTEL FIELDS -->
+            <div id="hFields" class="sb-fields" style="display:none;">
+                <div class="sf" style="flex:2;">
+                    <label class="tl">Destino</label>
+                    <input type="text" id="hDest" placeholder="Miami, Cancun, Rio...">
                 </div>
-                <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;">
-                    <button onclick="addMultiLeg()" style="padding:8px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--gray-400);font-size:12px;font-weight:600;cursor:pointer;font-family:DM Sans;">+ Adicionar Voo</button>
-                    <button class="search-btn" onclick="searchMulti()" style="padding:12px 28px;"><i class="bi bi-search"></i> Buscar</button>
-                </div>
-            </div>
-
-            <div id="hotelForm" class="search-form" style="display:none;">
-                <div class="search-field" style="flex:1.5;">
-                    <label>Destino</label>
-                    <input type="text" id="hotelDest" placeholder="Miami, New York, Rio de Janeiro...">
-                </div>
-                <div class="search-field">
+                <div class="sf" style="flex:.9;">
                     <label>Check-in</label>
-                    <input type="date" id="checkin">
+                    <input type="text" id="hIn" placeholder="Selecionar" readonly>
                 </div>
-                <div class="search-field">
+                <div class="sf" style="flex:.9;">
                     <label>Check-out</label>
-                    <input type="date" id="checkout">
+                    <input type="text" id="hOut" placeholder="Selecionar" readonly>
                 </div>
-                <div class="search-field" style="flex:0.5;">
-                    <label>Hospedes</label>
-                    <select id="hotelAdults"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option></select>
-                </div>
-                <button class="search-btn" onclick="searchHotels()"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
+                <button class="sb-btn" onclick="searchHotels()"><i class="bi bi-search"></i> <span class="tl">Buscar</span></button>
             </div>
-
-            <!-- Tours form -->
-            <div id="toursForm" class="search-form" style="display:none;">
-                <div class="search-field" style="flex:2;position:relative;">
-                    <label data-i18n="lbl_tour_dest">Destino ou Atividade</label>
-                    <input type="text" id="tourDest" placeholder="Cancun, Rio de Janeiro, New York...">
+            <!-- TOURS FIELDS -->
+            <div id="tFields" class="sb-fields" style="display:none;">
+                <div class="sf" style="flex:2;">
+                    <label class="tl">Destino ou Atividade</label>
+                    <input type="text" id="tDest" placeholder="Cancun, New York, Roma...">
                 </div>
-                <button class="search-btn" onclick="searchTours()"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
+                <button class="sb-btn" onclick="searchTours()"><i class="bi bi-search"></i> <span class="tl">Buscar Tours</span></button>
             </div>
-
-            <div id="cruiseForm" class="search-form" style="display:none;">
-                <div style="padding:32px;text-align:center;width:100%;">
-                    <i class="bi bi-water" style="font-size:36px;color:var(--sky);margin-bottom:12px;display:block;"></i>
-                    <p style="color:var(--gray-400);margin-bottom:20px;font-size:15px;" data-i18n="cruise_text">Para cruzeiros, fale diretamente com nosso agente para as melhores ofertas exclusivas.</p>
-                    <a href="https://wa.me/14352146939?text=Oi!%20Gostaria%20de%20informacoes%20sobre%20cruzeiros." target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#25d366;color:#fff;border-radius:14px;text-decoration:none;font-weight:700;font-size:14px;font-family:Outfit;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'"><i class="bi bi-whatsapp"></i> Consultar Cruzeiros</a>
+            <!-- CRUISE -->
+            <div id="cFields" class="sb-fields" style="display:none;">
+                <div style="padding:28px;text-align:center;width:100%;">
+                    <i class="bi bi-water" style="font-size:36px;color:var(--sky);display:block;margin-bottom:12px;"></i>
+                    <p class="tl" style="color:var(--t3);margin-bottom:16px;">Para cruzeiros, fale com nosso agente para ofertas exclusivas.</p>
+                    <a href="https://wa.me/14352146939?text=Oi!%20Quero%20informacoes%20sobre%20cruzeiros." target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:#25d366;color:var(--w);border-radius:12px;text-decoration:none;font-weight:700;font-size:14px;"><i class="bi bi-whatsapp"></i> <span class="tl">Consultar Cruzeiros</span></a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Results -->
-    <div class="results-section" id="results">
-        <div class="results-header">
-            <h2><i class="bi bi-airplane-fill" style="color:var(--coral);font-size:18px;"></i> <span id="resultsTitle">Resultados</span></h2>
-            <span class="results-count" id="resultsCount"></span>
-        </div>
-        <div id="resultsList"></div>
+    <!-- RESULTS -->
+    <div class="results" id="results">
+        <div class="res-head"><h2 id="resTitle"></h2><span class="res-count" id="resCount"></span></div>
+        <div id="resList"></div>
     </div>
 </section>
 
-<!-- Popular Routes -->
-<section class="routes fade-up">
-    <div class="routes-inner">
-        <div class="section-header">
-            <div class="section-label"><i class="bi bi-fire"></i> <span data-i18n="routes_label">Rotas Populares</span></div>
-            <h2 data-i18n="routes_title">Destinos Mais Buscados</h2>
-            <p data-i18n="routes_sub">Voos frequentes de brasileiros nos EUA</p>
-        </div>
-        <div class="routes-grid">
-            <a class="route-card route-lg" onclick="quickSearch('MIA','GRU')">
-                <img src="https://images.unsplash.com/photo-1543059080-f9b1272213d5?w=800&h=400&fit=crop" alt="Sao Paulo" loading="lazy">
-                <div class="route-overlay"></div>
-                <div class="route-arrow"><i class="bi bi-arrow-right"></i></div>
-                <div class="route-info">
-                    <div class="route-name">Sao Paulo <span class="route-flag">&#127463;&#127479;</span></div>
-                    <div class="route-from">MIA → GRU</div>
-                    <div class="route-price">Tickets from $420</div>
-                </div>
-            </a>
-            <a class="route-card" onclick="quickSearch('JFK','GIG')">
-                <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&h=450&fit=crop" alt="Rio de Janeiro" loading="lazy">
-                <div class="route-overlay"></div>
-                <div class="route-arrow"><i class="bi bi-arrow-right"></i></div>
-                <div class="route-info">
-                    <div class="route-name">Rio de Janeiro <span class="route-flag">&#127463;&#127479;</span></div>
-                    <div class="route-from">JFK → GIG</div>
-                    <div class="route-price">Tickets from $480</div>
-                </div>
-            </a>
-            <a class="route-card" onclick="quickSearch('SLC','CUN')">
-                <img src="https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=600&h=450&fit=crop" alt="Cancun" loading="lazy">
-                <div class="route-overlay"></div>
-                <div class="route-arrow"><i class="bi bi-arrow-right"></i></div>
-                <div class="route-info">
-                    <div class="route-name">Cancun <span class="route-flag">&#127474;&#127485;</span></div>
-                    <div class="route-from">SLC → CUN</div>
-                    <div class="route-price">Tickets from $280</div>
-                </div>
-            </a>
-            <a class="route-card" onclick="quickSearch('SLC','LIS')">
-                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=450&fit=crop" alt="Lisboa" loading="lazy">
-                <div class="route-overlay"></div>
-                <div class="route-arrow"><i class="bi bi-arrow-right"></i></div>
-                <div class="route-info">
-                    <div class="route-name">Lisboa <span class="route-flag">&#127477;&#127481;</span></div>
-                    <div class="route-from">SLC → LIS</div>
-                    <div class="route-price">Tickets from $520</div>
-                </div>
-            </a>
-            <a class="route-card route-lg" onclick="quickSearch('SLC','LAS')">
-                <img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=800&h=400&fit=crop" alt="Las Vegas" loading="lazy">
-                <div class="route-overlay"></div>
-                <div class="route-arrow"><i class="bi bi-arrow-right"></i></div>
-                <div class="route-info">
-                    <div class="route-name">Las Vegas <span class="route-flag">&#127482;&#127480;</span></div>
-                    <div class="route-from">SLC → LAS</div>
-                    <div class="route-price">Tickets from $55</div>
-                </div>
-            </a>
-        </div>
+<!-- DESTINATIONS -->
+<section class="dests ani">
+    <div class="sec-h">
+        <div class="sec-tag" style="background:rgba(255,82,82,.06);color:var(--coral);"><i class="bi bi-fire"></i> <span class="tl">Destinos Populares</span></div>
+        <h2 class="tl">Explore o Mundo</h2>
+        <p class="tl">Os destinos mais buscados saindo dos EUA</p>
+    </div>
+    <div class="dest-grid">
+        <a class="dest-card dest-lg" onclick="qSearch('MIA','GRU')">
+            <img src="https://images.unsplash.com/photo-1543059080-f9b1272213d5?w=800&h=400&fit=crop" alt="Sao Paulo" loading="lazy">
+            <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
+            <div class="dest-info"><div class="dest-name">Sao Paulo &#127463;&#127479;</div><div class="dest-sub">MIA → GRU</div><div class="dest-price">from $420</div></div>
+        </a>
+        <a class="dest-card" onclick="qSearch('JFK','GIG')">
+            <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&h=450&fit=crop" alt="Rio" loading="lazy">
+            <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
+            <div class="dest-info"><div class="dest-name">Rio &#127463;&#127479;</div><div class="dest-sub">JFK → GIG</div><div class="dest-price">from $480</div></div>
+        </a>
+        <a class="dest-card" onclick="qSearch('SLC','CUN')">
+            <img src="https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=600&h=450&fit=crop" alt="Cancun" loading="lazy">
+            <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
+            <div class="dest-info"><div class="dest-name">Cancun &#127474;&#127485;</div><div class="dest-sub">SLC → CUN</div><div class="dest-price">from $280</div></div>
+        </a>
+        <a class="dest-card" onclick="qSearch('SLC','LIS')">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=450&fit=crop" alt="Lisboa" loading="lazy">
+            <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
+            <div class="dest-info"><div class="dest-name">Lisboa &#127477;&#127481;</div><div class="dest-sub">SLC → LIS</div><div class="dest-price">from $520</div></div>
+        </a>
+        <a class="dest-card dest-lg" onclick="qSearch('SLC','LAS')">
+            <img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=800&h=400&fit=crop" alt="Las Vegas" loading="lazy">
+            <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
+            <div class="dest-info"><div class="dest-name">Las Vegas &#127482;&#127480;</div><div class="dest-sub">SLC → LAS</div><div class="dest-price">from $55</div></div>
+        </a>
     </div>
 </section>
 
-<!-- Features -->
-<section class="features fade-up" id="features">
-    <div class="features-inner">
-        <div class="section-header">
-            <div class="section-label"><i class="bi bi-stars"></i> <span data-i18n="feat_label">Por que Rio Travel</span></div>
-            <h2 data-i18n="feat_title">Viaje com Confianca</h2>
-            <p data-i18n="feat_sub">Mais do que busca de voos — uma experiencia completa de viagem.</p>
-        </div>
-        <div class="features-grid">
-            <div class="feat-card">
-                <div class="feat-icon" style="background:rgba(255,87,87,0.08);color:var(--coral);"><i class="bi bi-translate"></i></div>
-                <h3 data-i18n="feat1_title">Atendimento em Portugues</h3>
-                <p data-i18n="feat1_desc">Fale no seu idioma. Suporte completo para brasileiros morando nos EUA.</p>
-            </div>
-            <div class="feat-card">
-                <div class="feat-icon" style="background:rgba(6,214,160,0.08);color:var(--green);"><i class="bi bi-shield-check"></i></div>
-                <h3 data-i18n="feat2_title">Agente Certificado</h3>
-                <p data-i18n="feat2_desc">Agencia licenciada e certificada nos EUA. Seguranca total para sua viagem.</p>
-            </div>
-            <div class="feat-card">
-                <div class="feat-icon" style="background:rgba(76,201,240,0.08);color:var(--sky);"><i class="bi bi-lightning-charge-fill"></i></div>
-                <h3 data-i18n="feat3_title">Precos em Tempo Real</h3>
-                <p data-i18n="feat3_desc">Busca direto nas companhias aereas. Precos atualizados a cada segundo.</p>
-            </div>
-        </div>
+<!-- FEATURES -->
+<section class="feats ani">
+    <div class="sec-h">
+        <div class="sec-tag" style="background:rgba(6,214,160,.06);color:var(--green);"><i class="bi bi-stars"></i> <span class="tl">Por que Rio Travel</span></div>
+        <h2 class="tl">Viaje com Confianca</h2>
+    </div>
+    <div class="feat-grid">
+        <div class="feat"><i class="bi bi-translate" style="color:var(--coral);"></i><h3 class="tl">Multilingual</h3><p class="tl">Atendimento em Portugues, Ingles e Espanhol.</p></div>
+        <div class="feat"><i class="bi bi-shield-check" style="color:var(--green);"></i><h3 class="tl">Agente Certificado</h3><p class="tl">Agencia licenciada nos EUA. Seguranca total.</p></div>
+        <div class="feat"><i class="bi bi-lightning-charge-fill" style="color:var(--sky);"></i><h3 class="tl">Precos em Tempo Real</h3><p class="tl">Busca direto nas companhias aereas.</p></div>
     </div>
 </section>
 
-<!-- Agent -->
-<section class="agent fade-up">
-    <div class="agent-inner">
-        <img src="/static/hudson-photo.jpg" class="agent-photo" alt="Hudson" onerror="this.style.display='none'">
-        <div class="agent-info">
+<!-- AGENT -->
+<section class="agent ani">
+    <div class="agent-box">
+        <img src="/static/hudson-photo.jpg" alt="Hudson" onerror="this.style.display='none'">
+        <div>
             <h3>Hudson Valeriano</h3>
             <div class="role">Travel Advisor — Rio Travel LLC</div>
-            <p data-i18n="agent_bio">40+ paises visitados. Especialista em voos internacionais e viagens para o Brasil. Atendimento personalizado via WhatsApp.</p>
-            <div class="agent-actions">
-                <a href="https://wa.me/14352146939?text=Oi%20Hudson!%20Vi%20o%20site%20e%20preciso%20de%20ajuda%20com%20viagem." target="_blank" class="agent-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
-                <a href="tel:+14352146939" class="agent-call"><i class="bi bi-telephone-fill"></i> Ligar</a>
+            <p class="tl">40+ paises visitados. Especialista em viagens internacionais. Atendimento via WhatsApp.</p>
+            <div class="agent-btns">
+                <a href="https://wa.me/14352146939" target="_blank" class="btn-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+                <a href="tel:+14352146939" class="btn-call"><i class="bi bi-telephone-fill"></i> (435) 214-6939</a>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Footer -->
-<footer class="footer">
-    <div class="footer-inner">
-        <div class="footer-brand">
-            <img src="/static/logo-riotravel.png" alt="Rio Travel" style="height:28px;width:auto;">
-            <span style="font-family:Outfit;font-weight:800;letter-spacing:-0.5px;">Rio<span style="color:var(--coral);">Travel</span> LLC</span>
-        </div>
-        <div class="footer-links">
-            <a href="#">Voos</a>
-            <a href="#">Hoteis</a>
-            <a href="#">Cruzeiros</a>
-            <a href="mailto:contactus@riotravelpc.com">Contato</a>
-        </div>
-    </div>
-    <div class="footer-copy">
-        <p>Park City, Utah &middot; &copy; 2026 Rio Travel LLC. Todos os direitos reservados.</p>
-    </div>
+<!-- FOOTER -->
+<footer>
+    <div class="fb"><img src="/static/logo-riotravel.png" alt="" style="height:24px;"><span>Rio Travel LLC</span></div>
+    <div class="fl"><a href="#">Voos</a><a href="#">Hoteis</a><a href="#">Tours</a><a href="mailto:contactus@riotravelpc.com">Contato</a></div>
+    <div class="copy">Park City, Utah &middot; &copy; 2026 Rio Travel LLC</div>
 </footer>
 
-<!-- WhatsApp Float -->
-<a href="https://wa.me/14352146939?text=Oi!%20Vi%20o%20site%20e%20preciso%20de%20ajuda%20com%20viagem." target="_blank" class="wa-float">
-    <i class="bi bi-whatsapp"></i>
-    <span class="wa-text" data-i18n="wa_text">Fale Conosco</span>
-</a>
+<!-- WA FLOAT -->
+<a href="https://wa.me/14352146939?text=Oi!%20Preciso%20de%20ajuda%20com%20viagem." target="_blank" class="wa-float"><i class="bi bi-whatsapp"></i> <span class="tl">Fale Conosco</span></a>
 
+<!-- FLATPICKR -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
 <script>
-// Nav scroll
-window.addEventListener('scroll',()=>document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>40));
+// ========== STATE ==========
+let lang=localStorage.getItem('rl')||'pt', trip='rt', cabin='economy';
+let paxA=1,paxC=0,paxI=0,paxCB=0,paxDB=0;
 
-// Scroll animations
-const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');}),{threshold:0.1});
-document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
-
-// Tabs
-const tabNames=['flights','hotels','tours','cruises'];
-function switchTab(tab){
-    document.querySelectorAll('.search-tab').forEach((b,i)=>b.classList.toggle('active',tabNames[i]===tab));
-    document.getElementById('flightForm').style.display=tab==='flights'?'flex':'none';
-    document.getElementById('hotelForm').style.display=tab==='hotels'?'flex':'none';
-    document.getElementById('toursForm').style.display=tab==='tours'?'flex':'none';
-    document.getElementById('cruiseForm').style.display=tab==='cruises'?'flex':'none';
-    // Show/hide options bar (only for flights)
-    const optBar = document.querySelector('[id="tripTypeBar"]').parentElement;
-    if(optBar) optBar.style.display = tab==='flights'?'flex':'none';
-    document.getElementById('results').style.display='none';
-}
-
-// Tours search → Civitatis + Viator
-function searchTours(){
-    const dest=document.getElementById('tourDest').value.trim();
-    if(!dest){alert(t('error_fields'));return;}
-    const results=document.getElementById('results');
-    const list=document.getElementById('resultsList');
-    results.style.display='block';
-    document.getElementById('resultsTitle').innerHTML=`<span class="route-badge">${dest}</span> Tours & Activities`;
-    const civUrl=`https://www.civitatis.com/en/?query=${encodeURIComponent(dest)}&ag_aid=64713`;
-    const viaUrl=`https://www.viator.com/searchResults/all?text=${encodeURIComponent(dest)}&pid=P00006875`;
-    list.innerHTML=`
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <a href="${civUrl}" target="_blank" class="result-card" style="text-decoration:none;display:block;">
-                <div class="result-inner" style="flex-direction:column;text-align:center;gap:16px;padding:32px;">
-                    <div style="font-size:48px;">&#127758;</div>
-                    <div><div style="font-size:20px;font-weight:800;color:#fff;font-family:Outfit;">Civitatis</div>
-                    <div style="font-size:13px;color:var(--gray-400);margin-top:6px;" data-i18n="tour_civitatis_desc">Tours, excursoes e atividades em ${dest}</div></div>
-                    <div style="padding:12px 24px;background:linear-gradient(135deg,var(--coral),var(--orange));border-radius:12px;color:#fff;font-weight:700;font-family:Outfit;font-size:14px;" data-i18n="tour_explore">Explorar Tours</div>
-                </div>
-            </a>
-            <a href="${viaUrl}" target="_blank" class="result-card" style="text-decoration:none;display:block;">
-                <div class="result-inner" style="flex-direction:column;text-align:center;gap:16px;padding:32px;">
-                    <div style="font-size:48px;">&#127961;</div>
-                    <div><div style="font-size:20px;font-weight:800;color:#fff;font-family:Outfit;">Viator</div>
-                    <div style="font-size:13px;color:var(--gray-400);margin-top:6px;" data-i18n="tour_viator_desc">Passeios, ingressos e experiencias em ${dest}</div></div>
-                    <div style="padding:12px 24px;background:linear-gradient(135deg,#06d6a0,#0ead8c);border-radius:12px;color:#fff;font-weight:700;font-family:Outfit;font-size:14px;" data-i18n="tour_explore">Explorar Tours</div>
-                </div>
-            </a>
-        </div>
-        <div style="text-align:center;margin-top:20px;padding:16px;">
-            <a href="https://wa.me/14352146939?text=${encodeURIComponent('Oi! Quero ajuda para encontrar tours e atividades em '+dest)}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#25d366;color:#fff;border-radius:14px;text-decoration:none;font-weight:700;font-size:14px;font-family:Outfit;"><i class="bi bi-whatsapp"></i> <span data-i18n="tour_agent_help">Ou fale com nosso agente</span></a>
-        </div>`;
-    document.getElementById('resultsCount').textContent='';
-}
-
-// Min dates
-const today=new Date().toISOString().split('T')[0];
-['departure','returnDate','checkin','checkout'].forEach(id=>{const el=document.getElementById(id);if(el)el.min=today;});
-
-// Quick search
-function quickSearch(from,to){
-    document.getElementById('origin').value=from;
-    document.getElementById('destination').value=to;
-    const d=new Date();d.setDate(d.getDate()+30);
-    document.getElementById('departure').value=d.toISOString().split('T')[0];
-    switchTab('flights');
-    searchFlights();
-    window.scrollTo({top:0,behavior:'smooth'});
-}
-
-// Flight search
-function searchFlights(){
-    const originEl=document.getElementById('origin');
-    const destEl=document.getElementById('destination');
-    const origin=(originEl.dataset.code||originEl.value.match(/\((\w{3})\)/)?.[1]||originEl.value).trim().toUpperCase().substring(0,3);
-    const dest=(destEl.dataset.code||destEl.value.match(/\((\w{3})\)/)?.[1]||destEl.value).trim().toUpperCase().substring(0,3);
-    const dep=document.getElementById('departure').value;
-    const ret=document.getElementById('returnDate').value;
-    const adults=document.getElementById('adults').value;
-    if(!origin||!dest||!dep){alert(t('error_fields'));return;}
-
-    const btn=document.getElementById('searchBtn');
-    btn.disabled=true;btn.innerHTML=`<i class="bi bi-hourglass-split"></i> ${t('searching')}`;
-
-    const results=document.getElementById('results');
-    const list=document.getElementById('resultsList');
-    results.style.display='block';
-    list.innerHTML='<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
-    document.getElementById('resultsTitle').innerHTML=`<span class="route-badge">${origin} → ${dest}</span>`;
-    document.getElementById('resultsCount').textContent=t('searching_best');
-
-    let url=`/api/flights?origin=${origin}&destination=${dest}&departure=${dep}&adults=${adults}`;
-    if(ret)url+=`&return=${ret}`;
-
-    fetch(url).then(r=>r.json()).then(data=>{
-        btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('btn_search')}`;
-        if(data.error){
-            list.innerHTML=`<div style="text-align:center;padding:48px;"><i class="bi bi-exclamation-circle" style="font-size:36px;color:var(--coral);"></i><p style="margin-top:16px;color:var(--gray-400);">${data.error}</p></div>`;
-            document.getElementById('resultsCount').textContent='';return;
-        }
-        const flights=data.flights||[];
-        if(!flights.length){
-            list.innerHTML=`<div style="text-align:center;padding:48px;"><i class="bi bi-airplane" style="font-size:36px;color:var(--gray-600);"></i><p style="margin-top:16px;color:var(--gray-500);">${t('no_flights')}</p></div>`;
-            document.getElementById('resultsCount').textContent=`0 ${t('flights_found')}`;return;
-        }
-        document.getElementById('resultsCount').textContent=`${flights.length} ${t('flights_found')}`;
-        let html='';
-        flights.forEach((f,i)=>{
-            const stopsText=f.stops===0?t('direct'):f.stops===1?t('stop_1'):`${f.stops} ${t('stops_n')}`;
-            const stopsColor=f.stops===0?'var(--green)':f.stops===1?'var(--yellow)':'var(--gray-500)';
-            const wMsg=encodeURIComponent(t('wa_flight_msg').replace('{from}',origin).replace('{to}',dest).replace('{date}',dep).replace('{price}',f.price));
-            html+=`<div class="result-card">
-                ${i===0?`<div class="best-badge"><i class="bi bi-trophy-fill"></i> ${t('best_price')}</div>`:''}
-                <div class="result-inner">
-                    <div class="result-airline">
-                        <img class="result-airline-logo" src="${f.airlineLogo||'https://pics.avs.io/80/80/'+(f.airlineCode||'XX')+'.png'}" onerror="this.style.display='none'">
-                        <div class="result-airline-info"><div class="airline-name">${f.airline}</div><div class="airline-code">${f.airlineCode||''}</div></div>
-                    </div>
-                    <div class="result-route">
-                        <div class="result-endpoint"><div class="time">${f.departureTime||'--:--'}</div><div class="code">${f.origin||origin}</div></div>
-                        <div class="result-path">
-                            <div class="result-path-line"><span class="result-path-plane"><i class="bi bi-airplane-fill"></i></span></div>
-                            <div class="stops-text" style="color:${stopsColor};">${stopsText}</div>
-                            <div class="duration-text">${f.duration||''}</div>
-                        </div>
-                        <div class="result-endpoint"><div class="time">${f.arrivalTime||'--:--'}</div><div class="code">${f.destination||dest}</div></div>
-                    </div>
-                    <div class="result-pricing">
-                        <div class="price"><span class="price-currency">US$ </span>${f.price}</div>
-                        <div class="per-person">${t('per_person')}</div>
-                        <a href="https://wa.me/14352146939?text=${wMsg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a>
-                    </div>
-                </div>
-            </div>`;
-        });
-        list.innerHTML=html;
-    }).catch(()=>{
-        btn.disabled=false;btn.innerHTML='<i class="bi bi-search"></i> Buscar';
-        list.innerHTML='<div style="text-align:center;padding:48px;color:var(--coral);"><i class="bi bi-wifi-off" style="font-size:36px;"></i><p style="margin-top:16px;">${t('error_conn')}</p></div>';
-    });
-}
-
-// Hotel search
-function searchHotels(){
-    const dest=document.getElementById('hotelDest').value.trim();
-    const ci=document.getElementById('checkin').value;
-    const co=document.getElementById('checkout').value;
-    if(!dest||!ci||!co){alert(t('alert_fill'));return;}
-    const results=document.getElementById('results');
-    const list=document.getElementById('resultsList');
-    results.style.display='block';
-    list.innerHTML='<div class="skeleton"></div><div class="skeleton"></div>';
-    document.getElementById('resultsTitle').innerHTML=`Hoteis em ${dest}`;
-    document.getElementById('resultsCount').textContent=t('searching');
-    fetch(`/api/hotels?destination=${dest}&checkin=${ci}&checkout=${co}&adults=${document.getElementById('hotelAdults').value}`)
-    .then(r=>r.json()).then(data=>{
-        const hotels=data.hotels||[];
-        document.getElementById('resultsCount').textContent=`${hotels.length} ${t('hotels_found')}`;
-        if(!hotels.length){list.innerHTML=`<div style="text-align:center;padding:48px;color:var(--gray-500);"><p>${t('no_hotels')}</p></div>`;return;}
-        let html='';
-        hotels.forEach((h,i)=>{
-            const wMsg=encodeURIComponent(`Oi! Vi no site o hotel ${h.name} em ${dest} por $${h.price}/noite. Gostaria de reservar!`);
-            html+=`<div class="result-card">
-                ${i===0?`<div class="best-badge"><i class="bi bi-trophy-fill"></i> ${t('best_price')}</div>`:''}
-                <div class="result-inner">
-                    ${h.photo?`<img src="${h.photo}" style="width:80px;height:60px;border-radius:12px;object-fit:cover;">`:''}
-                    <div style="flex:1;"><div style="font-size:16px;font-weight:700;color:#fff;">${h.name}</div><div style="color:var(--yellow);font-size:12px;margin-top:4px;">${'&#9733;'.repeat(h.stars||0)}</div>${h.rating?`<div style="font-size:11px;color:var(--gray-500);margin-top:2px;">Nota ${h.rating}/10 (${h.reviewCount} avaliacoes)</div>`:''}</div>
-                    <div class="result-pricing"><div class="price"><span class="price-currency">US$ </span>${h.price}</div><div class="per-person">por noite</div>
-                    <a href="https://wa.me/14352146939?text=${wMsg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> Reservar</a></div>
-                </div>
-            </div>`;
-        });
-        list.innerHTML=html;
-    }).catch(()=>{list.innerHTML='<div style="text-align:center;padding:48px;color:var(--coral);"><p>Erro. Tente novamente.</p></div>';});
-}
-// ===== CABIN CLASS =====
-function setCabinClass(cls) {
-    document.getElementById('cabinClass').value = cls;
-    const names = {economy:t('class_economy'),premium:t('class_premium'),business:t('class_business'),first:t('class_first')};
-    document.getElementById('classText').textContent = names[cls] || cls;
-    ['Eco','Prem','Biz','First'].forEach(s => {
-        const el = document.getElementById('class'+s);
-        if(el) { el.className = 'bi bi-circle'; el.style.color = 'var(--gray-500)'; }
-    });
-    const map = {economy:'Eco',premium:'Prem',business:'Biz',first:'First'};
-    const sel = document.getElementById('class' + map[cls]);
-    if(sel) { sel.className = 'bi bi-circle-fill'; sel.style.color = 'var(--coral)'; }
-    document.getElementById('classDropdown').classList.remove('show');
-}
-
-// Close class dropdown on outside click
-document.addEventListener('click', e => {
-    if (!e.target.closest('#classDisplay') && !e.target.closest('#classDropdown')) {
-        const dd = document.getElementById('classDropdown');
-        if (dd) dd.classList.remove('show');
-    }
-});
-
-// ===== PASSENGER COUNTER =====
-function changePax(type, delta) {
-    const el = document.getElementById(type);
-    let val = parseInt(el.value) + delta;
-    if (type === 'adults') val = Math.max(1, Math.min(9, val));
-    else if (type === 'cabinBag' || type === 'checkedBag') val = Math.max(0, Math.min(9, val));
-    else val = Math.max(0, Math.min(6, val));
-    el.value = val;
-    document.getElementById(type + 'Count').textContent = val;
-    if (type !== 'cabinBag' && type !== 'checkedBag') updatePaxText();
-}
-
-function updatePaxText() {
-    const a = parseInt(document.getElementById('adults').value);
-    const c = parseInt(document.getElementById('children').value);
-    const inf = parseInt(document.getElementById('infants').value);
-    let parts = [];
-    const L = currentLang || 'pt';
-    if (L === 'pt') {
-        parts.push(a === 1 ? '1 Adulto' : `${a} Adultos`);
-        if (c > 0) parts.push(c === 1 ? '1 Crianca' : `${c} Criancas`);
-        if (inf > 0) parts.push(inf === 1 ? '1 Bebe' : `${inf} Bebes`);
-    } else if (L === 'en') {
-        parts.push(a === 1 ? '1 Adult' : `${a} Adults`);
-        if (c > 0) parts.push(c === 1 ? '1 Child' : `${c} Children`);
-        if (inf > 0) parts.push(inf === 1 ? '1 Infant' : `${inf} Infants`);
-    } else {
-        parts.push(a === 1 ? '1 Adulto' : `${a} Adultos`);
-        if (c > 0) parts.push(c === 1 ? '1 Nino' : `${c} Ninos`);
-        if (inf > 0) parts.push(inf === 1 ? '1 Bebe' : `${inf} Bebes`);
-    }
-    document.getElementById('paxText').textContent = parts.join(', ');
-}
-
-// Close pax dropdown on outside click
-document.addEventListener('click', e => {
-    if (!e.target.closest('#paxDisplay') && !e.target.closest('#paxDropdown')) {
-        const dd = document.getElementById('paxDropdown');
-        if (dd) dd.classList.remove('show');
-    }
-});
-
-// ===== AIRPORT AUTOCOMPLETE =====
-const AIRPORTS=[
-    {code:'GRU',city:'Sao Paulo',name:'Guarulhos International',country:'Brasil'},
-    {code:'GIG',city:'Rio de Janeiro',name:'Galeao International',country:'Brasil'},
-    {code:'BSB',city:'Brasilia',name:'Presidente Juscelino',country:'Brasil'},
-    {code:'CNF',city:'Belo Horizonte',name:'Confins International',country:'Brasil'},
-    {code:'SSA',city:'Salvador',name:'Deputado Luis Eduardo',country:'Brasil'},
-    {code:'REC',city:'Recife',name:'Guararapes International',country:'Brasil'},
-    {code:'CWB',city:'Curitiba',name:'Afonso Pena International',country:'Brasil'},
-    {code:'POA',city:'Porto Alegre',name:'Salgado Filho',country:'Brasil'},
-    {code:'FOR',city:'Fortaleza',name:'Pinto Martins',country:'Brasil'},
-    {code:'VCP',city:'Campinas',name:'Viracopos International',country:'Brasil'},
-    {code:'FLN',city:'Florianopolis',name:'Hercilio Luz',country:'Brasil'},
-    {code:'NAT',city:'Natal',name:'Sao Goncalo do Amarante',country:'Brasil'},
-    {code:'SLC',city:'Salt Lake City',name:'Salt Lake City Intl',country:'USA'},
-    {code:'JFK',city:'New York',name:'John F. Kennedy Intl',country:'USA'},
-    {code:'LAX',city:'Los Angeles',name:'Los Angeles Intl',country:'USA'},
-    {code:'MIA',city:'Miami',name:'Miami Intl',country:'USA'},
-    {code:'MCO',city:'Orlando',name:'Orlando Intl',country:'USA'},
-    {code:'EWR',city:'Newark',name:'Newark Liberty Intl',country:'USA'},
-    {code:'ORD',city:'Chicago',name:'O\'Hare Intl',country:'USA'},
-    {code:'DFW',city:'Dallas',name:'Dallas/Fort Worth Intl',country:'USA'},
-    {code:'ATL',city:'Atlanta',name:'Hartsfield-Jackson Intl',country:'USA'},
-    {code:'DEN',city:'Denver',name:'Denver Intl',country:'USA'},
-    {code:'SFO',city:'San Francisco',name:'San Francisco Intl',country:'USA'},
-    {code:'SEA',city:'Seattle',name:'Seattle-Tacoma Intl',country:'USA'},
-    {code:'BOS',city:'Boston',name:'Logan Intl',country:'USA'},
-    {code:'IAH',city:'Houston',name:'George Bush Intl',country:'USA'},
-    {code:'LAS',city:'Las Vegas',name:'Harry Reid Intl',country:'USA'},
-    {code:'PHX',city:'Phoenix',name:'Sky Harbor Intl',country:'USA'},
-    {code:'FLL',city:'Fort Lauderdale',name:'Fort Lauderdale Intl',country:'USA'},
-    {code:'TPA',city:'Tampa',name:'Tampa Intl',country:'USA'},
-    {code:'CUN',city:'Cancun',name:'Cancun Intl',country:'Mexico'},
-    {code:'MEX',city:'Mexico City',name:'Benito Juarez Intl',country:'Mexico'},
-    {code:'GDL',city:'Guadalajara',name:'Don Miguel Hidalgo',country:'Mexico'},
-    {code:'BOG',city:'Bogota',name:'El Dorado Intl',country:'Colombia'},
-    {code:'MDE',city:'Medellin',name:'Jose Maria Cordova',country:'Colombia'},
-    {code:'LIM',city:'Lima',name:'Jorge Chavez Intl',country:'Peru'},
-    {code:'SCL',city:'Santiago',name:'Arturo Merino Benitez',country:'Chile'},
-    {code:'EZE',city:'Buenos Aires',name:'Ministro Pistarini',country:'Argentina'},
-    {code:'PTY',city:'Panama City',name:'Tocumen Intl',country:'Panama'},
-    {code:'LIS',city:'Lisboa',name:'Humberto Delgado',country:'Portugal'},
-    {code:'OPO',city:'Porto',name:'Francisco Sa Carneiro',country:'Portugal'},
-    {code:'LHR',city:'London',name:'Heathrow',country:'UK'},
-    {code:'CDG',city:'Paris',name:'Charles de Gaulle',country:'France'},
-    {code:'MAD',city:'Madrid',name:'Adolfo Suarez Barajas',country:'Spain'},
-    {code:'FCO',city:'Rome',name:'Leonardo da Vinci',country:'Italy'},
-    {code:'FRA',city:'Frankfurt',name:'Frankfurt Intl',country:'Germany'},
-    {code:'AMS',city:'Amsterdam',name:'Schiphol',country:'Netherlands'},
-    {code:'DXB',city:'Dubai',name:'Dubai Intl',country:'UAE'},
-    {code:'NRT',city:'Tokyo',name:'Narita Intl',country:'Japan'},
-    {code:'HNL',city:'Honolulu',name:'Daniel K. Inouye',country:'USA'},
+// ========== AIRPORTS ==========
+const AP=[
+    {c:'GRU',n:'Guarulhos Intl',ci:'Sao Paulo',co:'Brasil'},{c:'GIG',n:'Galeao Intl',ci:'Rio de Janeiro',co:'Brasil'},
+    {c:'BSB',n:'Juscelino Kubitschek',ci:'Brasilia',co:'Brasil'},{c:'CNF',n:'Confins Intl',ci:'Belo Horizonte',co:'Brasil'},
+    {c:'SSA',n:'Luis Eduardo Magalhaes',ci:'Salvador',co:'Brasil'},{c:'REC',n:'Guararapes Intl',ci:'Recife',co:'Brasil'},
+    {c:'CWB',n:'Afonso Pena',ci:'Curitiba',co:'Brasil'},{c:'POA',n:'Salgado Filho',ci:'Porto Alegre',co:'Brasil'},
+    {c:'FOR',n:'Pinto Martins',ci:'Fortaleza',co:'Brasil'},{c:'FLN',n:'Hercilio Luz',ci:'Florianopolis',co:'Brasil'},
+    {c:'NAT',n:'Natal Intl',ci:'Natal',co:'Brasil'},{c:'VCP',n:'Viracopos',ci:'Campinas',co:'Brasil'},
+    {c:'SLC',n:'Salt Lake City Intl',ci:'Salt Lake City',co:'USA'},{c:'JFK',n:'John F Kennedy',ci:'New York',co:'USA'},
+    {c:'LAX',n:'Los Angeles Intl',ci:'Los Angeles',co:'USA'},{c:'MIA',n:'Miami Intl',ci:'Miami',co:'USA'},
+    {c:'MCO',n:'Orlando Intl',ci:'Orlando',co:'USA'},{c:'EWR',n:'Newark Liberty',ci:'Newark',co:'USA'},
+    {c:'ORD',n:'O\'Hare Intl',ci:'Chicago',co:'USA'},{c:'DFW',n:'Dallas Fort Worth',ci:'Dallas',co:'USA'},
+    {c:'ATL',n:'Hartsfield-Jackson',ci:'Atlanta',co:'USA'},{c:'DEN',n:'Denver Intl',ci:'Denver',co:'USA'},
+    {c:'SFO',n:'San Francisco Intl',ci:'San Francisco',co:'USA'},{c:'SEA',n:'Seattle-Tacoma',ci:'Seattle',co:'USA'},
+    {c:'BOS',n:'Logan Intl',ci:'Boston',co:'USA'},{c:'IAH',n:'George Bush',ci:'Houston',co:'USA'},
+    {c:'LAS',n:'Harry Reid Intl',ci:'Las Vegas',co:'USA'},{c:'PHX',n:'Sky Harbor',ci:'Phoenix',co:'USA'},
+    {c:'FLL',n:'Fort Lauderdale Intl',ci:'Fort Lauderdale',co:'USA'},{c:'TPA',n:'Tampa Intl',ci:'Tampa',co:'USA'},
+    {c:'HNL',n:'Daniel Inouye',ci:'Honolulu',co:'USA'},{c:'CUN',n:'Cancun Intl',ci:'Cancun',co:'Mexico'},
+    {c:'MEX',n:'Benito Juarez',ci:'Mexico City',co:'Mexico'},{c:'BOG',n:'El Dorado',ci:'Bogota',co:'Colombia'},
+    {c:'LIM',n:'Jorge Chavez',ci:'Lima',co:'Peru'},{c:'SCL',n:'Arturo Merino',ci:'Santiago',co:'Chile'},
+    {c:'EZE',n:'Ezeiza',ci:'Buenos Aires',co:'Argentina'},{c:'PTY',n:'Tocumen',ci:'Panama City',co:'Panama'},
+    {c:'LIS',n:'Humberto Delgado',ci:'Lisboa',co:'Portugal'},{c:'LHR',n:'Heathrow',ci:'London',co:'UK'},
+    {c:'CDG',n:'Charles de Gaulle',ci:'Paris',co:'France'},{c:'MAD',n:'Barajas',ci:'Madrid',co:'Spain'},
+    {c:'FCO',n:'Fiumicino',ci:'Rome',co:'Italy'},{c:'FRA',n:'Frankfurt Intl',ci:'Frankfurt',co:'Germany'},
+    {c:'DXB',n:'Dubai Intl',ci:'Dubai',co:'UAE'},{c:'NRT',n:'Narita',ci:'Tokyo',co:'Japan'},
 ];
 
-function searchAirport(input, acId) {
-    const q = input.value.toLowerCase().replace(/\(.*\)/,'').trim();
-    const ac = document.getElementById(acId);
-
-    // Show popular airports on empty focus
-    let matches;
-    if (q.length === 0) {
-        matches = AIRPORTS.slice(0, 8); // Show first 8 popular
-    } else {
-        matches = AIRPORTS.filter(a =>
-            a.code.toLowerCase().startsWith(q) ||
-            a.city.toLowerCase().startsWith(q) ||
-            a.city.toLowerCase().includes(q) ||
-            a.name.toLowerCase().includes(q) ||
-            a.country.toLowerCase().includes(q) ||
-            a.code.toLowerCase().includes(q)
-        ).slice(0, 8);
-    }
-
-    if (!matches.length) { ac.classList.remove('show'); return; }
-
-    ac.innerHTML = matches.map(a => `
-        <div class="airport-item" onmousedown="event.preventDefault();selectAirport('${input.id}','${a.code}','${a.city}','${acId}')">
-            <div class="ac-icon"><span class="ac-code">${a.code}</span></div>
-            <div class="ac-info">
-                <div class="ac-city">${a.city}</div>
-                <div class="ac-name">${a.name}</div>
-            </div>
-            <span class="ac-country">${a.country}</span>
-        </div>
-    `).join('');
-    ac.classList.add('show');
-}
-
-function selectAirport(inputId, code, city, acId) {
-    const input = document.getElementById(inputId);
-    input.value = `${city} (${code})`;
-    input.dataset.code = code;
-    document.getElementById(acId).classList.remove('show');
-}
-
-// Hide autocomplete on blur with delay
-document.querySelectorAll('#origin, #destination').forEach(input => {
-    input.addEventListener('blur', () => {
-        setTimeout(() => {
-            document.querySelectorAll('.airport-ac').forEach(ac => ac.classList.remove('show'));
-        }, 200);
-    });
-});
-
-// Close autocomplete on click outside
-document.addEventListener('click', e => {
-    if (!e.target.closest('.search-field')) {
-        document.querySelectorAll('.airport-ac').forEach(ac => ac.classList.remove('show'));
-    }
-    if (!e.target.closest('.lang-switch')) {
-        const dd = document.getElementById('langDropdown');
-        if (dd) dd.classList.remove('show');
-    }
-});
-
-// Swap airports
-function swapAirports() {
-    const o = document.getElementById('origin');
-    const d = document.getElementById('destination');
-    const tmp = o.value; o.value = d.value; d.value = tmp;
-    const tmpC = o.dataset.code; o.dataset.code = d.dataset.code; d.dataset.code = tmpC;
-}
-
-// Trip type
-function setTripType(type) {
-    document.getElementById('btnRoundtrip').classList.toggle('active', type === 'roundtrip');
-    document.getElementById('btnOneway').classList.toggle('active', type === 'oneway');
-    document.getElementById('btnMulti').classList.toggle('active', type === 'multi');
-    document.getElementById('returnField').style.display = type === 'oneway' ? 'none' : type === 'multi' ? 'none' : 'block';
-    document.getElementById('flightForm').style.display = type === 'multi' ? 'none' : 'flex';
-    document.getElementById('multiForm').style.display = type === 'multi' ? 'block' : 'none';
-    document.getElementById('tripTypeBar').style.display = 'flex';
-}
-
-function addMultiLeg() {
-    const legs = document.getElementById('multiLegs');
-    const n = legs.children.length + 1;
-    const div = document.createElement('div');
-    div.className = 'search-form';
-    div.style.marginBottom = '6px';
-    div.innerHTML = `
-        <div class="search-field" style="flex:1;"><label>Voo ${n} - Origem</label><input type="text" class="multi-origin" placeholder="Cidade ou aeroporto" autocomplete="off"></div>
-        <div class="search-field" style="flex:1;"><label>Destino</label><input type="text" class="multi-dest" placeholder="Cidade ou aeroporto" autocomplete="off"></div>
-        <div class="search-field" style="flex:0.7;"><label>Data</label><input type="date" class="multi-date" style="font-size:14px;padding-top:30px;"></div>
-    `;
-    legs.appendChild(div);
-}
-
-function searchMulti() {
-    // For multi-destination, redirect to WhatsApp with details
-    const legs = document.querySelectorAll('#multiLegs .search-form');
-    let msg = 'Oi Hudson! Preciso de um voo multi-destinos:\n';
-    legs.forEach((leg, i) => {
-        const from = leg.querySelector('.multi-origin').value;
-        const to = leg.querySelector('.multi-dest').value;
-        const date = leg.querySelector('.multi-date').value;
-        if (from && to) msg += `\nVoo ${i+1}: ${from} → ${to} em ${date}`;
-    });
-    window.open('https://wa.me/14352146939?text=' + encodeURIComponent(msg), '_blank');
-}
-
-// ===== MULTI-LANGUAGE SYSTEM =====
-const LANG = {
-    pt: {
-        nav_flights:'Voos', nav_hotels:'Hoteis', nav_cruises:'Cruzeiros', nav_deals:'Ofertas',
-        trip_roundtrip:'Ida e Volta', trip_oneway:'Somente Ida', trip_multi:'Multi-destinos',
-        pax_adults:'Adultos', pax_adults_age:'12+ anos', pax_children:'Criancas', pax_children_age:'2-11 anos', pax_infants:'Bebes', pax_infants_age:'0-23 meses', pax_done:'Pronto',
-        pax_bags:'Bagagem', pax_cabin_bag:'Mao', pax_checked_bag:'Despachada',
-        class_economy:'Economica', class_premium:'Premium Economy', class_business:'Executiva', class_first:'Primeira Classe',
-        nav_tours:'Tours', lbl_tour_dest:'Destino ou Atividade', tour_explore:'Explorar Tours', tour_agent_help:'Ou fale com nosso agente',
-        tour_civitatis_desc:'Tours, excursoes e atividades', tour_viator_desc:'Passeios, ingressos e experiencias',
-        hero_pill:'As melhores ofertas de viagem em um so lugar', hero_new:'NOVO',
-        hero_title:'Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span>',
-        hero_sub:'Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.',
-        btn_search:'Buscar', lbl_origin:'Origem', lbl_dest:'Destino', lbl_depart:'Ida', lbl_return:'Volta', lbl_pax:'Passageiros',
-        lbl_checkin:'Check-in', lbl_checkout:'Check-out', lbl_guests:'Hospedes', lbl_hotel_dest:'Destino',
-        cruise_text:'Para cruzeiros, fale diretamente com nosso agente para as melhores ofertas exclusivas.',
-        cruise_btn:'Consultar Cruzeiros',
-        routes_label:'Rotas Populares', routes_title:'Destinos Mais Buscados', routes_sub:'Voos frequentes de brasileiros nos EUA',
-        feat_label:'Por que Rio Travel', feat_title:'Viaje com Confianca', feat_sub:'Mais do que busca de voos — uma experiencia completa de viagem.',
-        feat1_title:'Atendimento em Portugues', feat1_desc:'Fale no seu idioma. Suporte completo para brasileiros morando nos EUA.',
-        feat2_title:'Agente Certificado', feat2_desc:'Agencia licenciada e certificada nos EUA. Seguranca total para sua viagem.',
-        feat3_title:'Precos em Tempo Real', feat3_desc:'Busca direto nas companhias aereas. Precos atualizados a cada segundo.',
-        agent_bio:'40+ paises visitados. Especialista em voos internacionais e viagens para o Brasil. Atendimento personalizado via WhatsApp.',
-        wa_text:'Fale Conosco',
-        best_price:'Melhor Preco', per_person:'por pessoa', per_night:'por noite', book:'Reservar',
-        searching:'Buscando...', searching_best:'Buscando melhores precos...',
-        flights_found:'voos encontrados', hotels_found:'hoteis encontrados',
-        no_flights:'Nenhum voo encontrado. Tente outras datas.', no_hotels:'Nenhum hotel encontrado.',
-        direct:'Direto', stop_1:'1 parada', stops_n:'paradas',
-        error_conn:'${t('error_conn')}', error_fields:'Preencha origem, destino e data.',
-        from:'ida', alert_fill:'Preencha destino e datas.',
-        wa_flight_msg:'Oi Hudson! Vi no site um voo {from} → {to} em {date} por ${price}. Gostaria de reservar!',
-        wa_hotel_msg:'Oi! Vi no site o hotel {name} em {dest} por ${price}/noite. Gostaria de reservar!',
+// ========== i18n ==========
+const I={
+    pt:{flights:'Voos',hotels:'Hoteis',tours:'Tours',cruises:'Cruzeiros',
+        rt:'Ida e Volta',ow:'Somente Ida',eco:'Economica',biz:'Executiva',first:'Primeira Classe',
+        from:'Origem',to:'Destino',dep:'Ida',ret:'Volta',search:'Buscar',searchTours:'Buscar Tours',
+        adults:'Adultos',children:'Criancas',infants:'Bebes',bags:'Bagagem',cabin:'Mao',checked:'Despachada',done:'Pronto',
+        adultsAge:'12+ anos',childrenAge:'2-11 anos',infantsAge:'0-23 meses',
+        heroT:'Encontre as Melhores<br><b>Ofertas de Voos</b>',heroS:'Compare precos de passagens, hoteis e cruzeiros em tempo real. Agente certificado nos EUA.',
+        destLabel:'Destinos Populares',destTitle:'Explore o Mundo',destSub:'Os destinos mais buscados saindo dos EUA',
+        whyLabel:'Por que Rio Travel',whyTitle:'Viaje com Confianca',
+        f1:'Multilingual',f1d:'Atendimento em Portugues, Ingles e Espanhol.',f2:'Agente Certificado',f2d:'Agencia licenciada nos EUA. Seguranca total.',f3:'Precos em Tempo Real',f3d:'Busca direto nas companhias aereas.',
+        agentBio:'40+ paises visitados. Especialista em viagens internacionais. Atendimento via WhatsApp.',
+        wa:'Fale Conosco',cruise:'Para cruzeiros, fale com nosso agente para ofertas exclusivas.',cruiseBtn:'Consultar Cruzeiros',
+        tourDest:'Destino ou Atividade',explore:'Explorar Tours',orAgent:'Ou fale com nosso agente',
+        best:'Melhor Preco',pp:'por pessoa',pn:'por noite',book:'Reservar',searching:'Buscando...',found:'voos encontrados',noFlights:'Nenhum voo encontrado.',
+        direct:'Direto',stop1:'1 parada',stops:'paradas',hotelDest:'Destino',
+        wamsg:'Oi Hudson! Vi um voo {f} → {t} em {d} por ${p}. Quero reservar!',
     },
-    en: {
-        nav_flights:'Flights', nav_hotels:'Hotels', nav_cruises:'Cruises', nav_deals:'Deals',
-        trip_roundtrip:'Round Trip', trip_oneway:'One Way', trip_multi:'Multi-city',
-        pax_adults:'Adults', pax_adults_age:'12+ years', pax_children:'Children', pax_children_age:'2-11 years', pax_infants:'Infants', pax_infants_age:'0-23 months', pax_done:'Done',
-        pax_bags:'Bags', pax_cabin_bag:'Cabin', pax_checked_bag:'Checked',
-        class_economy:'Economy', class_premium:'Premium Economy', class_business:'Business', class_first:'First Class',
-        nav_tours:'Tours', lbl_tour_dest:'Destination or Activity', tour_explore:'Explore Tours', tour_agent_help:'Or speak with our agent',
-        tour_civitatis_desc:'Tours, excursions and activities', tour_viator_desc:'Tours, tickets and experiences',
-        hero_pill:'The best travel deals in one place', hero_new:'NEW',
-        hero_title:'Find the Best<br><span class="gradient">Flight Deals</span>',
-        hero_sub:'Compare prices on <strong>flights</strong>, hotels and cruises in real time. Personalized service with a certified travel agent.',
-        btn_search:'Search', lbl_origin:'From', lbl_dest:'To', lbl_depart:'Depart', lbl_return:'Return', lbl_pax:'Passengers',
-        lbl_checkin:'Check-in', lbl_checkout:'Check-out', lbl_guests:'Guests', lbl_hotel_dest:'Destination',
-        cruise_text:'For cruises, speak directly with our agent for the best exclusive deals.',
-        cruise_btn:'Get Cruise Deals',
-        routes_label:'Popular Routes', routes_title:'Most Searched Destinations', routes_sub:'Frequent flights from the USA',
-        feat_label:'Why Rio Travel', feat_title:'Travel with Confidence', feat_sub:'More than flight search — a complete travel experience.',
-        feat1_title:'Multilingual Support', feat1_desc:'We speak your language. Full support in English, Portuguese and Spanish.',
-        feat2_title:'Certified Agent', feat2_desc:'Licensed and certified agency in the USA. Total security for your trip.',
-        feat3_title:'Real-Time Prices', feat3_desc:'Search directly from airlines. Prices updated every second.',
-        agent_bio:'40+ countries visited. Specialist in international flights and travel. Personalized service via WhatsApp.',
-        wa_text:'Contact Us',
-        best_price:'Best Price', per_person:'per person', per_night:'per night', book:'Book Now',
-        searching:'Searching...', searching_best:'Finding best prices...',
-        flights_found:'flights found', hotels_found:'hotels found',
-        no_flights:'No flights found. Try different dates.', no_hotels:'No hotels found.',
-        direct:'Direct', stop_1:'1 stop', stops_n:'stops',
-        error_conn:'Connection error. Please try again.', error_fields:'Please fill in origin, destination and date.',
-        from:'one way', alert_fill:'Please fill in destination and dates.',
-        wa_flight_msg:'Hi Hudson! I found a flight {from} → {to} on {date} for ${price}. I would like to book!',
-        wa_hotel_msg:'Hi! I found the hotel {name} in {dest} for ${price}/night. I would like to book!',
+    en:{flights:'Flights',hotels:'Hotels',tours:'Tours',cruises:'Cruises',
+        rt:'Round Trip',ow:'One Way',eco:'Economy',biz:'Business',first:'First Class',
+        from:'From',to:'To',dep:'Depart',ret:'Return',search:'Search',searchTours:'Search Tours',
+        adults:'Adults',children:'Children',infants:'Infants',bags:'Bags',cabin:'Cabin',checked:'Checked',done:'Done',
+        adultsAge:'12+ years',childrenAge:'2-11 years',infantsAge:'0-23 months',
+        heroT:'Find the Best<br><b>Flight Deals</b>',heroS:'Compare flights, hotels and cruises in real time. Certified agent in the USA.',
+        destLabel:'Popular Destinations',destTitle:'Explore the World',destSub:'Top destinations from the USA',
+        whyLabel:'Why Rio Travel',whyTitle:'Travel with Confidence',
+        f1:'Multilingual',f1d:'Support in English, Portuguese and Spanish.',f2:'Certified Agent',f2d:'Licensed agency in the USA. Total security.',f3:'Real-Time Prices',f3d:'Search directly from airlines.',
+        agentBio:'40+ countries visited. International travel specialist. WhatsApp support.',
+        wa:'Contact Us',cruise:'For cruises, speak with our agent for exclusive deals.',cruiseBtn:'Get Cruise Deals',
+        tourDest:'Destination or Activity',explore:'Explore Tours',orAgent:'Or speak with our agent',
+        best:'Best Price',pp:'per person',pn:'per night',book:'Book Now',searching:'Searching...',found:'flights found',noFlights:'No flights found.',
+        direct:'Direct',stop1:'1 stop',stops:'stops',hotelDest:'Destination',
+        wamsg:'Hi Hudson! I found a flight {f} → {t} on {d} for ${p}. I want to book!',
     },
-    es: {
-        nav_flights:'Vuelos', nav_hotels:'Hoteles', nav_cruises:'Cruceros', nav_deals:'Ofertas',
-        trip_roundtrip:'Ida y Vuelta', trip_oneway:'Solo Ida', trip_multi:'Multi-destinos',
-        pax_adults:'Adultos', pax_adults_age:'12+ anos', pax_children:'Ninos', pax_children_age:'2-11 anos', pax_infants:'Bebes', pax_infants_age:'0-23 meses', pax_done:'Listo',
-        pax_bags:'Equipaje', pax_cabin_bag:'Mano', pax_checked_bag:'Facturado',
-        class_economy:'Economica', class_premium:'Premium Economy', class_business:'Ejecutiva', class_first:'Primera Clase',
-        nav_tours:'Tours', lbl_tour_dest:'Destino o Actividad', tour_explore:'Explorar Tours', tour_agent_help:'O habla con nuestro agente',
-        tour_civitatis_desc:'Tours, excursiones y actividades', tour_viator_desc:'Paseos, entradas y experiencias',
-        hero_pill:'Las mejores ofertas de viaje en un solo lugar', hero_new:'NUEVO',
-        hero_title:'Encuentra las Mejores<br><span class="gradient">Ofertas de Vuelos</span>',
-        hero_sub:'Compara precios de <strong>vuelos</strong>, hoteles y cruceros en tiempo real. Atencion personalizada con agente certificado.',
-        btn_search:'Buscar', lbl_origin:'Origen', lbl_dest:'Destino', lbl_depart:'Ida', lbl_return:'Vuelta', lbl_pax:'Pasajeros',
-        lbl_checkin:'Entrada', lbl_checkout:'Salida', lbl_guests:'Huespedes', lbl_hotel_dest:'Destino',
-        cruise_text:'Para cruceros, hable directamente con nuestro agente para las mejores ofertas exclusivas.',
-        cruise_btn:'Consultar Cruceros',
-        routes_label:'Rutas Populares', routes_title:'Destinos Mas Buscados', routes_sub:'Vuelos frecuentes desde EE.UU.',
-        feat_label:'Por que Rio Travel', feat_title:'Viaja con Confianza', feat_sub:'Mas que busqueda de vuelos — una experiencia completa de viaje.',
-        feat1_title:'Atencion Multilingue', feat1_desc:'Hablamos tu idioma. Soporte completo en espanol, portugues e ingles.',
-        feat2_title:'Agente Certificado', feat2_desc:'Agencia licenciada y certificada en EE.UU. Seguridad total para tu viaje.',
-        feat3_title:'Precios en Tiempo Real', feat3_desc:'Busqueda directa en aerolineas. Precios actualizados cada segundo.',
-        agent_bio:'40+ paises visitados. Especialista en vuelos internacionales y viajes. Atencion personalizada por WhatsApp.',
-        wa_text:'Contactanos',
-        best_price:'Mejor Precio', per_person:'por persona', per_night:'por noche', book:'Reservar',
-        searching:'Buscando...', searching_best:'Buscando mejores precios...',
-        flights_found:'vuelos encontrados', hotels_found:'hoteles encontrados',
-        no_flights:'No se encontraron vuelos. Intenta otras fechas.', no_hotels:'No se encontraron hoteles.',
-        direct:'Directo', stop_1:'1 escala', stops_n:'escalas',
-        error_conn:'Error de conexion. Intenta de nuevo.', error_fields:'Completa origen, destino y fecha.',
-        from:'ida', alert_fill:'Completa destino y fechas.',
-        wa_flight_msg:'Hola Hudson! Vi en el sitio un vuelo {from} → {to} el {date} por ${price}. Me gustaria reservar!',
-        wa_hotel_msg:'Hola! Vi en el sitio el hotel {name} en {dest} por ${price}/noche. Me gustaria reservar!',
+    es:{flights:'Vuelos',hotels:'Hoteles',tours:'Tours',cruises:'Cruceros',
+        rt:'Ida y Vuelta',ow:'Solo Ida',eco:'Economica',biz:'Ejecutiva',first:'Primera Clase',
+        from:'Origen',to:'Destino',dep:'Ida',ret:'Vuelta',search:'Buscar',searchTours:'Buscar Tours',
+        adults:'Adultos',children:'Ninos',infants:'Bebes',bags:'Equipaje',cabin:'Mano',checked:'Facturado',done:'Listo',
+        adultsAge:'12+ anos',childrenAge:'2-11 anos',infantsAge:'0-23 meses',
+        heroT:'Encuentra las Mejores<br><b>Ofertas de Vuelos</b>',heroS:'Compara vuelos, hoteles y cruceros en tiempo real. Agente certificado en EE.UU.',
+        destLabel:'Destinos Populares',destTitle:'Explora el Mundo',destSub:'Los destinos mas buscados desde EE.UU.',
+        whyLabel:'Por que Rio Travel',whyTitle:'Viaja con Confianza',
+        f1:'Multilingue',f1d:'Atencion en Espanol, Ingles y Portugues.',f2:'Agente Certificado',f2d:'Agencia licenciada en EE.UU. Total seguridad.',f3:'Precios en Tiempo Real',f3d:'Busqueda directa en aerolineas.',
+        agentBio:'40+ paises visitados. Especialista en viajes internacionales. Atencion por WhatsApp.',
+        wa:'Contactanos',cruise:'Para cruceros, habla con nuestro agente para ofertas exclusivas.',cruiseBtn:'Consultar Cruceros',
+        tourDest:'Destino o Actividad',explore:'Explorar Tours',orAgent:'O habla con nuestro agente',
+        best:'Mejor Precio',pp:'por persona',pn:'por noche',book:'Reservar',searching:'Buscando...',found:'vuelos encontrados',noFlights:'No se encontraron vuelos.',
+        direct:'Directo',stop1:'1 escala',stops:'escalas',hotelDest:'Destino',
+        wamsg:'Hola Hudson! Vi un vuelo {f} → {t} el {d} por ${p}. Quiero reservar!',
     }
 };
+function t(k){return I[lang]?.[k]||I.pt[k]||k;}
 
-let currentLang = localStorage.getItem('rio_lang') || 'pt';
-
-function setLang(lang) {
-    currentLang = lang;
-    localStorage.setItem('rio_lang', lang);
-    document.getElementById('langDropdown').classList.remove('show');
-    const flags = {pt:'&#127463;&#127479;', en:'&#127482;&#127480;', es:'&#127474;&#127485;'};
-    const labels = {pt:'PT', en:'EN', es:'ES'};
-    document.getElementById('langFlag').innerHTML = flags[lang];
-    document.getElementById('langLabel').textContent = labels[lang];
-    document.querySelectorAll('.lang-option').forEach(o => o.classList.toggle('active', o.dataset.lang === lang));
-    document.documentElement.lang = lang;
-
-    const tr = LANG[lang];
-    // Update text content
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (tr[key]) el.textContent = tr[key];
-    });
-    // Update HTML content (for bold/spans)
-    document.querySelectorAll('[data-i18n-html]').forEach(el => {
-        const key = el.getAttribute('data-i18n-html');
-        if (tr[key]) el.innerHTML = tr[key];
-    });
-    // Update labels
-    const labelMap = {
-        'origin': 'lbl_origin', 'destination': 'lbl_dest', 'departure': 'lbl_depart', 'returnDate': 'lbl_return', 'adults': 'lbl_pax',
-        'hotelDest': 'lbl_hotel_dest', 'checkin': 'lbl_checkin', 'checkout': 'lbl_checkout', 'hotelAdults': 'lbl_guests'
-    };
-    Object.entries(labelMap).forEach(([id, key]) => {
-        const field = document.getElementById(id);
-        if (field && field.parentElement) {
-            const label = field.parentElement.querySelector('label');
-            if (label && tr[key]) label.textContent = tr[key];
-        }
-    });
-    // Update cabin class text
-    const cls = document.getElementById('cabinClass');
-    if (cls) setCabinClass(cls.value);
-    // Update pax text
-    updatePaxText();
+// ========== LANGUAGE ==========
+document.getElementById('langBtn').onclick=e=>{e.stopPropagation();document.getElementById('langDD').classList.toggle('open');closeExcept('langDD');};
+document.querySelectorAll('.lang-opt').forEach(o=>o.onmousedown=e=>{e.preventDefault();e.stopPropagation();setLang(o.dataset.l);});
+function setLang(l){
+    lang=l;localStorage.setItem('rl',l);
+    const fl={pt:['&#127463;&#127479;','PT'],en:['&#127482;&#127480;','EN'],es:['&#127474;&#127485;','ES']};
+    document.getElementById('langF').innerHTML=fl[l][0];
+    document.getElementById('langL').textContent=fl[l][1];
+    document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('on',o.dataset.l===l));
+    document.getElementById('langDD').classList.remove('open');
+    // Apply translations
+    document.getElementById('heroTitle').innerHTML=t('heroT');
+    document.getElementById('heroSub').textContent=t('heroS');
+    // Tabs
+    document.querySelectorAll('.sb-tab span.tl').forEach((s,i)=>s.textContent=t(['flights','hotels','tours','cruises'][i]));
+    // Options
+    document.getElementById('optRT').querySelector('.tl').textContent=t('rt');
+    document.getElementById('optOW').querySelector('.tl').textContent=t('ow');
+    document.getElementById('classTxt').textContent=t({economy:'eco',premium:'premium',business:'biz',first:'first'}[cabin]||'eco');
+    // Fields labels
+    const labels=document.querySelectorAll('#fFields .sf label.tl');
+    if(labels[0])labels[0].textContent=t('from');
+    if(labels[1])labels[1].textContent=t('to');
+    if(labels[2])labels[2].textContent=t('dep');
+    if(labels[3])labels[3].textContent=t('ret');
+    // Buttons
+    document.querySelectorAll('.sb-btn .tl').forEach(s=>{if(s.closest('#tFields'))s.textContent=t('searchTours');else s.textContent=t('search');});
+    // Pax
+    updatePax();
+    // Sections
+    document.querySelectorAll('.sec-tag .tl').forEach((s,i)=>s.textContent=t(i===0?'destLabel':'whyLabel'));
+    document.querySelectorAll('.sec-h h2.tl').forEach((s,i)=>s.textContent=t(i===0?'destTitle':'whyTitle'));
+    document.querySelectorAll('.sec-h p.tl').forEach(s=>s.textContent=t('destSub'));
+    // Features
+    const fts=document.querySelectorAll('.feat');
+    if(fts[0]){fts[0].querySelector('h3').textContent=t('f1');fts[0].querySelector('p').textContent=t('f1d');}
+    if(fts[1]){fts[1].querySelector('h3').textContent=t('f2');fts[1].querySelector('p').textContent=t('f2d');}
+    if(fts[2]){fts[2].querySelector('h3').textContent=t('f3');fts[2].querySelector('p').textContent=t('f3d');}
+    // WA float
+    document.querySelector('.wa-float span').textContent=t('wa');
+    // Flatpickr locale
+    if(window.fpDep)window.fpDep.set('locale',l==='es'?'es':l==='pt'?'pt':'default');
+    if(window.fpRet)window.fpRet.set('locale',l==='es'?'es':l==='pt'?'pt':'default');
 }
 
-// Helper for JS-generated content
-function t(key) { return LANG[currentLang][key] || LANG['pt'][key] || key; }
+// ========== CLOSE ALL DROPDOWNS ==========
+function closeAll(){document.querySelectorAll('.dd,.lang-dd,.ac').forEach(d=>d.classList.remove('open'));}
+function closeExcept(id){document.querySelectorAll('.dd,.lang-dd').forEach(d=>{if(d.id!==id)d.classList.remove('open');});}
+document.addEventListener('click',e=>{
+    if(!e.target.closest('.lang'))document.getElementById('langDD').classList.remove('open');
+    if(!e.target.closest('#classBtn')&&!e.target.closest('#classDD'))document.getElementById('classDD').classList.remove('open');
+    if(!e.target.closest('#paxBtn')&&!e.target.closest('#paxDD'))document.getElementById('paxDD').classList.remove('open');
+    if(!e.target.closest('.sf'))document.querySelectorAll('.ac').forEach(a=>a.classList.remove('open'));
+});
 
-// Apply saved language on load
-setLang(currentLang);
-updatePaxText();
+// ========== TABS ==========
+document.querySelectorAll('.sb-tab').forEach(tab=>tab.onclick=()=>{
+    const tt=tab.dataset.t;
+    document.querySelectorAll('.sb-tab').forEach(t=>t.classList.toggle('on',t.dataset.t===tt));
+    document.getElementById('fFields').style.display=tt==='flights'?'flex':'none';
+    document.getElementById('hFields').style.display=tt==='hotels'?'flex':'none';
+    document.getElementById('tFields').style.display=tt==='tours'?'flex':'none';
+    document.getElementById('cFields').style.display=tt==='cruises'?'flex':'none';
+    document.getElementById('sbOpts').style.display=tt==='flights'?'flex':'none';
+    document.getElementById('results').style.display='none';
+});
+
+// ========== TRIP TYPE ==========
+function setTrip(t){trip=t;document.getElementById('optRT').classList.toggle('on',t==='rt');document.getElementById('optOW').classList.toggle('on',t==='ow');document.getElementById('retWrap').style.display=t==='ow'?'none':'block';}
+
+// ========== CABIN CLASS ==========
+document.getElementById('classBtn').onclick=e=>{e.stopPropagation();document.getElementById('classDD').classList.toggle('open');closeExcept('classDD');};
+document.querySelectorAll('#classDD .dd-item').forEach(i=>i.onclick=()=>{
+    cabin=i.dataset.c;
+    document.querySelectorAll('#classDD .dd-item').forEach(x=>x.classList.toggle('on',x.dataset.c===cabin));
+    document.getElementById('classTxt').textContent=t({economy:'eco',premium:'premium',business:'biz',first:'first'}[cabin]);
+    document.getElementById('classDD').classList.remove('open');
+});
+
+// ========== PASSENGERS ==========
+document.getElementById('paxBtn').onclick=e=>{e.stopPropagation();document.getElementById('paxDD').classList.toggle('open');closeExcept('paxDD');};
+function pax(type,d){
+    if(type==='a'){paxA=Math.max(1,Math.min(9,paxA+d));document.getElementById('pA').textContent=paxA;}
+    if(type==='c'){paxC=Math.max(0,Math.min(6,paxC+d));document.getElementById('pC').textContent=paxC;}
+    if(type==='i'){paxI=Math.max(0,Math.min(4,paxI+d));document.getElementById('pI').textContent=paxI;}
+    if(type==='cb'){paxCB=Math.max(0,Math.min(9,paxCB+d));document.getElementById('pCB').textContent=paxCB;}
+    if(type==='db'){paxDB=Math.max(0,Math.min(9,paxDB+d));document.getElementById('pDB').textContent=paxDB;}
+    updatePax();
+}
+function updatePax(){
+    let parts=[];
+    const L=lang;
+    parts.push(paxA+(L==='en'?(paxA===1?' Adult':' Adults'):(paxA===1?' Adulto':' Adultos')));
+    if(paxC)parts.push(paxC+' '+(L==='en'?(paxC===1?'Child':'Children'):L==='es'?(paxC===1?'Nino':'Ninos'):(paxC===1?'Crianca':'Criancas')));
+    if(paxI)parts.push(paxI+' '+(L==='en'?(paxI===1?'Infant':'Infants'):'Bebe'+(paxI>1?'s':'')));
+    document.getElementById('paxTxt').textContent=parts.join(', ');
+    // Update labels in dropdown
+    const rows=document.querySelectorAll('#paxDD .pax-name.tl');
+    // Not using tl class for simplicity — direct update
+}
+
+// ========== AUTOCOMPLETE ==========
+['from','to'].forEach(id=>{
+    const input=document.getElementById(id);
+    const ac=document.getElementById(id+'AC');
+    input.onfocus=()=>showAC(input,ac);
+    input.oninput=()=>showAC(input,ac);
+});
+function showAC(input,ac){
+    const q=input.value.toLowerCase().replace(/\(.*\)/,'').trim();
+    let m=q.length===0?AP.slice(0,8):AP.filter(a=>a.c.toLowerCase().startsWith(q)||a.ci.toLowerCase().startsWith(q)||a.ci.toLowerCase().includes(q)||a.c.toLowerCase().includes(q)||a.n.toLowerCase().includes(q)).slice(0,8);
+    if(!m.length){ac.classList.remove('open');return;}
+    ac.innerHTML=m.map(a=>`<div class="ac-i" onmousedown="event.preventDefault();pickAP('${input.id}','${a.c}','${a.ci}')"><div class="ac-icon">${a.c}</div><div style="flex:1;min-width:0;"><div class="ac-city">${a.ci}</div><div class="ac-name">${a.n}</div></div><span class="ac-ctry">${a.co}</span></div>`).join('');
+    ac.classList.add('open');
+}
+function pickAP(id,code,city){document.getElementById(id).value=city+' ('+code+')';document.getElementById(id).dataset.code=code;document.querySelectorAll('.ac').forEach(a=>a.classList.remove('open'));}
+function swp(){const f=document.getElementById('from'),t=document.getElementById('to');const v=f.value;f.value=t.value;t.value=v;const c=f.dataset.code;f.dataset.code=t.dataset.code;t.dataset.code=c;}
+
+// ========== FLATPICKR DATES ==========
+const fpOpts={dateFormat:'Y-m-d',altInput:true,altFormat:'M d, Y',minDate:'today',theme:'dark',disableMobile:true};
+window.fpDep=flatpickr('#dep',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
+window.fpRet=flatpickr('#ret',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
+flatpickr('#hIn',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
+flatpickr('#hOut',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
+
+// ========== NAV SCROLL ==========
+window.onscroll=()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>40);
+
+// ========== SCROLL ANIMATIONS ==========
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('v');}),{threshold:.1});
+document.querySelectorAll('.ani').forEach(e=>obs.observe(e));
+
+// ========== SEARCH FLIGHTS ==========
+function getCode(id){const el=document.getElementById(id);return(el.dataset.code||el.value.match(/\((\w{3})\)/)?.[1]||el.value).toUpperCase().substring(0,3);}
+function doSearch(){
+    const f=getCode('from'),tt=getCode('to'),d=document.getElementById('dep').value;
+    if(!f||!tt||!d){alert('Preencha origem, destino e data.');return;}
+    const btn=document.getElementById('searchBtn');
+    btn.disabled=true;btn.innerHTML=`<i class="bi bi-hourglass-split"></i> ${t('searching')}`;
+    const res=document.getElementById('results'),list=document.getElementById('resList');
+    res.style.display='block';
+    list.innerHTML='<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
+    document.getElementById('resTitle').textContent=`${f} → ${tt}`;
+    document.getElementById('resCount').textContent=t('searching');
+    let url=`/api/flights?origin=${f}&destination=${tt}&departure=${d}&adults=${paxA}`;
+    const r=document.getElementById('ret').value;
+    if(trip==='rt'&&r)url+=`&return=${r}`;
+    fetch(url).then(r=>r.json()).then(data=>{
+        btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('search')}`;
+        const flights=data.flights||[];
+        if(!flights.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--t3);"><i class="bi bi-airplane" style="font-size:32px;"></i><p style="margin-top:12px;">${t('noFlights')}</p></div>`;document.getElementById('resCount').textContent='';return;}
+        document.getElementById('resCount').textContent=`${flights.length} ${t('found')}`;
+        list.innerHTML=flights.map((fl,i)=>{
+            const stops=fl.stops===0?t('direct'):fl.stops===1?t('stop1'):`${fl.stops} ${t('stops')}`;
+            const msg=encodeURIComponent(t('wamsg').replace('{f}',f).replace('{t}',tt).replace('{d}',d).replace('{p}',fl.price));
+            return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}<div class="res-inner"><div class="res-air"><img src="${fl.airlineLogo||''}" onerror="this.style.display='none'"><div><div class="res-air-name">${fl.airline}</div><div class="res-air-code">${fl.airlineCode||''}</div></div></div><div class="res-route"><div class="res-ep"><div class="time">${fl.departureTime||'--:--'}</div><div class="code">${fl.origin||f}</div></div><div class="res-line"><span class="plane"><i class="bi bi-airplane-fill"></i></span><div class="res-line-bar"></div><div class="res-stops" style="color:${fl.stops===0?'var(--green)':fl.stops===1?'var(--gold)':'var(--t3)'};">${stops}</div><div class="res-dur">${fl.duration||''}</div></div><div class="res-ep"><div class="time">${fl.arrivalTime||'--:--'}</div><div class="code">${fl.destination||tt}</div></div></div><div class="res-price"><div class="amt"><span class="cur">$ </span>${fl.price}</div><div class="pp">${t('pp')}</div><a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div></div>`;
+        }).join('');
+    }).catch(()=>{btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('search')}`;list.innerHTML='<div style="text-align:center;padding:40px;color:var(--coral);">Error</div>';});
+}
+
+// ========== SEARCH HOTELS ==========
+function searchHotels(){
+    const d=document.getElementById('hDest').value.trim(),ci=document.getElementById('hIn').value,co=document.getElementById('hOut').value;
+    if(!d||!ci||!co){alert('Preencha todos os campos.');return;}
+    const res=document.getElementById('results'),list=document.getElementById('resList');
+    res.style.display='block';list.innerHTML='<div class="skel"></div><div class="skel"></div>';
+    document.getElementById('resTitle').textContent=d;document.getElementById('resCount').textContent=t('searching');
+    fetch(`/api/hotels?destination=${d}&checkin=${ci}&checkout=${co}&adults=${paxA}`).then(r=>r.json()).then(data=>{
+        const h=data.hotels||[];
+        document.getElementById('resCount').textContent=h.length+' hotels';
+        if(!h.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--t3);">No hotels found.</div>';return;}
+        list.innerHTML=h.map((ht,i)=>{
+            const msg=encodeURIComponent(`Hi! Hotel ${ht.name} in ${d} for $${ht.price}/night.`);
+            return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}<div class="res-inner">${ht.photo?`<img src="${ht.photo}" style="width:80px;height:60px;border-radius:10px;object-fit:cover;">`:''}<div style="flex:1;"><div style="font-size:15px;font-weight:700;color:var(--w);">${ht.name}</div><div style="color:var(--gold);font-size:12px;margin-top:3px;">${'★'.repeat(ht.stars||0)}</div>${ht.rating?`<div style="font-size:11px;color:var(--t3);">${ht.rating}/10</div>`:''}</div><div class="res-price"><div class="amt"><span class="cur">$ </span>${ht.price}</div><div class="pp">${t('pn')}</div><a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div></div>`;
+        }).join('');
+    });
+}
+
+// ========== SEARCH TOURS ==========
+function searchTours(){
+    const d=document.getElementById('tDest').value.trim();
+    if(!d)return;
+    const res=document.getElementById('results'),list=document.getElementById('resList');
+    res.style.display='block';
+    document.getElementById('resTitle').textContent=d+' — Tours';
+    document.getElementById('resCount').textContent='';
+    const civ=`https://www.civitatis.com/en/?query=${encodeURIComponent(d)}&ag_aid=64713`;
+    const via=`https://www.viator.com/searchResults/all?text=${encodeURIComponent(d)}&pid=P00006875`;
+    list.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <a href="${civ}" target="_blank" class="res-card" style="text-decoration:none;"><div class="res-inner" style="flex-direction:column;text-align:center;gap:14px;padding:28px;"><div style="font-size:40px;">🌎</div><div style="font-size:18px;font-weight:800;color:var(--w);font-family:Outfit;">Civitatis</div><div style="font-size:13px;color:var(--t3);">Tours & ${t('explore')}</div><div style="padding:10px 22px;background:linear-gradient(135deg,var(--coral),var(--orange));border-radius:10px;color:var(--w);font-weight:700;font-size:13px;">${t('explore')}</div></div></a>
+        <a href="${via}" target="_blank" class="res-card" style="text-decoration:none;"><div class="res-inner" style="flex-direction:column;text-align:center;gap:14px;padding:28px;"><div style="font-size:40px;">🏛️</div><div style="font-size:18px;font-weight:800;color:var(--w);font-family:Outfit;">Viator</div><div style="font-size:13px;color:var(--t3);">Experiences & Tickets</div><div style="padding:10px 22px;background:linear-gradient(135deg,var(--green),#0ead8c);border-radius:10px;color:var(--w);font-weight:700;font-size:13px;">${t('explore')}</div></div></a>
+    </div><div style="text-align:center;margin-top:16px;"><a href="https://wa.me/14352146939?text=${encodeURIComponent('Help with tours in '+d)}" target="_blank" style="color:var(--t3);font-size:13px;text-decoration:none;"><i class="bi bi-whatsapp" style="color:#25d366;"></i> ${t('orAgent')}</a></div>`;
+}
+
+// ========== QUICK SEARCH ==========
+function qSearch(f,tt){
+    document.getElementById('from').value=AP.find(a=>a.c===f)?.ci+' ('+f+')';
+    document.getElementById('from').dataset.code=f;
+    document.getElementById('to').value=AP.find(a=>a.c===tt)?.ci+' ('+tt+')';
+    document.getElementById('to').dataset.code=tt;
+    const d=new Date();d.setDate(d.getDate()+30);
+    window.fpDep.setDate(d);
+    window.scrollTo({top:0,behavior:'smooth'});
+    setTimeout(doSearch,300);
+}
+
+// ========== INIT ==========
+setLang(lang);
 </script>
 </body>
 </html>
