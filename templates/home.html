@@ -44,9 +44,39 @@
         .nav-links a.active { color:#fff; }
         .nav-links a.active::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--coral); border-radius:1px; }
         .nav-right { display:flex; align-items:center; gap:12px; }
-        .lang-switch { display:flex; gap:2px; background:rgba(255,255,255,0.04); border-radius:8px; padding:2px; border:1px solid rgba(255,255,255,0.06); }
-        .lang-btn { padding:5px 10px; border-radius:6px; border:none; background:transparent; color:var(--gray-500); font-size:11px; font-weight:700; cursor:pointer; font-family:'DM Sans'; transition:all 0.2s; letter-spacing:0.5px; }
-        .lang-btn.active { background:rgba(255,255,255,0.08); color:#fff; }
+        .lang-switch { position:relative; }
+        .lang-current { display:flex; align-items:center; gap:6px; padding:6px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.04); cursor:pointer; transition:all 0.2s; font-size:13px; color:#fff; font-weight:600; }
+        .lang-current:hover { background:rgba(255,255,255,0.08); }
+        .lang-current .flag { font-size:18px; }
+        .lang-current .arrow { font-size:10px; color:var(--gray-500); transition:transform 0.2s; }
+        .lang-dropdown { position:absolute; top:calc(100% + 8px); right:0; background:var(--bg3); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:6px; min-width:160px; display:none; box-shadow:0 16px 48px rgba(0,0,0,0.4); z-index:300; }
+        .lang-dropdown.show { display:block; }
+        .lang-option { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:10px; cursor:pointer; transition:all 0.2s; font-size:13px; color:var(--gray-400); font-weight:500; }
+        .lang-option:hover { background:rgba(255,255,255,0.06); color:#fff; }
+        .lang-option.active { background:rgba(255,87,87,0.08); color:#fff; }
+        .lang-option .flag { font-size:20px; }
+
+        /* Trip type toggle */
+        .trip-type { display:flex; gap:4px; padding:4px; background:rgba(255,255,255,0.03); border-radius:12px; margin-bottom:8px; border:1px solid rgba(255,255,255,0.04); }
+        .trip-type-btn { padding:8px 18px; border-radius:9px; border:none; background:transparent; color:var(--gray-500); font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans'; transition:all 0.2s; display:flex; align-items:center; gap:6px; }
+        .trip-type-btn.active { background:rgba(255,255,255,0.06); color:#fff; }
+        .trip-type-btn i { font-size:14px; }
+
+        /* Airport autocomplete */
+        .airport-ac { position:absolute; top:100%; left:0; right:0; background:var(--bg3); border:1px solid rgba(255,255,255,0.08); border-radius:14px; margin-top:4px; max-height:220px; overflow-y:auto; display:none; z-index:100; box-shadow:0 12px 40px rgba(0,0,0,0.4); }
+        .airport-ac.show { display:block; }
+        .airport-item { display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer; transition:background 0.15s; border-bottom:1px solid rgba(255,255,255,0.03); }
+        .airport-item:last-child { border-bottom:none; }
+        .airport-item:hover { background:rgba(255,255,255,0.04); }
+        .airport-item .ac-code { font-family:'Outfit'; font-weight:800; font-size:16px; color:var(--coral); min-width:40px; }
+        .airport-item .ac-info { flex:1; }
+        .airport-item .ac-city { font-size:13px; font-weight:600; color:#fff; }
+        .airport-item .ac-name { font-size:11px; color:var(--gray-500); }
+        .airport-item .ac-country { font-size:11px; color:var(--gray-600); }
+
+        /* Better date picker */
+        .search-field input[type="date"] { color-scheme:dark; }
+        .search-field input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(0.6); cursor:pointer; font-size:18px; }
         .nav-phone { color:var(--gray-400); font-size:13px; font-weight:500; text-decoration:none; display:flex; align-items:center; gap:6px; }
         .nav-phone:hover { color:#fff; }
         .nav-cta { padding:8px 20px; border-radius:10px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.3s; border:none; cursor:pointer; }
@@ -230,10 +260,23 @@
         <a href="#" data-i18n="nav_deals">Ofertas</a>
     </div>
     <div class="nav-right">
-        <div class="lang-switch">
-            <button class="lang-btn active" onclick="setLang('pt')">PT</button>
-            <button class="lang-btn" onclick="setLang('en')">EN</button>
-            <button class="lang-btn" onclick="setLang('es')">ES</button>
+        <div class="lang-switch" id="langSwitch">
+            <div class="lang-current" onclick="document.getElementById('langDropdown').classList.toggle('show')">
+                <span class="flag" id="langFlag">&#127463;&#127479;</span>
+                <span id="langLabel">PT</span>
+                <i class="bi bi-chevron-down arrow"></i>
+            </div>
+            <div class="lang-dropdown" id="langDropdown">
+                <div class="lang-option active" data-lang="pt" onclick="setLang('pt')">
+                    <span class="flag">&#127463;&#127479;</span> Portugues
+                </div>
+                <div class="lang-option" data-lang="en" onclick="setLang('en')">
+                    <span class="flag">&#127482;&#127480;</span> English
+                </div>
+                <div class="lang-option" data-lang="es" onclick="setLang('es')">
+                    <span class="flag">&#127474;&#127485;</span> Espanol
+                </div>
+            </div>
         </div>
         <a href="tel:+14352146939" class="nav-phone"><i class="bi bi-telephone-fill"></i> (435) 214-6939</a>
         <a href="https://wa.me/14352146939" target="_blank" class="nav-cta"><i class="bi bi-whatsapp"></i> WhatsApp</a>
@@ -265,28 +308,78 @@
                 <button class="search-tab" onclick="switchTab('cruises')"><i class="bi bi-water"></i> <span data-i18n="nav_cruises">Cruzeiros</span></button>
             </div>
 
-            <div id="flightForm" class="search-form">
-                <div class="search-field" style="flex:1.2;">
-                    <label>Origem</label>
-                    <input type="text" id="origin" placeholder="SLC, JFK, MIA..." maxlength="3" style="text-transform:uppercase;">
+            <!-- Trip Type -->
+            <div class="trip-type" id="tripTypeBar">
+                <button class="trip-type-btn active" onclick="setTripType('roundtrip')" id="btnRoundtrip"><i class="bi bi-arrow-left-right"></i> <span data-i18n="trip_roundtrip">Ida e Volta</span></button>
+                <button class="trip-type-btn" onclick="setTripType('oneway')" id="btnOneway"><i class="bi bi-arrow-right"></i> <span data-i18n="trip_oneway">Somente Ida</span></button>
+                <button class="trip-type-btn" onclick="setTripType('multi')" id="btnMulti"><i class="bi bi-signpost-split"></i> <span data-i18n="trip_multi">Multi-destinos</span></button>
+            </div>
+
+            <div id="flightForm" class="search-form" style="flex-wrap:wrap;">
+                <div class="search-field" style="flex:1.3;position:relative;">
+                    <label data-i18n="lbl_origin">Origem</label>
+                    <input type="text" id="origin" placeholder="Salt Lake City (SLC)" autocomplete="off" oninput="searchAirport(this,'originAC')" onfocus="searchAirport(this,'originAC')">
+                    <div class="airport-ac" id="originAC"></div>
                 </div>
-                <div class="search-field" style="flex:1.2;">
-                    <label>Destino</label>
-                    <input type="text" id="destination" placeholder="GRU, GIG, LIS..." maxlength="3" style="text-transform:uppercase;">
+                <div style="display:flex;align-items:center;margin:0 -4px;z-index:1;">
+                    <button onclick="swapAirports()" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);background:var(--bg3);color:var(--gray-400);cursor:pointer;font-size:14px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.color='var(--coral)'" onmouseout="this.style.color='var(--gray-400)'"><i class="bi bi-arrow-left-right"></i></button>
                 </div>
-                <div class="search-field">
-                    <label>Ida</label>
-                    <input type="date" id="departure">
+                <div class="search-field" style="flex:1.3;position:relative;">
+                    <label data-i18n="lbl_dest">Destino</label>
+                    <input type="text" id="destination" placeholder="Sao Paulo (GRU)" autocomplete="off" oninput="searchAirport(this,'destAC')" onfocus="searchAirport(this,'destAC')">
+                    <div class="airport-ac" id="destAC"></div>
                 </div>
-                <div class="search-field">
-                    <label>Volta</label>
-                    <input type="date" id="returnDate">
+                <div class="search-field" style="flex:1;">
+                    <label data-i18n="lbl_depart">Ida</label>
+                    <input type="date" id="departure" style="font-size:14px;padding-top:30px;">
                 </div>
-                <div class="search-field" style="flex:0.5;">
-                    <label>Passageiros</label>
-                    <select id="adults"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
+                <div class="search-field" id="returnField" style="flex:1;">
+                    <label data-i18n="lbl_return">Volta</label>
+                    <input type="date" id="returnDate" style="font-size:14px;padding-top:30px;">
                 </div>
-                <button class="search-btn" id="searchBtn" onclick="searchFlights()"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
+                <div class="search-field" style="flex:0.6;">
+                    <label data-i18n="lbl_pax">Passageiros</label>
+                    <select id="adults"><option value="1">1 pax</option><option value="2">2 pax</option><option value="3">3 pax</option><option value="4">4 pax</option><option value="5">5 pax</option></select>
+                </div>
+                <button class="search-btn" id="searchBtn" onclick="searchFlights()" style="flex:0 0 auto;"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
+            </div>
+
+            <!-- Multi-destination form (hidden by default) -->
+            <div id="multiForm" style="display:none;padding:12px;">
+                <div id="multiLegs">
+                    <div class="search-form" style="margin-bottom:6px;">
+                        <div class="search-field" style="flex:1;position:relative;">
+                            <label>Voo 1 - Origem</label>
+                            <input type="text" class="multi-origin" placeholder="Cidade ou aeroporto" autocomplete="off">
+                        </div>
+                        <div class="search-field" style="flex:1;position:relative;">
+                            <label>Destino</label>
+                            <input type="text" class="multi-dest" placeholder="Cidade ou aeroporto" autocomplete="off">
+                        </div>
+                        <div class="search-field" style="flex:0.7;">
+                            <label>Data</label>
+                            <input type="date" class="multi-date" style="font-size:14px;padding-top:30px;">
+                        </div>
+                    </div>
+                    <div class="search-form" style="margin-bottom:6px;">
+                        <div class="search-field" style="flex:1;position:relative;">
+                            <label>Voo 2 - Origem</label>
+                            <input type="text" class="multi-origin" placeholder="Cidade ou aeroporto" autocomplete="off">
+                        </div>
+                        <div class="search-field" style="flex:1;position:relative;">
+                            <label>Destino</label>
+                            <input type="text" class="multi-dest" placeholder="Cidade ou aeroporto" autocomplete="off">
+                        </div>
+                        <div class="search-field" style="flex:0.7;">
+                            <label>Data</label>
+                            <input type="date" class="multi-date" style="font-size:14px;padding-top:30px;">
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;">
+                    <button onclick="addMultiLeg()" style="padding:8px 16px;border-radius:10px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:var(--gray-400);font-size:12px;font-weight:600;cursor:pointer;font-family:DM Sans;">+ Adicionar Voo</button>
+                    <button class="search-btn" onclick="searchMulti()" style="padding:12px 28px;"><i class="bi bi-search"></i> Buscar</button>
+                </div>
             </div>
 
             <div id="hotelForm" class="search-form" style="display:none;">
@@ -468,8 +561,10 @@ function quickSearch(from,to){
 
 // Flight search
 function searchFlights(){
-    const origin=document.getElementById('origin').value.trim().toUpperCase();
-    const dest=document.getElementById('destination').value.trim().toUpperCase();
+    const originEl=document.getElementById('origin');
+    const destEl=document.getElementById('destination');
+    const origin=(originEl.dataset.code||originEl.value.match(/\((\w{3})\)/)?.[1]||originEl.value).trim().toUpperCase().substring(0,3);
+    const dest=(destEl.dataset.code||destEl.value.match(/\((\w{3})\)/)?.[1]||destEl.value).trim().toUpperCase().substring(0,3);
     const dep=document.getElementById('departure').value;
     const ret=document.getElementById('returnDate').value;
     const adults=document.getElementById('adults').value;
@@ -569,10 +664,150 @@ function searchHotels(){
         list.innerHTML=html;
     }).catch(()=>{list.innerHTML='<div style="text-align:center;padding:48px;color:var(--coral);"><p>Erro. Tente novamente.</p></div>';});
 }
+// ===== AIRPORT AUTOCOMPLETE =====
+const AIRPORTS=[
+    {code:'GRU',city:'Sao Paulo',name:'Guarulhos International',country:'Brasil'},
+    {code:'GIG',city:'Rio de Janeiro',name:'Galeao International',country:'Brasil'},
+    {code:'BSB',city:'Brasilia',name:'Presidente Juscelino',country:'Brasil'},
+    {code:'CNF',city:'Belo Horizonte',name:'Confins International',country:'Brasil'},
+    {code:'SSA',city:'Salvador',name:'Deputado Luis Eduardo',country:'Brasil'},
+    {code:'REC',city:'Recife',name:'Guararapes International',country:'Brasil'},
+    {code:'CWB',city:'Curitiba',name:'Afonso Pena International',country:'Brasil'},
+    {code:'POA',city:'Porto Alegre',name:'Salgado Filho',country:'Brasil'},
+    {code:'FOR',city:'Fortaleza',name:'Pinto Martins',country:'Brasil'},
+    {code:'VCP',city:'Campinas',name:'Viracopos International',country:'Brasil'},
+    {code:'FLN',city:'Florianopolis',name:'Hercilio Luz',country:'Brasil'},
+    {code:'NAT',city:'Natal',name:'Sao Goncalo do Amarante',country:'Brasil'},
+    {code:'SLC',city:'Salt Lake City',name:'Salt Lake City Intl',country:'USA'},
+    {code:'JFK',city:'New York',name:'John F. Kennedy Intl',country:'USA'},
+    {code:'LAX',city:'Los Angeles',name:'Los Angeles Intl',country:'USA'},
+    {code:'MIA',city:'Miami',name:'Miami Intl',country:'USA'},
+    {code:'MCO',city:'Orlando',name:'Orlando Intl',country:'USA'},
+    {code:'EWR',city:'Newark',name:'Newark Liberty Intl',country:'USA'},
+    {code:'ORD',city:'Chicago',name:'O\'Hare Intl',country:'USA'},
+    {code:'DFW',city:'Dallas',name:'Dallas/Fort Worth Intl',country:'USA'},
+    {code:'ATL',city:'Atlanta',name:'Hartsfield-Jackson Intl',country:'USA'},
+    {code:'DEN',city:'Denver',name:'Denver Intl',country:'USA'},
+    {code:'SFO',city:'San Francisco',name:'San Francisco Intl',country:'USA'},
+    {code:'SEA',city:'Seattle',name:'Seattle-Tacoma Intl',country:'USA'},
+    {code:'BOS',city:'Boston',name:'Logan Intl',country:'USA'},
+    {code:'IAH',city:'Houston',name:'George Bush Intl',country:'USA'},
+    {code:'LAS',city:'Las Vegas',name:'Harry Reid Intl',country:'USA'},
+    {code:'PHX',city:'Phoenix',name:'Sky Harbor Intl',country:'USA'},
+    {code:'FLL',city:'Fort Lauderdale',name:'Fort Lauderdale Intl',country:'USA'},
+    {code:'TPA',city:'Tampa',name:'Tampa Intl',country:'USA'},
+    {code:'CUN',city:'Cancun',name:'Cancun Intl',country:'Mexico'},
+    {code:'MEX',city:'Mexico City',name:'Benito Juarez Intl',country:'Mexico'},
+    {code:'GDL',city:'Guadalajara',name:'Don Miguel Hidalgo',country:'Mexico'},
+    {code:'BOG',city:'Bogota',name:'El Dorado Intl',country:'Colombia'},
+    {code:'MDE',city:'Medellin',name:'Jose Maria Cordova',country:'Colombia'},
+    {code:'LIM',city:'Lima',name:'Jorge Chavez Intl',country:'Peru'},
+    {code:'SCL',city:'Santiago',name:'Arturo Merino Benitez',country:'Chile'},
+    {code:'EZE',city:'Buenos Aires',name:'Ministro Pistarini',country:'Argentina'},
+    {code:'PTY',city:'Panama City',name:'Tocumen Intl',country:'Panama'},
+    {code:'LIS',city:'Lisboa',name:'Humberto Delgado',country:'Portugal'},
+    {code:'OPO',city:'Porto',name:'Francisco Sa Carneiro',country:'Portugal'},
+    {code:'LHR',city:'London',name:'Heathrow',country:'UK'},
+    {code:'CDG',city:'Paris',name:'Charles de Gaulle',country:'France'},
+    {code:'MAD',city:'Madrid',name:'Adolfo Suarez Barajas',country:'Spain'},
+    {code:'FCO',city:'Rome',name:'Leonardo da Vinci',country:'Italy'},
+    {code:'FRA',city:'Frankfurt',name:'Frankfurt Intl',country:'Germany'},
+    {code:'AMS',city:'Amsterdam',name:'Schiphol',country:'Netherlands'},
+    {code:'DXB',city:'Dubai',name:'Dubai Intl',country:'UAE'},
+    {code:'NRT',city:'Tokyo',name:'Narita Intl',country:'Japan'},
+    {code:'HNL',city:'Honolulu',name:'Daniel K. Inouye',country:'USA'},
+];
+
+function searchAirport(input, acId) {
+    const q = input.value.toLowerCase();
+    const ac = document.getElementById(acId);
+    if (q.length < 1) { ac.classList.remove('show'); return; }
+    const matches = AIRPORTS.filter(a =>
+        a.code.toLowerCase().includes(q) ||
+        a.city.toLowerCase().includes(q) ||
+        a.name.toLowerCase().includes(q) ||
+        a.country.toLowerCase().includes(q)
+    ).slice(0, 6);
+    if (!matches.length) { ac.classList.remove('show'); return; }
+    ac.innerHTML = matches.map(a => `
+        <div class="airport-item" onclick="selectAirport('${input.id}','${a.code}','${a.city}','${acId}')">
+            <span class="ac-code">${a.code}</span>
+            <div class="ac-info">
+                <div class="ac-city">${a.city}</div>
+                <div class="ac-name">${a.name}</div>
+            </div>
+            <span class="ac-country">${a.country}</span>
+        </div>
+    `).join('');
+    ac.classList.add('show');
+}
+
+function selectAirport(inputId, code, city, acId) {
+    document.getElementById(inputId).value = code;
+    document.getElementById(inputId).dataset.display = `${city} (${code})`;
+    document.getElementById(inputId).value = `${city} (${code})`;
+    document.getElementById(inputId).dataset.code = code;
+    document.getElementById(acId).classList.remove('show');
+}
+
+// Close autocomplete on click outside
+document.addEventListener('click', e => {
+    if (!e.target.closest('.search-field')) {
+        document.querySelectorAll('.airport-ac').forEach(ac => ac.classList.remove('show'));
+    }
+});
+
+// Swap airports
+function swapAirports() {
+    const o = document.getElementById('origin');
+    const d = document.getElementById('destination');
+    const tmp = o.value; o.value = d.value; d.value = tmp;
+    const tmpC = o.dataset.code; o.dataset.code = d.dataset.code; d.dataset.code = tmpC;
+}
+
+// Trip type
+function setTripType(type) {
+    document.getElementById('btnRoundtrip').classList.toggle('active', type === 'roundtrip');
+    document.getElementById('btnOneway').classList.toggle('active', type === 'oneway');
+    document.getElementById('btnMulti').classList.toggle('active', type === 'multi');
+    document.getElementById('returnField').style.display = type === 'oneway' ? 'none' : type === 'multi' ? 'none' : 'block';
+    document.getElementById('flightForm').style.display = type === 'multi' ? 'none' : 'flex';
+    document.getElementById('multiForm').style.display = type === 'multi' ? 'block' : 'none';
+    document.getElementById('tripTypeBar').style.display = 'flex';
+}
+
+function addMultiLeg() {
+    const legs = document.getElementById('multiLegs');
+    const n = legs.children.length + 1;
+    const div = document.createElement('div');
+    div.className = 'search-form';
+    div.style.marginBottom = '6px';
+    div.innerHTML = `
+        <div class="search-field" style="flex:1;"><label>Voo ${n} - Origem</label><input type="text" class="multi-origin" placeholder="Cidade ou aeroporto" autocomplete="off"></div>
+        <div class="search-field" style="flex:1;"><label>Destino</label><input type="text" class="multi-dest" placeholder="Cidade ou aeroporto" autocomplete="off"></div>
+        <div class="search-field" style="flex:0.7;"><label>Data</label><input type="date" class="multi-date" style="font-size:14px;padding-top:30px;"></div>
+    `;
+    legs.appendChild(div);
+}
+
+function searchMulti() {
+    // For multi-destination, redirect to WhatsApp with details
+    const legs = document.querySelectorAll('#multiLegs .search-form');
+    let msg = 'Oi Hudson! Preciso de um voo multi-destinos:\n';
+    legs.forEach((leg, i) => {
+        const from = leg.querySelector('.multi-origin').value;
+        const to = leg.querySelector('.multi-dest').value;
+        const date = leg.querySelector('.multi-date').value;
+        if (from && to) msg += `\nVoo ${i+1}: ${from} → ${to} em ${date}`;
+    });
+    window.open('https://wa.me/14352146939?text=' + encodeURIComponent(msg), '_blank');
+}
+
 // ===== MULTI-LANGUAGE SYSTEM =====
 const LANG = {
     pt: {
         nav_flights:'Voos', nav_hotels:'Hoteis', nav_cruises:'Cruzeiros', nav_deals:'Ofertas',
+        trip_roundtrip:'Ida e Volta', trip_oneway:'Somente Ida', trip_multi:'Multi-destinos',
         hero_pill:'Atendimento em Portugues para brasileiros nos EUA', hero_new:'NOVO',
         hero_title:'Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span>',
         hero_sub:'Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.',
@@ -599,6 +834,7 @@ const LANG = {
     },
     en: {
         nav_flights:'Flights', nav_hotels:'Hotels', nav_cruises:'Cruises', nav_deals:'Deals',
+        trip_roundtrip:'Round Trip', trip_oneway:'One Way', trip_multi:'Multi-city',
         hero_pill:'Personalized service for travelers in the USA', hero_new:'NEW',
         hero_title:'Find the Best<br><span class="gradient">Flight Deals</span>',
         hero_sub:'Compare prices on <strong>flights</strong>, hotels and cruises in real time. Personalized service with a certified travel agent.',
@@ -625,6 +861,7 @@ const LANG = {
     },
     es: {
         nav_flights:'Vuelos', nav_hotels:'Hoteles', nav_cruises:'Cruceros', nav_deals:'Ofertas',
+        trip_roundtrip:'Ida y Vuelta', trip_oneway:'Solo Ida', trip_multi:'Multi-destinos',
         hero_pill:'Atencion personalizada para viajeros en EE.UU.', hero_new:'NUEVO',
         hero_title:'Encuentra las Mejores<br><span class="gradient">Ofertas de Vuelos</span>',
         hero_sub:'Compara precios de <strong>vuelos</strong>, hoteles y cruceros en tiempo real. Atencion personalizada con agente certificado.',
@@ -656,8 +893,13 @@ let currentLang = localStorage.getItem('rio_lang') || 'pt';
 function setLang(lang) {
     currentLang = lang;
     localStorage.setItem('rio_lang', lang);
-    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase()));
-    document.documentElement.lang = lang === 'pt' ? 'pt' : lang === 'es' ? 'es' : 'en';
+    document.getElementById('langDropdown').classList.remove('show');
+    const flags = {pt:'&#127463;&#127479;', en:'&#127482;&#127480;', es:'&#127474;&#127485;'};
+    const labels = {pt:'PT', en:'EN', es:'ES'};
+    document.getElementById('langFlag').innerHTML = flags[lang];
+    document.getElementById('langLabel').textContent = labels[lang];
+    document.querySelectorAll('.lang-option').forEach(o => o.classList.toggle('active', o.dataset.lang === lang));
+    document.documentElement.lang = lang;
 
     const t = LANG[lang];
     // Update text content
