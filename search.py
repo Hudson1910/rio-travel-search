@@ -10,13 +10,12 @@ GF_HEADERS = {
 }
 GF_BASE = 'https://google-flights2.p.rapidapi.com/api/v1'
 
-# ========== BOOKING COM (hotels only) ==========
+# ========== BOOKING COM (hotels + car rentals) ==========
 BK_HEADERS = {
     'x-rapidapi-key': RAPIDAPI_KEY,
-    'x-rapidapi-host': 'booking-com15.p.rapidapi.com',
-    'Content-Type': 'application/json',
+    'x-rapidapi-host': 'booking-com.p.rapidapi.com',
 }
-BK_BASE = 'https://booking-com15.p.rapidapi.com/api/v1'
+BK_BASE = 'https://booking-com.p.rapidapi.com'
 
 
 def search_flights(origin, destination, depart_date, return_date=None,
@@ -267,59 +266,180 @@ def search_airport(query):
         return {'results': []}
 
 
-def search_hotels(destination, checkin, checkout, adults=2):
-    """Search hotels via Booking COM API."""
+def search_hotels(destination, checkin, checkout, adults=2, locale='en-gb'):
+    """Search hotels via Booking.com API (new host)."""
     try:
-        dest_resp = requests.get(f'{BK_BASE}/hotels/searchDestination',
+        # Step 1: Get destination ID
+        dest_resp = requests.get(f'{BK_BASE}/v1/hotels/locations',
             headers=BK_HEADERS,
-            params={'query': destination},
+            params={'name': destination, 'locale': locale},
             timeout=15)
-        dest_data = dest_resp.json()
-        destinations = dest_data.get('data', [])
+        destinations = dest_resp.json()
 
-        if not destinations:
+        if not isinstance(destinations, list) or not destinations:
             return {'hotels': [], 'error': 'Destination not found'}
 
         dest = destinations[0]
         dest_id = dest.get('dest_id', '')
         dest_type = dest.get('dest_type', 'city')
 
-        resp = requests.get(f'{BK_BASE}/hotels/searchHotels',
+        # Step 2: Search hotels
+        resp = requests.get(f'{BK_BASE}/v1/hotels/search',
             headers=BK_HEADERS,
             params={
+                'locale': locale,
                 'dest_id': dest_id,
-                'search_type': dest_type.upper(),
-                'arrival_date': checkin,
-                'departure_date': checkout,
-                'adults': adults,
-                'room_qty': 1,
-                'currency_code': 'USD',
-                'sort_by': 'price',
+                'dest_type': dest_type,
+                'checkin_date': checkin,
+                'checkout_date': checkout,
+                'adults_number': adults,
+                'room_number': 1,
+                'filter_by_currency': 'USD',
+                'order_by': 'popularity',
+                'units': 'metric',
             },
             timeout=30)
         data = resp.json()
 
-        hotels_raw = data.get('data', {}).get('hotels', [])
+        hotels_raw = data.get('result', [])
         hotels = []
 
         for h in hotels_raw[:15]:
-            prop = h.get('property', {})
-            price_data = prop.get('priceBreakdown', {}).get('grossPrice', {})
+            photo = ''
+            if h.get('max_photo_url'):
+                photo = h['max_photo_url']
+            elif h.get('main_photo_url'):
+                photo = h['main_photo_url']
 
             hotels.append({
-                'name': prop.get('name', ''),
-                'price': round(price_data.get('value', 0), 2),
-                'currency': price_data.get('currency', 'USD'),
-                'stars': prop.get('propertyClass', 0),
-                'rating': prop.get('reviewScore', 0),
-                'reviewCount': prop.get('reviewCount', 0),
-                'photo': prop.get('photoUrls', [''])[0] if prop.get('photoUrls') else '',
-                'location': prop.get('wishlistName', ''),
+                'id': h.get('hotel_id', ''),
+                'name': h.get('hotel_name', ''),
+                'price': round(h.get('min_total_price', 0), 2),
+                'currency': h.get('currency_code', 'USD'),
+                'stars': h.get('class', 0),
+                'rating': h.get('review_score', 0),
+                'ratingWord': h.get('review_score_word', ''),
+                'reviewCount': h.get('review_nr', 0),
+                'photo': photo,
+                'address': h.get('address', ''),
+                'city': h.get('city', ''),
+                'distance': h.get('distance_to_cc', ''),
+                'distanceUnit': h.get('distance_to_cc_unit', 'km'),
+                'checkin': h.get('checkin', {}),
+                'checkout': h.get('checkout', {}),
+                'url': h.get('url', ''),
+                'isFreeCancel': h.get('is_free_cancellable', False),
+                'isNoPrepay': h.get('is_no_prepayment_block', False),
             })
 
-        hotels.sort(key=lambda x: x['price'])
-        return {'hotels': hotels, 'total': len(hotels_raw)}
+        hotels.sort(key=lambda x: x['price'] if x['price'] > 0 else 99999)
+        return {
+            'hotels': hotels,
+            'total': data.get('count', len(hotels_raw)),
+            'destination': dest.get('label', destination),
+        }
 
     except Exception as e:
         print(f"[Search] Hotel error: {e}")
         return {'hotels': [], 'error': str(e)}
+
+
+def search_cars(location, pickup_date, dropoff_date, pickup_time='10:00:00',
+                dropoff_time='10:00:00', locale='en-gb'):
+    """Search car rentals via Booking.com API."""
+    try:
+        # Step 1: Get location coordinates
+        loc_resp = requests.get(f'{BK_BASE}/v1/car-rental/locations',
+            headers=BK_HEADERS,
+            params={'name': location, 'locale': locale},
+            timeout=15)
+        locations = loc_resp.json()
+
+        if not isinstance(locations, list) or not locations:
+            return {'cars': [], 'error': 'Location not found'}
+
+        loc = locations[0]
+        lat = loc.get('latitude', 0)
+        lng = loc.get('longitude', 0)
+
+        # Detect country code from location name
+        country = 'us'
+        loc_lower = location.lower()
+        if any(x in loc_lower for x in ['brazil', 'brasil', 'sao paulo', 'rio']):
+            country = 'br'
+        elif any(x in loc_lower for x in ['mexico', 'cancun', 'guadalajara']):
+            country = 'mx'
+        elif any(x in loc_lower for x in ['uk', 'london', 'england']):
+            country = 'gb'
+        elif any(x in loc_lower for x in ['france', 'paris']):
+            country = 'fr'
+        elif any(x in loc_lower for x in ['spain', 'madrid', 'barcelona']):
+            country = 'es'
+        elif any(x in loc_lower for x in ['italy', 'rome', 'milan']):
+            country = 'it'
+        elif any(x in loc_lower for x in ['germany', 'berlin', 'munich']):
+            country = 'de'
+
+        # Step 2: Search cars
+        resp = requests.get(f'{BK_BASE}/v1/car-rental/search',
+            headers=BK_HEADERS,
+            params={
+                'locale': locale,
+                'currency': 'USD',
+                'sort_by': 'price_low_to_high',
+                'from_country': country,
+                'pick_up_latitude': lat,
+                'pick_up_longitude': lng,
+                'pick_up_datetime': f'{pickup_date} {pickup_time}',
+                'drop_off_latitude': lat,
+                'drop_off_longitude': lng,
+                'drop_off_datetime': f'{dropoff_date} {dropoff_time}',
+            },
+            timeout=30)
+        data = resp.json()
+
+        cars_raw = data.get('search_results', data.get('result', []))
+        if not isinstance(cars_raw, list):
+            cars_raw = []
+
+        cars = []
+        for c in cars_raw[:15]:
+            vehicle = c.get('vehicle_info', c.get('vehicle_type', {}))
+            supplier = c.get('supplier_info', c.get('supplier', {}))
+            price_info = c.get('pricing_info', {})
+            price = price_info.get('price', c.get('price', 0))
+            if isinstance(price, str):
+                try:
+                    price = float(price)
+                except ValueError:
+                    price = 0
+
+            cars.append({
+                'name': vehicle.get('v_name', vehicle.get('name', '')),
+                'group': vehicle.get('group', ''),
+                'type': vehicle.get('label', vehicle.get('vehicle_type', '')),
+                'transmission': vehicle.get('transmission', ''),
+                'fuel': vehicle.get('fuel_type', vehicle.get('fuel_policy', '')),
+                'seats': vehicle.get('seats', vehicle.get('seat_count', '')),
+                'doors': vehicle.get('doors', vehicle.get('door_count', '')),
+                'bags': vehicle.get('bags', vehicle.get('bag_count', '')),
+                'ac': vehicle.get('aircon', vehicle.get('air_conditioning', False)),
+                'photo': vehicle.get('image_url', vehicle.get('image_thumbnail_url', '')),
+                'price': round(price, 2) if price else 0,
+                'currency': price_info.get('currency', 'USD'),
+                'supplier': supplier.get('name', supplier.get('supplier_name', '')),
+                'supplierLogo': supplier.get('logo_url', ''),
+                'supplierRating': supplier.get('review_score', supplier.get('rating', 0)),
+                'pickup': loc.get('label', location),
+            })
+
+        cars.sort(key=lambda x: x['price'] if x['price'] > 0 else 99999)
+        return {
+            'cars': cars,
+            'total': len(cars_raw),
+            'location': loc.get('label', location),
+        }
+
+    except Exception as e:
+        print(f"[Search] Car rental error: {e}")
+        return {'cars': [], 'error': str(e)}

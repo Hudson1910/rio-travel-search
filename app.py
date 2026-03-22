@@ -71,6 +71,21 @@ def api_search_airport():
     return jsonify(results)
 
 
+@app.route('/api/cars')
+def api_cars():
+    """Search car rentals via Booking.com."""
+    location = request.args.get('location', '').strip()
+    pickup = request.args.get('pickup', '')
+    dropoff = request.args.get('dropoff', '')
+    lang = request.args.get('lang', 'en-gb')
+
+    if not location or not pickup or not dropoff:
+        return jsonify({'error': 'Missing required fields', 'cars': []})
+
+    results = search.search_cars(location, pickup, dropoff, locale=lang)
+    return jsonify(results)
+
+
 @app.route('/api/hotels')
 def api_hotels():
     """Search hotels via Booking COM."""
@@ -82,7 +97,8 @@ def api_hotels():
     if not destination or not checkin or not checkout:
         return jsonify({'error': 'Missing required fields', 'hotels': []})
 
-    results = search.search_hotels(destination, checkin, checkout, adults)
+    lang = request.args.get('lang', 'en-gb')
+    results = search.search_hotels(destination, checkin, checkout, adults, locale=lang)
     return jsonify(results)
 
 

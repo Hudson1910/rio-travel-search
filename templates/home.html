@@ -494,6 +494,7 @@
                 <button class="sb-tab on" data-t="flights"><i class="bi bi-airplane-fill"></i> <span data-t="flights" class="tl">Voos</span></button>
                 <button class="sb-tab" data-t="hotels"><i class="bi bi-building"></i> <span data-t="hotels" class="tl">Hoteis</span></button>
                 <button class="sb-tab" data-t="tours"><i class="bi bi-compass-fill"></i> <span data-t="tours" class="tl">Tours</span></button>
+                <button class="sb-tab" data-t="cars"><i class="bi bi-car-front-fill"></i> <span data-t="cars" class="tl">Carros</span></button>
                 <button class="sb-tab" data-t="cruises"><i class="bi bi-water"></i> <span data-t="cruises" class="tl">Cruzeiros</span></button>
             </div>
             <!-- Options -->
@@ -585,6 +586,22 @@
                     <input type="text" id="tDest" placeholder="Cancun, New York, Roma...">
                 </div>
                 <button class="sb-btn" onclick="searchTours()"><i class="bi bi-search"></i> <span class="tl">Buscar Tours</span></button>
+            </div>
+            <!-- CAR RENTAL FIELDS -->
+            <div id="carFields" class="sb-fields" style="display:none;">
+                <div class="sf" style="flex:2;">
+                    <label class="tl">Local de Retirada</label>
+                    <input type="text" id="carLoc" placeholder="Miami, Cancun, Sao Paulo...">
+                </div>
+                <div class="sf" style="flex:.9;">
+                    <label class="tl">Retirada</label>
+                    <input type="text" id="carPickup" placeholder="Selecionar" readonly>
+                </div>
+                <div class="sf" style="flex:.9;">
+                    <label class="tl">Devolucao</label>
+                    <input type="text" id="carDropoff" placeholder="Selecionar" readonly>
+                </div>
+                <button class="sb-btn" onclick="searchCars()"><i class="bi bi-search"></i> <span class="tl">Buscar Carros</span></button>
             </div>
             <!-- CRUISE -->
             <div id="cFields" class="sb-fields" style="display:none;">
@@ -994,7 +1011,7 @@ const I={
         f1:'Multilingual',f1d:'Atendimento em Portugues, Ingles e Espanhol.',f2:'Agente Certificado',f2d:'Agencia licenciada nos EUA. Seguranca total.',f3:'Precos em Tempo Real',f3d:'Busca direto nas companhias aereas.',
         agentBio:'40+ paises visitados. Especialista em viagens internacionais. Atendimento via WhatsApp.',
         wa:'Fale Conosco',cruise:'Para cruzeiros, fale com nosso agente para ofertas exclusivas.',cruiseBtn:'Consultar Cruzeiros',
-        tourDest:'Destino ou Atividade',explore:'Explorar Tours',orAgent:'Ou fale com nosso agente',
+        tourDest:'Destino ou Atividade',explore:'Explorar Tours',orAgent:'Ou fale com nosso agente',cars:'Carros',carLoc:'Local de Retirada',carPickup:'Retirada',carDropoff:'Devolucao',searchCars:'Buscar Carros',carsFound:'carros encontrados',noCars:'Nenhum carro encontrado.',perDay:'por dia',
         best:'Melhor Preco',pp:'por pessoa',pn:'por noite',book:'Reservar',searching:'Buscando...',found:'voos encontrados',noFlights:'Nenhum voo encontrado.',
         direct:'Direto',stop1:'1 parada',stops:'paradas',hotelDest:'Destino',
         wamsg_head:'Oi Hudson! Quero reservar este voo:',wamsg_airline:'Companhia',wamsg_route:'Rota',wamsg_date:'Data',wamsg_dep:'Saida',wamsg_arr:'Chegada',wamsg_dur:'Duracao',wamsg_stops:'Paradas',wamsg_class:'Classe',wamsg_pax:'Passageiros',wamsg_price:'Preco',wamsg_bags:'Bagagem',wamsg_carry:'mao',wamsg_checked:'despachada',wamsg_adults:'adulto(s)',wamsg_children:'crianca(s)',wamsg_infants:'bebe(s)',wamsg_trip:'Tipo',
@@ -1010,7 +1027,7 @@ const I={
         f1:'Multilingual',f1d:'Support in English, Portuguese and Spanish.',f2:'Certified Agent',f2d:'Licensed agency in the USA. Total security.',f3:'Real-Time Prices',f3d:'Search directly from airlines.',
         agentBio:'40+ countries visited. International travel specialist. WhatsApp support.',
         wa:'Contact Us',cruise:'For cruises, speak with our agent for exclusive deals.',cruiseBtn:'Get Cruise Deals',
-        tourDest:'Destination or Activity',explore:'Explore Tours',orAgent:'Or speak with our agent',
+        tourDest:'Destination or Activity',explore:'Explore Tours',orAgent:'Or speak with our agent',cars:'Cars',carLoc:'Pickup Location',carPickup:'Pickup',carDropoff:'Dropoff',searchCars:'Search Cars',carsFound:'cars found',noCars:'No cars found.',perDay:'per day',
         best:'Best Price',pp:'per person',pn:'per night',book:'Book Now',searching:'Searching...',found:'flights found',noFlights:'No flights found.',
         direct:'Direct',stop1:'1 stop',stops:'stops',hotelDest:'Destination',
         wamsg_head:'Hi Hudson! I want to book this flight:',wamsg_airline:'Airline',wamsg_route:'Route',wamsg_date:'Date',wamsg_dep:'Departure',wamsg_arr:'Arrival',wamsg_dur:'Duration',wamsg_stops:'Stops',wamsg_class:'Class',wamsg_pax:'Passengers',wamsg_price:'Price',wamsg_bags:'Bags',wamsg_carry:'carry-on',wamsg_checked:'checked',wamsg_adults:'adult(s)',wamsg_children:'child(ren)',wamsg_infants:'infant(s)',wamsg_trip:'Type',
@@ -1026,7 +1043,7 @@ const I={
         f1:'Multilingue',f1d:'Atencion en Espanol, Ingles y Portugues.',f2:'Agente Certificado',f2d:'Agencia licenciada en EE.UU. Total seguridad.',f3:'Precios en Tiempo Real',f3d:'Busqueda directa en aerolineas.',
         agentBio:'40+ paises visitados. Especialista en viajes internacionales. Atencion por WhatsApp.',
         wa:'Contactanos',cruise:'Para cruceros, habla con nuestro agente para ofertas exclusivas.',cruiseBtn:'Consultar Cruceros',
-        tourDest:'Destino o Actividad',explore:'Explorar Tours',orAgent:'O habla con nuestro agente',
+        tourDest:'Destino o Actividad',explore:'Explorar Tours',orAgent:'O habla con nuestro agente',cars:'Autos',carLoc:'Lugar de Retiro',carPickup:'Retiro',carDropoff:'Devolucion',searchCars:'Buscar Autos',carsFound:'autos encontrados',noCars:'No se encontraron autos.',perDay:'por dia',
         best:'Mejor Precio',pp:'por persona',pn:'por noche',book:'Reservar',searching:'Buscando...',found:'vuelos encontrados',noFlights:'No se encontraron vuelos.',
         direct:'Directo',stop1:'1 escala',stops:'escalas',hotelDest:'Destino',
         wamsg_head:'Hola Hudson! Quiero reservar este vuelo:',wamsg_airline:'Aerolinea',wamsg_route:'Ruta',wamsg_date:'Fecha',wamsg_dep:'Salida',wamsg_arr:'Llegada',wamsg_dur:'Duracion',wamsg_stops:'Escalas',wamsg_class:'Clase',wamsg_pax:'Pasajeros',wamsg_price:'Precio',wamsg_bags:'Equipaje',wamsg_carry:'mano',wamsg_checked:'facturado',wamsg_adults:'adulto(s)',wamsg_children:'nino(s)',wamsg_infants:'bebe(s)',wamsg_trip:'Tipo',
@@ -1161,6 +1178,7 @@ document.querySelectorAll('.sb-tab').forEach(tab=>tab.onclick=()=>{
     document.getElementById('fFields').style.display=tt==='flights'?'flex':'none';
     document.getElementById('hFields').style.display=tt==='hotels'?'flex':'none';
     document.getElementById('tFields').style.display=tt==='tours'?'flex':'none';
+    document.getElementById('carFields').style.display=tt==='cars'?'flex':'none';
     document.getElementById('cFields').style.display=tt==='cruises'?'flex':'none';
     document.getElementById('sbOpts').style.display=tt==='flights'?'flex':'none';
     document.getElementById('results').style.display='none';
@@ -1328,6 +1346,8 @@ window.fpDep=flatpickr('#dep',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt
 window.fpRet=flatpickr('#ret',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
 flatpickr('#hIn',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
 flatpickr('#hOut',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
+flatpickr('#carPickup',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
+flatpickr('#carDropoff',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
 
 // ========== NAV SCROLL ==========
 window.onscroll=()=>document.getElementById('nav').classList.toggle('scrolled',scrollY>40);
@@ -1581,6 +1601,44 @@ function searchTours(){
         <a href="${civ}" target="_blank" class="res-card" style="text-decoration:none;"><div class="res-inner" style="flex-direction:column;text-align:center;gap:14px;padding:28px;"><div style="font-size:40px;">🌎</div><div style="font-size:18px;font-weight:800;color:var(--w);font-family:Outfit;">Civitatis</div><div style="font-size:13px;color:var(--t3);">Tours & ${t('explore')}</div><div style="padding:10px 22px;background:linear-gradient(135deg,var(--coral),var(--orange));border-radius:10px;color:var(--w);font-weight:700;font-size:13px;">${t('explore')}</div></div></a>
         <a href="${via}" target="_blank" class="res-card" style="text-decoration:none;"><div class="res-inner" style="flex-direction:column;text-align:center;gap:14px;padding:28px;"><div style="font-size:40px;">🏛️</div><div style="font-size:18px;font-weight:800;color:var(--w);font-family:Outfit;">Viator</div><div style="font-size:13px;color:var(--t3);">Experiences & Tickets</div><div style="padding:10px 22px;background:linear-gradient(135deg,var(--green),#0ead8c);border-radius:10px;color:var(--w);font-weight:700;font-size:13px;">${t('explore')}</div></div></a>
     </div><div style="text-align:center;margin-top:16px;"><a href="https://wa.me/14352146939?text=${encodeURIComponent('Help with tours in '+d)}" target="_blank" style="color:var(--t3);font-size:13px;text-decoration:none;"><i class="bi bi-whatsapp" style="color:#25d366;"></i> ${t('orAgent')}</a></div>`;
+}
+
+// ========== SEARCH CARS ==========
+function searchCars(){
+    const loc=document.getElementById('carLoc').value.trim();
+    const pickup=document.getElementById('carPickup').value;
+    const dropoff=document.getElementById('carDropoff').value;
+    if(!loc||!pickup||!dropoff){alert('Preencha todos os campos.');return;}
+    const res=document.getElementById('results'),list=document.getElementById('resList');
+    res.style.display='block';list.innerHTML='<div class="skel"></div><div class="skel"></div>';
+    document.getElementById('resTitle').textContent=loc+' — '+t('cars');
+    document.getElementById('resCount').textContent=t('searching');
+    const langMap={pt:'pt-br',en:'en-gb',es:'es'};
+    fetch(`/api/cars?location=${encodeURIComponent(loc)}&pickup=${pickup}&dropoff=${dropoff}&lang=${langMap[lang]||'en-gb'}`).then(r=>r.json()).then(data=>{
+        const cars=data.cars||[];
+        if(!cars.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--t3);"><i class="bi bi-car-front" style="font-size:32px;"></i><p style="margin-top:12px;">${t('noCars')}</p>${data.error?`<p style="font-size:11px;margin-top:8px;color:var(--t4);">${data.error}</p>`:''}</div>`;document.getElementById('resCount').textContent='';return;}
+        document.getElementById('resCount').textContent=`${cars.length} ${t('carsFound')}`;
+        list.innerHTML=cars.map((c,i)=>{
+            const msg=encodeURIComponent((lang==='pt'?`Oi Hudson! Quero alugar:\n\n🚗 ${c.name}\n📍 ${c.pickup}\n📅 Retirada: ${pickup}\n📅 Devolucao: ${dropoff}\n💰 $${c.price} ${t('perDay')}\n🏢 ${c.supplier}`:lang==='es'?`Hola Hudson! Quiero alquilar:\n\n🚗 ${c.name}\n📍 ${c.pickup}\n📅 Retiro: ${pickup}\n📅 Devolucion: ${dropoff}\n💰 $${c.price} ${t('perDay')}\n🏢 ${c.supplier}`:`Hi Hudson! I want to rent:\n\n🚗 ${c.name}\n📍 ${c.pickup}\n📅 Pickup: ${pickup}\n📅 Dropoff: ${dropoff}\n💰 $${c.price} ${t('perDay')}\n🏢 ${c.supplier}`));
+            const tags=[];
+            if(c.seats)tags.push(`<span class="res-tag"><i class="bi bi-people-fill"></i> ${c.seats}</span>`);
+            if(c.transmission)tags.push(`<span class="res-tag"><i class="bi bi-gear-fill"></i> ${c.transmission}</span>`);
+            if(c.doors)tags.push(`<span class="res-tag"><i class="bi bi-door-open-fill"></i> ${c.doors}</span>`);
+            if(c.bags)tags.push(`<span class="res-tag"><i class="bi bi-luggage-fill"></i> ${c.bags}</span>`);
+            if(c.ac)tags.push(`<span class="res-tag"><i class="bi bi-snow"></i> A/C</span>`);
+            if(c.fuel)tags.push(`<span class="res-tag"><i class="bi bi-fuel-pump"></i> ${c.fuel}</span>`);
+            return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
+<div class="res-header"><i class="bi bi-car-front-fill"></i><div><div class="res-header-txt">${c.name}</div><div class="res-header-sub">${c.supplier} · ${c.type||c.group||''}</div></div></div>
+<div class="res-inner" style="display:flex;align-items:center;gap:16px;">
+${c.photo?`<img src="${c.photo}" style="width:100px;height:65px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,.9);padding:4px;flex-shrink:0;" onerror="this.style.display='none'">`:''}<div style="flex:1;">
+<div style="font-size:15px;font-weight:700;color:#1a1a2e;">${c.name}</div>
+<div style="font-size:12px;color:#64748b;margin-top:3px;">${c.supplier}${c.supplierRating?' · '+c.supplierRating+'/10':''}</div>
+${tags.length?`<div class="res-tags" style="margin-top:8px;">${tags.join('')}</div>`:''}
+</div></div>
+<div class="res-bottom"><div class="res-price"><div class="amt">$${c.price}</div><div class="pp">${t('perDay')}</div></div>
+<a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
+        }).join('');
+    }).catch(e=>{list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--coral);">Error: ${e.message}</div>`;});
 }
 
 // ========== QUICK SEARCH ==========
