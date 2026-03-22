@@ -201,15 +201,22 @@
 
         /* ===== POPULAR ROUTES ===== */
         .routes { padding:80px 24px; }
-        .routes-inner { max-width:1000px; margin:0 auto; }
-        .routes-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
-        .route-card { background:var(--bg3); border:1px solid rgba(255,255,255,0.03); border-radius:18px; padding:24px 20px; text-align:center; transition:all 0.3s; cursor:pointer; text-decoration:none; }
-        .route-card:hover { border-color:rgba(255,87,87,0.12); transform:translateY(-3px); box-shadow:0 8px 32px rgba(0,0,0,0.15); }
-        .route-card .emoji { font-size:32px; margin-bottom:12px; display:block; }
-        .route-card .route-name { font-family:'Outfit'; font-size:15px; font-weight:700; color:#fff; margin-bottom:4px; }
-        .route-card .route-from { font-size:11px; color:var(--gray-500); margin-bottom:10px; }
-        .route-card .route-price { font-family:'Outfit'; font-size:20px; font-weight:800; color:var(--coral); }
-        .route-card .route-price span { font-size:12px; font-weight:500; color:var(--gray-500); }
+        .routes-inner { max-width:1100px; margin:0 auto; }
+        .routes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+        .route-card { position:relative; border-radius:20px; overflow:hidden; cursor:pointer; text-decoration:none; display:block; aspect-ratio:4/3; transition:all 0.4s cubic-bezier(0.22,1,0.36,1); }
+        .route-card:hover { transform:translateY(-6px); box-shadow:0 16px 48px rgba(0,0,0,0.3); }
+        .route-card img { width:100%; height:100%; object-fit:cover; transition:transform 0.5s; }
+        .route-card:hover img { transform:scale(1.05); }
+        .route-card .route-overlay { position:absolute; inset:0; background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,0.75) 100%); }
+        .route-card .route-info { position:absolute; bottom:0; left:0; right:0; padding:20px; }
+        .route-card .route-name { font-family:'Outfit'; font-size:22px; font-weight:800; color:#fff; display:flex; align-items:center; gap:8px; }
+        .route-card .route-flag { font-size:16px; }
+        .route-card .route-from { font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px; }
+        .route-card .route-price { font-family:'Outfit'; font-size:16px; font-weight:700; color:var(--coral); margin-top:6px; }
+        .route-card .route-arrow { position:absolute; top:16px; right:16px; width:36px; height:36px; border-radius:50%; background:rgba(255,255,255,0.15); backdrop-filter:blur(10px); display:flex; align-items:center; justify-content:center; color:#fff; font-size:16px; transition:all 0.3s; }
+        .route-card:hover .route-arrow { background:var(--coral); }
+        .route-lg { grid-column:span 2; aspect-ratio:2/1; }
+        .route-lg .route-name { font-size:28px; }
 
         /* ===== AGENT SECTION ===== */
         .agent { padding:80px 24px; }
@@ -319,8 +326,8 @@
 <!-- Navbar -->
 <nav class="nav" id="navbar">
     <a href="/" class="nav-brand">
-        <img src="/static/logo-riotravel.png" alt="Rio Travel" style="height:36px;width:auto;object-fit:contain;border-radius:6px;">
-        <span style="font-family:Outfit;font-weight:800;font-size:22px;letter-spacing:-1px;">Rio<span class="accent">Travel</span></span>
+        <img src="/static/logo-riotravel.png" alt="Rio Travel" style="height:52px;width:auto;object-fit:contain;">
+        <span style="font-family:Outfit;font-weight:800;font-size:24px;letter-spacing:-1px;">Rio<span class="accent">Travel</span></span>
     </a>
     <div class="nav-links">
         <a href="#" class="active" data-i18n="nav_flights">Voos</a>
@@ -377,50 +384,41 @@
                 <button class="search-tab" onclick="switchTab('cruises')"><i class="bi bi-water"></i> <span data-i18n="nav_cruises">Cruzeiros</span></button>
             </div>
 
-            <!-- Trip Type -->
-            <div class="trip-type" id="tripTypeBar">
-                <button class="trip-type-btn active" onclick="setTripType('roundtrip')" id="btnRoundtrip"><i class="bi bi-arrow-left-right"></i> <span data-i18n="trip_roundtrip">Ida e Volta</span></button>
-                <button class="trip-type-btn" onclick="setTripType('oneway')" id="btnOneway"><i class="bi bi-arrow-right"></i> <span data-i18n="trip_oneway">Somente Ida</span></button>
-                <button class="trip-type-btn" onclick="setTripType('multi')" id="btnMulti"><i class="bi bi-signpost-split"></i> <span data-i18n="trip_multi">Multi-destinos</span></button>
-            </div>
-
-            <div id="flightForm" class="search-form" style="flex-wrap:wrap;">
-                <div class="search-field" style="flex:1.3;position:relative;">
-                    <label data-i18n="lbl_origin">Origem</label>
-                    <input type="text" id="origin" placeholder="Salt Lake City (SLC)" autocomplete="off" oninput="searchAirport(this,'originAC')" onfocus="searchAirport(this,'originAC')">
-                    <div class="airport-ac" id="originAC"></div>
+            <!-- Options Bar: Trip Type + Class + Passengers -->
+            <div style="display:flex;gap:6px;padding:6px 10px;flex-wrap:wrap;align-items:center;">
+                <!-- Trip Type -->
+                <div class="trip-type" id="tripTypeBar" style="margin:0;">
+                    <button class="trip-type-btn active" onclick="setTripType('roundtrip')" id="btnRoundtrip"><i class="bi bi-arrow-left-right"></i> <span data-i18n="trip_roundtrip">Ida e Volta</span></button>
+                    <button class="trip-type-btn" onclick="setTripType('oneway')" id="btnOneway"><i class="bi bi-arrow-right"></i> <span data-i18n="trip_oneway">Somente Ida</span></button>
+                    <button class="trip-type-btn" onclick="setTripType('multi')" id="btnMulti"><i class="bi bi-signpost-split"></i> <span data-i18n="trip_multi">Multi-destinos</span></button>
                 </div>
-                <div class="swap-btn-wrap" style="display:flex;align-items:center;margin:0 -4px;z-index:1;">
-                    <button onclick="swapAirports()" style="width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);background:var(--bg3);color:var(--gray-400);cursor:pointer;font-size:14px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.color='var(--coral)'" onmouseout="this.style.color='var(--gray-400)'"><i class="bi bi-arrow-left-right"></i></button>
-                </div>
-                <div class="search-field" style="flex:1.3;position:relative;">
-                    <label data-i18n="lbl_dest">Destino</label>
-                    <input type="text" id="destination" placeholder="Sao Paulo (GRU)" autocomplete="off" oninput="searchAirport(this,'destAC')" onfocus="searchAirport(this,'destAC')">
-                    <div class="airport-ac" id="destAC"></div>
-                </div>
-                <div class="search-field" style="flex:1;">
-                    <label data-i18n="lbl_depart">Ida</label>
-                    <input type="date" id="departure" style="font-size:14px;padding-top:30px;">
-                </div>
-                <div class="search-field" id="returnField" style="flex:1;">
-                    <label data-i18n="lbl_return">Volta</label>
-                    <input type="date" id="returnDate" style="font-size:14px;padding-top:30px;">
-                </div>
-                <div class="search-field" style="flex:0.8;position:relative;">
-                    <label data-i18n="lbl_pax">Passageiros</label>
-                    <div id="paxDisplay" onclick="document.getElementById('paxDropdown').classList.toggle('show')" style="width:100%;padding:32px 16px 12px;border:1px solid rgba(255,255,255,0.06);border-radius:18px;font-size:14px;font-family:DM Sans;font-weight:600;color:#fff;background:rgba(255,255,255,0.03);cursor:pointer;display:flex;align-items:center;gap:6px;">
-                        <i class="bi bi-people-fill" style="color:var(--coral);"></i>
-                        <span id="paxText">1 Adulto</span>
-                        <i class="bi bi-chevron-down" style="margin-left:auto;font-size:10px;color:var(--gray-500);"></i>
+                <!-- Cabin Class -->
+                <div style="position:relative;">
+                    <button class="trip-type-btn" onclick="document.getElementById('classDropdown').classList.toggle('show')" id="classDisplay" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:8px 14px;">
+                        <i class="bi bi-star"></i> <span id="classText" data-i18n="class_economy">Economica</span> <i class="bi bi-chevron-down" style="font-size:9px;margin-left:2px;"></i>
+                    </button>
+                    <div class="pax-dropdown" id="classDropdown" style="min-width:200px;left:0;right:auto;top:calc(100% + 6px);">
+                        <div class="pax-row" style="cursor:pointer;" onclick="setCabinClass('economy')"><div class="pax-label" style="width:100%;"><i class="bi bi-circle-fill" id="classEco" style="font-size:8px;color:var(--coral);margin-right:8px;"></i> <span data-i18n="class_economy">Economica</span></div></div>
+                        <div class="pax-row" style="cursor:pointer;" onclick="setCabinClass('premium')"><div class="pax-label" style="width:100%;"><i class="bi bi-circle" id="classPrem" style="font-size:8px;color:var(--gray-500);margin-right:8px;"></i> <span data-i18n="class_premium">Premium Economy</span></div></div>
+                        <div class="pax-row" style="cursor:pointer;" onclick="setCabinClass('business')"><div class="pax-label" style="width:100%;"><i class="bi bi-circle" id="classBiz" style="font-size:8px;color:var(--gray-500);margin-right:8px;"></i> <span data-i18n="class_business">Executiva</span></div></div>
+                        <div class="pax-row" style="cursor:pointer;border-bottom:none;" onclick="setCabinClass('first')"><div class="pax-label" style="width:100%;"><i class="bi bi-circle" id="classFirst" style="font-size:8px;color:var(--gray-500);margin-right:8px;"></i> <span data-i18n="class_first">Primeira Classe</span></div></div>
                     </div>
+                    <input type="hidden" id="cabinClass" value="economy">
+                </div>
+                <!-- Passengers trigger -->
+                <div style="position:relative;">
+                    <button class="trip-type-btn" onclick="document.getElementById('paxDropdown').classList.toggle('show')" style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:8px 14px;">
+                        <i class="bi bi-person-fill"></i> <span id="paxText">1 Adulto</span> <i class="bi bi-chevron-down" style="font-size:9px;margin-left:2px;"></i>
+                    </button>
                     <input type="hidden" id="adults" value="1">
                     <input type="hidden" id="children" value="0">
                     <input type="hidden" id="infants" value="0">
-                    <div class="pax-dropdown" id="paxDropdown">
+                    <div class="pax-dropdown" id="paxDropdown" style="left:0;right:auto;">
+                        <div style="padding:10px 14px 6px;font-family:Outfit;font-weight:700;font-size:14px;color:#fff;" data-i18n="lbl_pax">Passageiros</div>
                         <div class="pax-row">
                             <div class="pax-info">
-                                <div class="pax-label"><span class="pax-icon"><i class="bi bi-person-fill"></i></span> <span data-i18n="pax_adults">Adultos</span></div>
-                                <div class="pax-age" data-i18n="pax_adults_age">12+ anos</div>
+                                <div class="pax-label"><i class="bi bi-person-fill" style="margin-right:8px;font-size:18px;color:var(--gray-400);"></i> <span data-i18n="pax_adults">Adultos</span></div>
+                                <div class="pax-age" style="padding-left:28px;" data-i18n="pax_adults_age">12+ anos</div>
                             </div>
                             <div class="pax-controls">
                                 <button class="pax-btn" onclick="changePax('adults',-1)"><i class="bi bi-dash-lg"></i></button>
@@ -430,8 +428,8 @@
                         </div>
                         <div class="pax-row">
                             <div class="pax-info">
-                                <div class="pax-label"><span class="pax-icon"><i class="bi bi-person"></i></span> <span data-i18n="pax_children">Criancas</span></div>
-                                <div class="pax-age" data-i18n="pax_children_age">2-11 anos</div>
+                                <div class="pax-label"><i class="bi bi-emoji-smile" style="margin-right:8px;font-size:18px;color:var(--gray-400);"></i> <span data-i18n="pax_children">Criancas</span></div>
+                                <div class="pax-age" style="padding-left:28px;" data-i18n="pax_children_age">2-11 anos</div>
                             </div>
                             <div class="pax-controls">
                                 <button class="pax-btn" onclick="changePax('children',-1)"><i class="bi bi-dash-lg"></i></button>
@@ -439,10 +437,10 @@
                                 <button class="pax-btn" onclick="changePax('children',1)"><i class="bi bi-plus-lg"></i></button>
                             </div>
                         </div>
-                        <div class="pax-row" style="border-bottom:none;">
+                        <div class="pax-row">
                             <div class="pax-info">
-                                <div class="pax-label"><span class="pax-icon">&#128118;</span> <span data-i18n="pax_infants">Bebes</span></div>
-                                <div class="pax-age" data-i18n="pax_infants_age">0-23 meses</div>
+                                <div class="pax-label"><i class="bi bi-balloon-heart" style="margin-right:8px;font-size:18px;color:var(--gray-400);"></i> <span data-i18n="pax_infants">Bebes</span></div>
+                                <div class="pax-age" style="padding-left:28px;" data-i18n="pax_infants_age">0-23 meses</div>
                             </div>
                             <div class="pax-controls">
                                 <button class="pax-btn" onclick="changePax('infants',-1)"><i class="bi bi-dash-lg"></i></button>
@@ -450,10 +448,58 @@
                                 <button class="pax-btn" onclick="changePax('infants',1)"><i class="bi bi-plus-lg"></i></button>
                             </div>
                         </div>
+                        <div style="padding:8px 14px 6px;font-family:Outfit;font-weight:700;font-size:13px;color:var(--gray-400);border-top:1px solid rgba(255,255,255,0.04);margin-top:4px;" data-i18n="pax_bags">Bagagem</div>
+                        <div class="pax-row">
+                            <div class="pax-info">
+                                <div class="pax-label"><i class="bi bi-bag" style="margin-right:8px;font-size:18px;color:var(--gray-400);"></i> <span data-i18n="pax_cabin_bag">Mao</span></div>
+                            </div>
+                            <div class="pax-controls">
+                                <button class="pax-btn" onclick="changePax('cabinBag',-1)"><i class="bi bi-dash-lg"></i></button>
+                                <span class="pax-count" id="cabinBagCount">0</span>
+                                <button class="pax-btn" onclick="changePax('cabinBag',1)"><i class="bi bi-plus-lg"></i></button>
+                            </div>
+                        </div>
+                        <div class="pax-row" style="border-bottom:none;">
+                            <div class="pax-info">
+                                <div class="pax-label"><i class="bi bi-luggage" style="margin-right:8px;font-size:18px;color:var(--gray-400);"></i> <span data-i18n="pax_checked_bag">Despachada</span></div>
+                            </div>
+                            <div class="pax-controls">
+                                <button class="pax-btn" onclick="changePax('checkedBag',-1)"><i class="bi bi-dash-lg"></i></button>
+                                <span class="pax-count" id="checkedBagCount">0</span>
+                                <button class="pax-btn" onclick="changePax('checkedBag',1)"><i class="bi bi-plus-lg"></i></button>
+                            </div>
+                        </div>
+                        <input type="hidden" id="cabinBag" value="0">
+                        <input type="hidden" id="checkedBag" value="0">
                         <button class="pax-done" onclick="document.getElementById('paxDropdown').classList.remove('show')" data-i18n="pax_done">Pronto</button>
                     </div>
                 </div>
-                <button class="search-btn" id="searchBtn" onclick="searchFlights()" style="flex:0 0 auto;"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
+            </div>
+
+            <!-- Flight Search Fields -->
+            <div id="flightForm" class="search-form" style="flex-wrap:wrap;">
+                <div class="search-field" style="flex:1.4;position:relative;">
+                    <label data-i18n="lbl_origin">Origem</label>
+                    <input type="text" id="origin" placeholder="Salt Lake City (SLC)" autocomplete="off" oninput="searchAirport(this,'originAC')" onfocus="searchAirport(this,'originAC')">
+                    <div class="airport-ac" id="originAC"></div>
+                </div>
+                <div class="swap-btn-wrap" style="display:flex;align-items:center;margin:0 -4px;z-index:1;">
+                    <button onclick="swapAirports()" style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,0.08);background:var(--bg3);color:var(--gray-400);cursor:pointer;font-size:16px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;" onmouseover="this.style.color='var(--coral)';this.style.borderColor='var(--coral)'" onmouseout="this.style.color='var(--gray-400)';this.style.borderColor='rgba(255,255,255,0.08)'"><i class="bi bi-arrow-left-right"></i></button>
+                </div>
+                <div class="search-field" style="flex:1.4;position:relative;">
+                    <label data-i18n="lbl_dest">Destino</label>
+                    <input type="text" id="destination" placeholder="Sao Paulo (GRU)" autocomplete="off" oninput="searchAirport(this,'destAC')" onfocus="searchAirport(this,'destAC')">
+                    <div class="airport-ac" id="destAC"></div>
+                </div>
+                <div class="search-field" style="flex:1;">
+                    <label data-i18n="lbl_depart">Ida</label>
+                    <input type="date" id="departure">
+                </div>
+                <div class="search-field" id="returnField" style="flex:1;">
+                    <label data-i18n="lbl_return">Volta</label>
+                    <input type="date" id="returnDate">
+                </div>
+                <button class="search-btn" id="searchBtn" onclick="searchFlights()"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
             </div>
 
             <!-- Multi-destination form (hidden by default) -->
@@ -543,29 +589,55 @@
             <p data-i18n="routes_sub">Voos frequentes de brasileiros nos EUA</p>
         </div>
         <div class="routes-grid">
-            <a class="route-card" onclick="quickSearch('MIA','GRU')">
-                <span class="emoji">&#127463;&#127479;</span>
-                <div class="route-name">Miami → Sao Paulo</div>
-                <div class="route-from">MIA → GRU</div>
-                <div class="route-price">$420+ <span>ida</span></div>
+            <a class="route-card route-lg" onclick="quickSearch('MIA','GRU')">
+                <img src="https://images.unsplash.com/photo-1543059080-f9b1272213d5?w=800&h=400&fit=crop" alt="Sao Paulo" loading="lazy">
+                <div class="route-overlay"></div>
+                <div class="route-arrow"><i class="bi bi-arrow-right"></i></div>
+                <div class="route-info">
+                    <div class="route-name">Sao Paulo <span class="route-flag">&#127463;&#127479;</span></div>
+                    <div class="route-from">MIA → GRU</div>
+                    <div class="route-price">Tickets from $420</div>
+                </div>
             </a>
             <a class="route-card" onclick="quickSearch('JFK','GIG')">
-                <span class="emoji">&#127463;&#127479;</span>
-                <div class="route-name">New York → Rio</div>
-                <div class="route-from">JFK → GIG</div>
-                <div class="route-price">$480+ <span>ida</span></div>
+                <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&h=450&fit=crop" alt="Rio de Janeiro" loading="lazy">
+                <div class="route-overlay"></div>
+                <div class="route-arrow"><i class="bi bi-arrow-right"></i></div>
+                <div class="route-info">
+                    <div class="route-name">Rio de Janeiro <span class="route-flag">&#127463;&#127479;</span></div>
+                    <div class="route-from">JFK → GIG</div>
+                    <div class="route-price">Tickets from $480</div>
+                </div>
             </a>
             <a class="route-card" onclick="quickSearch('SLC','CUN')">
-                <span class="emoji">&#127474;&#127485;</span>
-                <div class="route-name">Salt Lake → Cancun</div>
-                <div class="route-from">SLC → CUN</div>
-                <div class="route-price">$280+ <span>ida</span></div>
+                <img src="https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=600&h=450&fit=crop" alt="Cancun" loading="lazy">
+                <div class="route-overlay"></div>
+                <div class="route-arrow"><i class="bi bi-arrow-right"></i></div>
+                <div class="route-info">
+                    <div class="route-name">Cancun <span class="route-flag">&#127474;&#127485;</span></div>
+                    <div class="route-from">SLC → CUN</div>
+                    <div class="route-price">Tickets from $280</div>
+                </div>
             </a>
             <a class="route-card" onclick="quickSearch('SLC','LIS')">
-                <span class="emoji">&#127477;&#127481;</span>
-                <div class="route-name">Salt Lake → Lisboa</div>
-                <div class="route-from">SLC → LIS</div>
-                <div class="route-price">$520+ <span>ida</span></div>
+                <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=450&fit=crop" alt="Lisboa" loading="lazy">
+                <div class="route-overlay"></div>
+                <div class="route-arrow"><i class="bi bi-arrow-right"></i></div>
+                <div class="route-info">
+                    <div class="route-name">Lisboa <span class="route-flag">&#127477;&#127481;</span></div>
+                    <div class="route-from">SLC → LIS</div>
+                    <div class="route-price">Tickets from $520</div>
+                </div>
+            </a>
+            <a class="route-card route-lg" onclick="quickSearch('SLC','LAS')">
+                <img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=800&h=400&fit=crop" alt="Las Vegas" loading="lazy">
+                <div class="route-overlay"></div>
+                <div class="route-arrow"><i class="bi bi-arrow-right"></i></div>
+                <div class="route-info">
+                    <div class="route-name">Las Vegas <span class="route-flag">&#127482;&#127480;</span></div>
+                    <div class="route-from">SLC → LAS</div>
+                    <div class="route-price">Tickets from $55</div>
+                </div>
             </a>
         </div>
     </div>
@@ -777,15 +849,39 @@ function searchHotels(){
         list.innerHTML=html;
     }).catch(()=>{list.innerHTML='<div style="text-align:center;padding:48px;color:var(--coral);"><p>Erro. Tente novamente.</p></div>';});
 }
+// ===== CABIN CLASS =====
+function setCabinClass(cls) {
+    document.getElementById('cabinClass').value = cls;
+    const names = {economy:t('class_economy'),premium:t('class_premium'),business:t('class_business'),first:t('class_first')};
+    document.getElementById('classText').textContent = names[cls] || cls;
+    ['Eco','Prem','Biz','First'].forEach(s => {
+        const el = document.getElementById('class'+s);
+        if(el) { el.className = 'bi bi-circle'; el.style.color = 'var(--gray-500)'; }
+    });
+    const map = {economy:'Eco',premium:'Prem',business:'Biz',first:'First'};
+    const sel = document.getElementById('class' + map[cls]);
+    if(sel) { sel.className = 'bi bi-circle-fill'; sel.style.color = 'var(--coral)'; }
+    document.getElementById('classDropdown').classList.remove('show');
+}
+
+// Close class dropdown on outside click
+document.addEventListener('click', e => {
+    if (!e.target.closest('#classDisplay') && !e.target.closest('#classDropdown')) {
+        const dd = document.getElementById('classDropdown');
+        if (dd) dd.classList.remove('show');
+    }
+});
+
 // ===== PASSENGER COUNTER =====
 function changePax(type, delta) {
     const el = document.getElementById(type);
     let val = parseInt(el.value) + delta;
     if (type === 'adults') val = Math.max(1, Math.min(9, val));
+    else if (type === 'cabinBag' || type === 'checkedBag') val = Math.max(0, Math.min(9, val));
     else val = Math.max(0, Math.min(6, val));
     el.value = val;
     document.getElementById(type + 'Count').textContent = val;
-    updatePaxText();
+    if (type !== 'cabinBag' && type !== 'checkedBag') updatePaxText();
 }
 
 function updatePaxText() {
@@ -985,6 +1081,8 @@ const LANG = {
         nav_flights:'Voos', nav_hotels:'Hoteis', nav_cruises:'Cruzeiros', nav_deals:'Ofertas',
         trip_roundtrip:'Ida e Volta', trip_oneway:'Somente Ida', trip_multi:'Multi-destinos',
         pax_adults:'Adultos', pax_adults_age:'12+ anos', pax_children:'Criancas', pax_children_age:'2-11 anos', pax_infants:'Bebes', pax_infants_age:'0-23 meses', pax_done:'Pronto',
+        pax_bags:'Bagagem', pax_cabin_bag:'Mao', pax_checked_bag:'Despachada',
+        class_economy:'Economica', class_premium:'Premium Economy', class_business:'Executiva', class_first:'Primeira Classe',
         hero_pill:'As melhores ofertas de viagem em um so lugar', hero_new:'NOVO',
         hero_title:'Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span>',
         hero_sub:'Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.',
@@ -1013,6 +1111,8 @@ const LANG = {
         nav_flights:'Flights', nav_hotels:'Hotels', nav_cruises:'Cruises', nav_deals:'Deals',
         trip_roundtrip:'Round Trip', trip_oneway:'One Way', trip_multi:'Multi-city',
         pax_adults:'Adults', pax_adults_age:'12+ years', pax_children:'Children', pax_children_age:'2-11 years', pax_infants:'Infants', pax_infants_age:'0-23 months', pax_done:'Done',
+        pax_bags:'Bags', pax_cabin_bag:'Cabin', pax_checked_bag:'Checked',
+        class_economy:'Economy', class_premium:'Premium Economy', class_business:'Business', class_first:'First Class',
         hero_pill:'The best travel deals in one place', hero_new:'NEW',
         hero_title:'Find the Best<br><span class="gradient">Flight Deals</span>',
         hero_sub:'Compare prices on <strong>flights</strong>, hotels and cruises in real time. Personalized service with a certified travel agent.',
@@ -1041,6 +1141,8 @@ const LANG = {
         nav_flights:'Vuelos', nav_hotels:'Hoteles', nav_cruises:'Cruceros', nav_deals:'Ofertas',
         trip_roundtrip:'Ida y Vuelta', trip_oneway:'Solo Ida', trip_multi:'Multi-destinos',
         pax_adults:'Adultos', pax_adults_age:'12+ anos', pax_children:'Ninos', pax_children_age:'2-11 anos', pax_infants:'Bebes', pax_infants_age:'0-23 meses', pax_done:'Listo',
+        pax_bags:'Equipaje', pax_cabin_bag:'Mano', pax_checked_bag:'Facturado',
+        class_economy:'Economica', class_premium:'Premium Economy', class_business:'Ejecutiva', class_first:'Primera Clase',
         hero_pill:'Las mejores ofertas de viaje en un solo lugar', hero_new:'NUEVO',
         hero_title:'Encuentra las Mejores<br><span class="gradient">Ofertas de Vuelos</span>',
         hero_sub:'Compara precios de <strong>vuelos</strong>, hoteles y cruceros en tiempo real. Atencion personalizada con agente certificado.',
