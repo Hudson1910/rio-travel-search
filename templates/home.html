@@ -178,26 +178,34 @@
         [data-theme="light"] .res-header i{color:rgba(0,0,0,.3);}
         [data-theme="light"] .res-header-txt{color:rgba(0,0,0,.6);}
         [data-theme="light"] .res-header-sub{color:rgba(0,0,0,.35);}
-        /* Inner white card — flight details */
-        .res-inner{background:rgba(255,255,255,.95);border-radius:14px;padding:18px 20px;color:#1a1a2e;}
-        [data-theme="light"] .res-inner{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+        /* Inner card — dark glass style */
+        .res-inner{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:18px 20px;}
+        [data-theme="light"] .res-inner{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 1px 4px rgba(0,0,0,.06);}
         /* Airline row inside inner card */
-        .res-airline-row{font-size:13px;font-weight:600;color:#475569;margin-bottom:14px;display:flex;align-items:center;gap:6px;}
-        .res-airline-row .cabin-tag{font-size:11px;color:#94a3b8;font-weight:500;}
+        .res-airline-row{font-size:13px;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
+        .res-airline-row .cabin-tag{font-size:11px;color:rgba(255,255,255,.4);font-weight:500;}
+        [data-theme="light"] .res-airline-row{color:#475569;}
+        [data-theme="light"] .res-airline-row .cabin-tag{color:#94a3b8;}
         /* Flight route inside inner card */
         .res-flight{display:flex;align-items:center;gap:14px;}
-        .res-air-logo{width:44px;height:44px;border-radius:10px;object-fit:contain;background:#f1f5f9;padding:4px;flex-shrink:0;}
+        .res-air-logo{width:44px;height:44px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,.9);padding:4px;flex-shrink:0;}
+        [data-theme="light"] .res-air-logo{background:#f1f5f9;}
         .res-times{flex:1;display:flex;align-items:center;gap:8px;}
         .res-ep{text-align:center;min-width:50px;}
-        .res-ep .time{font-family:Outfit;font-size:24px;font-weight:800;color:#1a1a2e;line-height:1.1;}
-        .res-ep .code{font-size:11px;color:#94a3b8;font-weight:600;letter-spacing:.5px;margin-top:2px;}
+        .res-ep .time{font-family:Outfit;font-size:24px;font-weight:800;color:#fff;line-height:1.1;}
+        .res-ep .code{font-size:11px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.5px;margin-top:2px;}
+        [data-theme="light"] .res-ep .time{color:#1a1a2e;}
+        [data-theme="light"] .res-ep .code{color:#94a3b8;}
         .res-line{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 4px;}
-        .res-line-bar{width:100%;height:2px;background:#cbd5e1;position:relative;}
-        .res-line-bar::before,.res-line-bar::after{content:'';position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:#94a3b8;}
+        .res-line-bar{width:100%;height:2px;background:rgba(255,255,255,.2);position:relative;}
+        .res-line-bar::before,.res-line-bar::after{content:'';position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);}
         .res-line-bar::before{left:0;}
         .res-line-bar::after{right:0;}
-        .res-dur{font-size:11px;color:#94a3b8;font-weight:500;}
+        [data-theme="light"] .res-line-bar{background:#cbd5e1;}
+        [data-theme="light"] .res-line-bar::before,[data-theme="light"] .res-line-bar::after{background:#94a3b8;}
+        .res-dur{font-size:11px;color:rgba(255,255,255,.4);font-weight:500;}
         .res-stops{font-size:10px;font-weight:600;}
+        [data-theme="light"] .res-dur{color:#94a3b8;}
         /* Bottom — price + CTA */
         .res-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:0 2px;}
         .res-price{display:flex;align-items:baseline;gap:6px;}
