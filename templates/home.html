@@ -943,7 +943,7 @@ const I={
         tourDest:'Destino ou Atividade',explore:'Explorar Tours',orAgent:'Ou fale com nosso agente',
         best:'Melhor Preco',pp:'por pessoa',pn:'por noite',book:'Reservar',searching:'Buscando...',found:'voos encontrados',noFlights:'Nenhum voo encontrado.',
         direct:'Direto',stop1:'1 parada',stops:'paradas',hotelDest:'Destino',
-        wamsg:'Oi Hudson! Vi um voo {f} → {t} em {d} por ${p}. Quero reservar!',
+        wamsg_head:'Oi Hudson! Quero reservar este voo:',wamsg_airline:'Companhia',wamsg_route:'Rota',wamsg_date:'Data',wamsg_dep:'Saida',wamsg_arr:'Chegada',wamsg_dur:'Duracao',wamsg_stops:'Paradas',wamsg_class:'Classe',wamsg_pax:'Passageiros',wamsg_price:'Preco',wamsg_bags:'Bagagem',wamsg_carry:'mao',wamsg_checked:'despachada',wamsg_adults:'adulto(s)',wamsg_children:'crianca(s)',wamsg_infants:'bebe(s)',wamsg_trip:'Tipo',
     },
     en:{flights:'Flights',hotels:'Hotels',tours:'Tours',cruises:'Cruises',
         rt:'Round Trip',ow:'One Way',eco:'Economy',biz:'Business',first:'First Class',
@@ -959,7 +959,7 @@ const I={
         tourDest:'Destination or Activity',explore:'Explore Tours',orAgent:'Or speak with our agent',
         best:'Best Price',pp:'per person',pn:'per night',book:'Book Now',searching:'Searching...',found:'flights found',noFlights:'No flights found.',
         direct:'Direct',stop1:'1 stop',stops:'stops',hotelDest:'Destination',
-        wamsg:'Hi Hudson! I found a flight {f} → {t} on {d} for ${p}. I want to book!',
+        wamsg_head:'Hi Hudson! I want to book this flight:',wamsg_airline:'Airline',wamsg_route:'Route',wamsg_date:'Date',wamsg_dep:'Departure',wamsg_arr:'Arrival',wamsg_dur:'Duration',wamsg_stops:'Stops',wamsg_class:'Class',wamsg_pax:'Passengers',wamsg_price:'Price',wamsg_bags:'Bags',wamsg_carry:'carry-on',wamsg_checked:'checked',wamsg_adults:'adult(s)',wamsg_children:'child(ren)',wamsg_infants:'infant(s)',wamsg_trip:'Type',
     },
     es:{flights:'Vuelos',hotels:'Hoteles',tours:'Tours',cruises:'Cruceros',
         rt:'Ida y Vuelta',ow:'Solo Ida',eco:'Economica',biz:'Ejecutiva',first:'Primera Clase',
@@ -975,7 +975,7 @@ const I={
         tourDest:'Destino o Actividad',explore:'Explorar Tours',orAgent:'O habla con nuestro agente',
         best:'Mejor Precio',pp:'por persona',pn:'por noche',book:'Reservar',searching:'Buscando...',found:'vuelos encontrados',noFlights:'No se encontraron vuelos.',
         direct:'Directo',stop1:'1 escala',stops:'escalas',hotelDest:'Destino',
-        wamsg:'Hola Hudson! Vi un vuelo {f} → {t} el {d} por ${p}. Quiero reservar!',
+        wamsg_head:'Hola Hudson! Quiero reservar este vuelo:',wamsg_airline:'Aerolinea',wamsg_route:'Ruta',wamsg_date:'Fecha',wamsg_dep:'Salida',wamsg_arr:'Llegada',wamsg_dur:'Duracion',wamsg_stops:'Escalas',wamsg_class:'Clase',wamsg_pax:'Pasajeros',wamsg_price:'Precio',wamsg_bags:'Equipaje',wamsg_carry:'mano',wamsg_checked:'facturado',wamsg_adults:'adulto(s)',wamsg_children:'nino(s)',wamsg_infants:'bebe(s)',wamsg_trip:'Tipo',
     }
 };
 function t(k){return I[lang]?.[k]||I.pt[k]||k;}
@@ -1305,10 +1305,34 @@ function doSearch(){
         list.innerHTML=flights.map((fl,i)=>{
             const stops=fl.stops===0?t('direct'):fl.stops===1?t('stop1'):`${fl.stops} ${t('stops')}`;
             const stopsColor=fl.stops===0?'#06d6a0':fl.stops===1?'#ffb347':'#94a3b8';
-            const msg=encodeURIComponent(t('wamsg').replace('{f}',f).replace('{t}',tt).replace('{d}',d).replace('{p}',fl.price));
             const tripLabel=trip==='rt'?t('rt'):t('ow');
             const cabinLabel=cabin==='economy'?t('eco'):cabin==='business'?t('biz'):cabin==='first'?t('first'):'Premium';
-            const paxLabel=paxA+(paxC>0?' + '+paxC:'')+(paxI>0?' + '+paxI:'');
+            const paxParts=[];
+            if(paxA>0)paxParts.push(paxA+' '+t('wamsg_adults'));
+            if(paxC>0)paxParts.push(paxC+' '+t('wamsg_children'));
+            if(paxI>0)paxParts.push(paxI+' '+t('wamsg_infants'));
+            const paxLabel=paxParts.join(', ');
+            const bagParts=[];
+            if(paxCB>0)bagParts.push(paxCB+' '+t('wamsg_carry'));
+            if(paxDB>0)bagParts.push(paxDB+' '+t('wamsg_checked'));
+            const retDate=document.getElementById('ret').value;
+            const msgLines=[
+                t('wamsg_head'),
+                '',
+                '✈️ '+t('wamsg_airline')+': '+fl.airline+(fl.airlineCode?' ('+fl.airlineCode+')':''),
+                '🛫 '+t('wamsg_route')+': '+(fl.originCity||f)+' ('+( fl.origin||f)+') → '+(fl.destinationCity||tt)+' ('+(fl.destination||tt)+')',
+                '📅 '+t('wamsg_date')+': '+(fl.departureDate||d)+(trip==='rt'&&retDate?' → '+retDate:''),
+                '🕐 '+t('wamsg_dep')+': '+(fl.departureTime||'--:--')+' | '+t('wamsg_arr')+': '+(fl.arrivalTime||'--:--'),
+                '⏱️ '+t('wamsg_dur')+': '+(fl.duration||'N/A'),
+                '📍 '+t('wamsg_stops')+': '+stops,
+                '💺 '+t('wamsg_class')+': '+cabinLabel,
+                '🎫 '+t('wamsg_trip')+': '+tripLabel,
+                '👥 '+t('wamsg_pax')+': '+paxLabel,
+                bagParts.length?'🧳 '+t('wamsg_bags')+': '+bagParts.join(', '):'',
+                '',
+                '💰 '+t('wamsg_price')+': $'+fl.price+' '+t('pp'),
+            ].filter(l=>l!==undefined).join('\n');
+            const msg=encodeURIComponent(msgLines);
             const logoHQ=fl.airlineCode?`https://pics.avs.io/200/200/${fl.airlineCode}.png`:fl.airlineLogo||'';
             const originCity=fl.originCity||f;
             const destCity=fl.destinationCity||tt;
@@ -1341,7 +1365,20 @@ function searchHotels(){
         document.getElementById('resCount').textContent=h.length+' hotels';
         if(!h.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--t3);">No hotels found.</div>';return;}
         list.innerHTML=h.map((ht,i)=>{
-            const msg=encodeURIComponent(`Hi! Hotel ${ht.name} in ${d} for $${ht.price}/night.`);
+            const htMsg=[
+                lang==='pt'?'Oi Hudson! Quero reservar este hotel:':lang==='es'?'Hola Hudson! Quiero reservar este hotel:':'Hi Hudson! I want to book this hotel:',
+                '',
+                '🏨 Hotel: '+ht.name,
+                '📍 '+(lang==='pt'?'Destino':lang==='es'?'Destino':'Destination')+': '+d,
+                '📅 Check-in: '+ci,
+                '📅 Check-out: '+co,
+                '👥 '+(lang==='pt'?'Hospedes':lang==='es'?'Huespedes':'Guests')+': '+paxA,
+                ht.stars?'⭐ '+ht.stars+' '+(lang==='pt'?'estrelas':lang==='es'?'estrellas':'stars'):'',
+                ht.rating?'📊 Rating: '+ht.rating+'/10':'',
+                '',
+                '💰 '+(lang==='pt'?'Preco':lang==='es'?'Precio':'Price')+': $'+ht.price+' '+(lang==='pt'?'por noite':lang==='es'?'por noche':'per night'),
+            ].filter(l=>l).join('\n');
+            const msg=encodeURIComponent(htMsg);
             return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
 <div class="res-header"><i class="bi bi-building"></i><div><div class="res-header-txt">${ht.name}</div><div class="res-header-sub">${d} · ${ci} → ${co}</div></div></div>
 <div class="res-inner" style="display:flex;align-items:center;gap:16px;">
