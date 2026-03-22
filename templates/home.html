@@ -74,6 +74,20 @@
         .airport-item .ac-name { font-size:11px; color:var(--gray-500); }
         .airport-item .ac-country { font-size:11px; color:var(--gray-600); }
 
+        /* Passenger dropdown */
+        .pax-dropdown { position:absolute; top:calc(100% + 6px); left:0; right:0; background:var(--bg3); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:8px; display:none; z-index:150; box-shadow:0 16px 48px rgba(0,0,0,0.5); min-width:260px; }
+        .pax-dropdown.show { display:block; }
+        .pax-row { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid rgba(255,255,255,0.04); }
+        .pax-info { }
+        .pax-label { font-size:14px; font-weight:600; color:#fff; }
+        .pax-age { font-size:11px; color:var(--gray-500); margin-top:2px; }
+        .pax-controls { display:flex; align-items:center; gap:12px; }
+        .pax-btn { width:32px; height:32px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:var(--gray-400); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+        .pax-btn:hover { border-color:var(--coral); color:var(--coral); background:rgba(255,87,87,0.06); }
+        .pax-count { font-family:'Outfit'; font-size:18px; font-weight:700; color:#fff; min-width:24px; text-align:center; }
+        .pax-done { width:100%; padding:12px; border:none; border-radius:12px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-family:'Outfit'; font-size:14px; font-weight:700; cursor:pointer; margin-top:6px; transition:all 0.2s; }
+        .pax-done:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(255,87,87,0.3); }
+
         /* Better date picker */
         .search-field input[type="date"] { color-scheme:dark; }
         .search-field input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(0.6); cursor:pointer; font-size:18px; }
@@ -337,9 +351,52 @@
                     <label data-i18n="lbl_return">Volta</label>
                     <input type="date" id="returnDate" style="font-size:14px;padding-top:30px;">
                 </div>
-                <div class="search-field" style="flex:0.6;">
+                <div class="search-field" style="flex:0.8;position:relative;">
                     <label data-i18n="lbl_pax">Passageiros</label>
-                    <select id="adults"><option value="1">1 pax</option><option value="2">2 pax</option><option value="3">3 pax</option><option value="4">4 pax</option><option value="5">5 pax</option></select>
+                    <div id="paxDisplay" onclick="document.getElementById('paxDropdown').classList.toggle('show')" style="width:100%;padding:32px 16px 12px;border:1px solid rgba(255,255,255,0.06);border-radius:18px;font-size:14px;font-family:DM Sans;font-weight:600;color:#fff;background:rgba(255,255,255,0.03);cursor:pointer;display:flex;align-items:center;gap:6px;">
+                        <i class="bi bi-people-fill" style="color:var(--coral);"></i>
+                        <span id="paxText">1 Adulto</span>
+                        <i class="bi bi-chevron-down" style="margin-left:auto;font-size:10px;color:var(--gray-500);"></i>
+                    </div>
+                    <input type="hidden" id="adults" value="1">
+                    <input type="hidden" id="children" value="0">
+                    <input type="hidden" id="infants" value="0">
+                    <div class="pax-dropdown" id="paxDropdown">
+                        <div class="pax-row">
+                            <div class="pax-info">
+                                <div class="pax-label" data-i18n="pax_adults">Adultos</div>
+                                <div class="pax-age" data-i18n="pax_adults_age">12+ anos</div>
+                            </div>
+                            <div class="pax-controls">
+                                <button class="pax-btn" onclick="changePax('adults',-1)"><i class="bi bi-dash"></i></button>
+                                <span class="pax-count" id="adultsCount">1</span>
+                                <button class="pax-btn" onclick="changePax('adults',1)"><i class="bi bi-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="pax-row">
+                            <div class="pax-info">
+                                <div class="pax-label" data-i18n="pax_children">Criancas</div>
+                                <div class="pax-age" data-i18n="pax_children_age">2-11 anos</div>
+                            </div>
+                            <div class="pax-controls">
+                                <button class="pax-btn" onclick="changePax('children',-1)"><i class="bi bi-dash"></i></button>
+                                <span class="pax-count" id="childrenCount">0</span>
+                                <button class="pax-btn" onclick="changePax('children',1)"><i class="bi bi-plus"></i></button>
+                            </div>
+                        </div>
+                        <div class="pax-row" style="border-bottom:none;">
+                            <div class="pax-info">
+                                <div class="pax-label" data-i18n="pax_infants">Bebes</div>
+                                <div class="pax-age" data-i18n="pax_infants_age">0-23 meses</div>
+                            </div>
+                            <div class="pax-controls">
+                                <button class="pax-btn" onclick="changePax('infants',-1)"><i class="bi bi-dash"></i></button>
+                                <span class="pax-count" id="infantsCount">0</span>
+                                <button class="pax-btn" onclick="changePax('infants',1)"><i class="bi bi-plus"></i></button>
+                            </div>
+                        </div>
+                        <button class="pax-done" onclick="document.getElementById('paxDropdown').classList.remove('show')" data-i18n="pax_done">Pronto</button>
+                    </div>
                 </div>
                 <button class="search-btn" id="searchBtn" onclick="searchFlights()" style="flex:0 0 auto;"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
             </div>
@@ -664,6 +721,47 @@ function searchHotels(){
         list.innerHTML=html;
     }).catch(()=>{list.innerHTML='<div style="text-align:center;padding:48px;color:var(--coral);"><p>Erro. Tente novamente.</p></div>';});
 }
+// ===== PASSENGER COUNTER =====
+function changePax(type, delta) {
+    const el = document.getElementById(type);
+    let val = parseInt(el.value) + delta;
+    if (type === 'adults') val = Math.max(1, Math.min(9, val));
+    else val = Math.max(0, Math.min(6, val));
+    el.value = val;
+    document.getElementById(type + 'Count').textContent = val;
+    updatePaxText();
+}
+
+function updatePaxText() {
+    const a = parseInt(document.getElementById('adults').value);
+    const c = parseInt(document.getElementById('children').value);
+    const inf = parseInt(document.getElementById('infants').value);
+    let parts = [];
+    const L = currentLang || 'pt';
+    if (L === 'pt') {
+        parts.push(a === 1 ? '1 Adulto' : `${a} Adultos`);
+        if (c > 0) parts.push(c === 1 ? '1 Crianca' : `${c} Criancas`);
+        if (inf > 0) parts.push(inf === 1 ? '1 Bebe' : `${inf} Bebes`);
+    } else if (L === 'en') {
+        parts.push(a === 1 ? '1 Adult' : `${a} Adults`);
+        if (c > 0) parts.push(c === 1 ? '1 Child' : `${c} Children`);
+        if (inf > 0) parts.push(inf === 1 ? '1 Infant' : `${inf} Infants`);
+    } else {
+        parts.push(a === 1 ? '1 Adulto' : `${a} Adultos`);
+        if (c > 0) parts.push(c === 1 ? '1 Nino' : `${c} Ninos`);
+        if (inf > 0) parts.push(inf === 1 ? '1 Bebe' : `${inf} Bebes`);
+    }
+    document.getElementById('paxText').textContent = parts.join(', ');
+}
+
+// Close pax dropdown on outside click
+document.addEventListener('click', e => {
+    if (!e.target.closest('#paxDisplay') && !e.target.closest('#paxDropdown')) {
+        const dd = document.getElementById('paxDropdown');
+        if (dd) dd.classList.remove('show');
+    }
+});
+
 // ===== AIRPORT AUTOCOMPLETE =====
 const AIRPORTS=[
     {code:'GRU',city:'Sao Paulo',name:'Guarulhos International',country:'Brasil'},
@@ -812,6 +910,7 @@ const LANG = {
     pt: {
         nav_flights:'Voos', nav_hotels:'Hoteis', nav_cruises:'Cruzeiros', nav_deals:'Ofertas',
         trip_roundtrip:'Ida e Volta', trip_oneway:'Somente Ida', trip_multi:'Multi-destinos',
+        pax_adults:'Adultos', pax_adults_age:'12+ anos', pax_children:'Criancas', pax_children_age:'2-11 anos', pax_infants:'Bebes', pax_infants_age:'0-23 meses', pax_done:'Pronto',
         hero_pill:'As melhores ofertas de viagem em um so lugar', hero_new:'NOVO',
         hero_title:'Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span>',
         hero_sub:'Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.',
@@ -839,6 +938,7 @@ const LANG = {
     en: {
         nav_flights:'Flights', nav_hotels:'Hotels', nav_cruises:'Cruises', nav_deals:'Deals',
         trip_roundtrip:'Round Trip', trip_oneway:'One Way', trip_multi:'Multi-city',
+        pax_adults:'Adults', pax_adults_age:'12+ years', pax_children:'Children', pax_children_age:'2-11 years', pax_infants:'Infants', pax_infants_age:'0-23 months', pax_done:'Done',
         hero_pill:'The best travel deals in one place', hero_new:'NEW',
         hero_title:'Find the Best<br><span class="gradient">Flight Deals</span>',
         hero_sub:'Compare prices on <strong>flights</strong>, hotels and cruises in real time. Personalized service with a certified travel agent.',
@@ -866,6 +966,7 @@ const LANG = {
     es: {
         nav_flights:'Vuelos', nav_hotels:'Hoteles', nav_cruises:'Cruceros', nav_deals:'Ofertas',
         trip_roundtrip:'Ida y Vuelta', trip_oneway:'Solo Ida', trip_multi:'Multi-destinos',
+        pax_adults:'Adultos', pax_adults_age:'12+ anos', pax_children:'Ninos', pax_children_age:'2-11 anos', pax_infants:'Bebes', pax_infants_age:'0-23 meses', pax_done:'Listo',
         hero_pill:'Las mejores ofertas de viaje en un solo lugar', hero_new:'NUEVO',
         hero_title:'Encuentra las Mejores<br><span class="gradient">Ofertas de Vuelos</span>',
         hero_sub:'Compara precios de <strong>vuelos</strong>, hoteles y cruceros en tiempo real. Atencion personalizada con agente certificado.',
@@ -935,6 +1036,7 @@ function t(key) { return LANG[currentLang][key] || LANG['pt'][key] || key; }
 
 // Apply saved language on load
 setLang(currentLang);
+updatePaxText();
 </script>
 </body>
 </html>
