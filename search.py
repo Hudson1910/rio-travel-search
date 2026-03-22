@@ -52,15 +52,15 @@ def search_flights(origin, destination, depart_date, return_date=None,
             msg = data.get('message', 'API error')
             return {'flights': [], 'error': str(msg)}
 
-        d = data.get('data', {})
-        itineraries = d.get('itineraries', {})
-        top = itineraries.get('topFlights', [])
-        other = itineraries.get('otherFlights', [])
+        d = data.get('data') or {}
+        itineraries = d.get('itineraries') or {}
+        top = itineraries.get('topFlights') or []
+        other = itineraries.get('otherFlights') or []
         all_flights = top + other
 
         # Price history
-        ph = d.get('priceHistory', {})
-        price_summary = ph.get('summary', {})
+        ph = d.get('priceHistory') or {}
+        price_summary = ph.get('summary') or {}
 
         flights = []
         for fl in all_flights[:25]:
@@ -362,23 +362,26 @@ def search_cars(location, pickup_date, dropoff_date, pickup_time='10:00:00',
         lat = loc.get('latitude', 0)
         lng = loc.get('longitude', 0)
 
-        # Detect country code from location name
-        country = 'us'
+        # from_country must be a locale code, not country code
+        # Allowed: it,de,nl,fr,es,ca,no,fi,sv,da,cs,hu,ro,ja,pl,el,ru,tr,bg,ar,ko,he,lv,uk,id,ms,th,et,hr,lt,sk,sr,sl,vi,tl
+        country = 'es'  # default to Spanish (works for US, Mexico, Latin America)
         loc_lower = location.lower()
-        if any(x in loc_lower for x in ['brazil', 'brasil', 'sao paulo', 'rio']):
-            country = 'br'
-        elif any(x in loc_lower for x in ['mexico', 'cancun', 'guadalajara']):
-            country = 'mx'
-        elif any(x in loc_lower for x in ['uk', 'london', 'england']):
-            country = 'gb'
-        elif any(x in loc_lower for x in ['france', 'paris']):
+        if any(x in loc_lower for x in ['france', 'paris', 'lyon', 'nice']):
             country = 'fr'
-        elif any(x in loc_lower for x in ['spain', 'madrid', 'barcelona']):
-            country = 'es'
-        elif any(x in loc_lower for x in ['italy', 'rome', 'milan']):
+        elif any(x in loc_lower for x in ['italy', 'rome', 'milan', 'roma']):
             country = 'it'
-        elif any(x in loc_lower for x in ['germany', 'berlin', 'munich']):
+        elif any(x in loc_lower for x in ['germany', 'berlin', 'munich', 'frankfurt']):
             country = 'de'
+        elif any(x in loc_lower for x in ['netherlands', 'amsterdam']):
+            country = 'nl'
+        elif any(x in loc_lower for x in ['japan', 'tokyo', 'osaka']):
+            country = 'ja'
+        elif any(x in loc_lower for x in ['turkey', 'istanbul']):
+            country = 'tr'
+        elif any(x in loc_lower for x in ['russia', 'moscow']):
+            country = 'ru'
+        elif any(x in loc_lower for x in ['korea', 'seoul']):
+            country = 'ko'
 
         # Step 2: Search cars
         resp = requests.get(f'{BK_BASE}/v1/car-rental/search',
@@ -398,7 +401,9 @@ def search_cars(location, pickup_date, dropoff_date, pickup_time='10:00:00',
             timeout=30)
         data = resp.json()
 
-        cars_raw = data.get('search_results', data.get('result', []))
+        if not isinstance(data, dict):
+            return {'cars': [], 'error': 'Invalid response'}
+        cars_raw = data.get('search_results') or data.get('result') or []
         if not isinstance(cars_raw, list):
             cars_raw = []
 
