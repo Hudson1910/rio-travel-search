@@ -332,8 +332,8 @@
     <div class="nav-links">
         <a href="#" class="active" data-i18n="nav_flights">Voos</a>
         <a href="#" data-i18n="nav_hotels">Hoteis</a>
+        <a href="#" data-i18n="nav_tours">Tours</a>
         <a href="#" data-i18n="nav_cruises">Cruzeiros</a>
-        <a href="#" data-i18n="nav_deals">Ofertas</a>
     </div>
     <div class="nav-right">
         <div class="lang-switch" id="langSwitch">
@@ -343,13 +343,13 @@
                 <i class="bi bi-chevron-down arrow"></i>
             </div>
             <div class="lang-dropdown" id="langDropdown">
-                <div class="lang-option active" data-lang="pt" onclick="setLang('pt')">
+                <div class="lang-option active" data-lang="pt" onmousedown="event.stopPropagation();setLang('pt')">
                     <span class="flag">&#127463;&#127479;</span> Portugues
                 </div>
-                <div class="lang-option" data-lang="en" onclick="setLang('en')">
+                <div class="lang-option" data-lang="en" onmousedown="event.stopPropagation();setLang('en')">
                     <span class="flag">&#127482;&#127480;</span> English
                 </div>
-                <div class="lang-option" data-lang="es" onclick="setLang('es')">
+                <div class="lang-option" data-lang="es" onmousedown="event.stopPropagation();setLang('es')">
                     <span class="flag">&#127474;&#127485;</span> Espanol
                 </div>
             </div>
@@ -381,6 +381,7 @@
             <div class="search-tabs">
                 <button class="search-tab active" onclick="switchTab('flights')"><i class="bi bi-airplane-fill"></i> <span data-i18n="nav_flights">Voos</span></button>
                 <button class="search-tab" onclick="switchTab('hotels')"><i class="bi bi-building"></i> <span data-i18n="nav_hotels">Hoteis</span></button>
+                <button class="search-tab" onclick="switchTab('tours')"><i class="bi bi-compass"></i> <span data-i18n="nav_tours">Tours</span></button>
                 <button class="search-tab" onclick="switchTab('cruises')"><i class="bi bi-water"></i> <span data-i18n="nav_cruises">Cruzeiros</span></button>
             </div>
 
@@ -560,6 +561,15 @@
                 <button class="search-btn" onclick="searchHotels()"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
             </div>
 
+            <!-- Tours form -->
+            <div id="toursForm" class="search-form" style="display:none;">
+                <div class="search-field" style="flex:2;position:relative;">
+                    <label data-i18n="lbl_tour_dest">Destino ou Atividade</label>
+                    <input type="text" id="tourDest" placeholder="Cancun, Rio de Janeiro, New York...">
+                </div>
+                <button class="search-btn" onclick="searchTours()"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
+            </div>
+
             <div id="cruiseForm" class="search-form" style="display:none;">
                 <div style="padding:32px;text-align:center;width:100%;">
                     <i class="bi bi-water" style="font-size:36px;color:var(--sky);margin-bottom:12px;display:block;"></i>
@@ -721,12 +731,52 @@ const obs=new IntersectionObserver(e=>e.forEach(el=>{if(el.isIntersecting)el.tar
 document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
 
 // Tabs
-function switchTab(t){
-    document.querySelectorAll('.search-tab').forEach((b,i)=>b.classList.toggle('active',['flights','hotels','cruises'][i]===t));
-    document.getElementById('flightForm').style.display=t==='flights'?'flex':'none';
-    document.getElementById('hotelForm').style.display=t==='hotels'?'flex':'none';
-    document.getElementById('cruiseForm').style.display=t==='cruises'?'flex':'none';
+const tabNames=['flights','hotels','tours','cruises'];
+function switchTab(tab){
+    document.querySelectorAll('.search-tab').forEach((b,i)=>b.classList.toggle('active',tabNames[i]===tab));
+    document.getElementById('flightForm').style.display=tab==='flights'?'flex':'none';
+    document.getElementById('hotelForm').style.display=tab==='hotels'?'flex':'none';
+    document.getElementById('toursForm').style.display=tab==='tours'?'flex':'none';
+    document.getElementById('cruiseForm').style.display=tab==='cruises'?'flex':'none';
+    // Show/hide options bar (only for flights)
+    const optBar = document.querySelector('[id="tripTypeBar"]').parentElement;
+    if(optBar) optBar.style.display = tab==='flights'?'flex':'none';
     document.getElementById('results').style.display='none';
+}
+
+// Tours search → Civitatis + Viator
+function searchTours(){
+    const dest=document.getElementById('tourDest').value.trim();
+    if(!dest){alert(t('error_fields'));return;}
+    const results=document.getElementById('results');
+    const list=document.getElementById('resultsList');
+    results.style.display='block';
+    document.getElementById('resultsTitle').innerHTML=`<span class="route-badge">${dest}</span> Tours & Activities`;
+    const civUrl=`https://www.civitatis.com/en/?query=${encodeURIComponent(dest)}&ag_aid=64713`;
+    const viaUrl=`https://www.viator.com/searchResults/all?text=${encodeURIComponent(dest)}&pid=P00006875`;
+    list.innerHTML=`
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <a href="${civUrl}" target="_blank" class="result-card" style="text-decoration:none;display:block;">
+                <div class="result-inner" style="flex-direction:column;text-align:center;gap:16px;padding:32px;">
+                    <div style="font-size:48px;">&#127758;</div>
+                    <div><div style="font-size:20px;font-weight:800;color:#fff;font-family:Outfit;">Civitatis</div>
+                    <div style="font-size:13px;color:var(--gray-400);margin-top:6px;" data-i18n="tour_civitatis_desc">Tours, excursoes e atividades em ${dest}</div></div>
+                    <div style="padding:12px 24px;background:linear-gradient(135deg,var(--coral),var(--orange));border-radius:12px;color:#fff;font-weight:700;font-family:Outfit;font-size:14px;" data-i18n="tour_explore">Explorar Tours</div>
+                </div>
+            </a>
+            <a href="${viaUrl}" target="_blank" class="result-card" style="text-decoration:none;display:block;">
+                <div class="result-inner" style="flex-direction:column;text-align:center;gap:16px;padding:32px;">
+                    <div style="font-size:48px;">&#127961;</div>
+                    <div><div style="font-size:20px;font-weight:800;color:#fff;font-family:Outfit;">Viator</div>
+                    <div style="font-size:13px;color:var(--gray-400);margin-top:6px;" data-i18n="tour_viator_desc">Passeios, ingressos e experiencias em ${dest}</div></div>
+                    <div style="padding:12px 24px;background:linear-gradient(135deg,#06d6a0,#0ead8c);border-radius:12px;color:#fff;font-weight:700;font-family:Outfit;font-size:14px;" data-i18n="tour_explore">Explorar Tours</div>
+                </div>
+            </a>
+        </div>
+        <div style="text-align:center;margin-top:20px;padding:16px;">
+            <a href="https://wa.me/14352146939?text=${encodeURIComponent('Oi! Quero ajuda para encontrar tours e atividades em '+dest)}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#25d366;color:#fff;border-radius:14px;text-decoration:none;font-weight:700;font-size:14px;font-family:Outfit;"><i class="bi bi-whatsapp"></i> <span data-i18n="tour_agent_help">Ou fale com nosso agente</span></a>
+        </div>`;
+    document.getElementById('resultsCount').textContent='';
 }
 
 // Min dates
@@ -1083,6 +1133,8 @@ const LANG = {
         pax_adults:'Adultos', pax_adults_age:'12+ anos', pax_children:'Criancas', pax_children_age:'2-11 anos', pax_infants:'Bebes', pax_infants_age:'0-23 meses', pax_done:'Pronto',
         pax_bags:'Bagagem', pax_cabin_bag:'Mao', pax_checked_bag:'Despachada',
         class_economy:'Economica', class_premium:'Premium Economy', class_business:'Executiva', class_first:'Primeira Classe',
+        nav_tours:'Tours', lbl_tour_dest:'Destino ou Atividade', tour_explore:'Explorar Tours', tour_agent_help:'Ou fale com nosso agente',
+        tour_civitatis_desc:'Tours, excursoes e atividades', tour_viator_desc:'Passeios, ingressos e experiencias',
         hero_pill:'As melhores ofertas de viagem em um so lugar', hero_new:'NOVO',
         hero_title:'Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span>',
         hero_sub:'Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.',
@@ -1113,6 +1165,8 @@ const LANG = {
         pax_adults:'Adults', pax_adults_age:'12+ years', pax_children:'Children', pax_children_age:'2-11 years', pax_infants:'Infants', pax_infants_age:'0-23 months', pax_done:'Done',
         pax_bags:'Bags', pax_cabin_bag:'Cabin', pax_checked_bag:'Checked',
         class_economy:'Economy', class_premium:'Premium Economy', class_business:'Business', class_first:'First Class',
+        nav_tours:'Tours', lbl_tour_dest:'Destination or Activity', tour_explore:'Explore Tours', tour_agent_help:'Or speak with our agent',
+        tour_civitatis_desc:'Tours, excursions and activities', tour_viator_desc:'Tours, tickets and experiences',
         hero_pill:'The best travel deals in one place', hero_new:'NEW',
         hero_title:'Find the Best<br><span class="gradient">Flight Deals</span>',
         hero_sub:'Compare prices on <strong>flights</strong>, hotels and cruises in real time. Personalized service with a certified travel agent.',
@@ -1143,6 +1197,8 @@ const LANG = {
         pax_adults:'Adultos', pax_adults_age:'12+ anos', pax_children:'Ninos', pax_children_age:'2-11 anos', pax_infants:'Bebes', pax_infants_age:'0-23 meses', pax_done:'Listo',
         pax_bags:'Equipaje', pax_cabin_bag:'Mano', pax_checked_bag:'Facturado',
         class_economy:'Economica', class_premium:'Premium Economy', class_business:'Ejecutiva', class_first:'Primera Clase',
+        nav_tours:'Tours', lbl_tour_dest:'Destino o Actividad', tour_explore:'Explorar Tours', tour_agent_help:'O habla con nuestro agente',
+        tour_civitatis_desc:'Tours, excursiones y actividades', tour_viator_desc:'Paseos, entradas y experiencias',
         hero_pill:'Las mejores ofertas de viaje en un solo lugar', hero_new:'NUEVO',
         hero_title:'Encuentra las Mejores<br><span class="gradient">Ofertas de Vuelos</span>',
         hero_sub:'Compara precios de <strong>vuelos</strong>, hoteles y cruceros en tiempo real. Atencion personalizada con agente certificado.',
@@ -1205,6 +1261,11 @@ function setLang(lang) {
             if (label && tr[key]) label.textContent = tr[key];
         }
     });
+    // Update cabin class text
+    const cls = document.getElementById('cabinClass');
+    if (cls) setCabinClass(cls.value);
+    // Update pax text
+    updatePaxText();
 }
 
 // Helper for JS-generated content
