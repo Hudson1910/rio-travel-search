@@ -24,13 +24,13 @@
         .ani.v{opacity:1;transform:translateY(0);}
 
         /* NAV */
-        nav{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:background .3s;}
+        nav{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:background .3s;gap:8px;overflow:visible;}
         nav.scrolled{background:rgba(6,8,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
-        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-        .logo img{height:54px;border-radius:12px;background:rgba(255,255,255,.95);padding:4px;}
-        .logo span{font-family:Outfit;font-weight:900;font-size:32px;color:var(--w);letter-spacing:-1px;text-shadow:0 2px 8px rgba(0,0,0,.3);}
+        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:1;min-width:0;}
+        .logo img{height:50px;width:50px;border-radius:12px;object-fit:cover;flex-shrink:0;}
+        .logo span{font-family:Outfit;font-weight:900;font-size:28px;color:var(--w);letter-spacing:-1px;text-shadow:0 2px 8px rgba(0,0,0,.3);white-space:nowrap;}
         .logo .a{color:var(--coral);}
-        .nav-r{display:flex;align-items:center;gap:10px;}
+        .nav-r{display:flex;align-items:center;gap:8px;flex-shrink:0;}
         /* LANG */
         .lang{position:relative;}
         .lang-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--t2);font-size:13px;font-weight:600;cursor:pointer;font-family:Inter;}
@@ -216,14 +216,21 @@
         .wa-float:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(37,211,102,.45);}
         .wa-float i{font-size:22px;}
 
-        /* RESPONSIVE */
+        /* RESPONSIVE — Tablets landscape / small laptops */
+        @media(max-width:1024px){
+            .dests{padding:60px 16px;}
+            .feats{padding:60px 16px;}
+            .sb{max-width:100%;padding:0 4px;}
+        }
+        /* RESPONSIVE — Tablets / iPad */
         @media(max-width:900px){
-            .hero h1{font-size:36px;}
+            .hero h1{font-size:36px;letter-spacing:-1.5px;}
+            .hero p{font-size:15px;}
             .sb-fields{flex-direction:column;gap:8px;}
             .sf{min-width:100%!important;flex:1 1 100%!important;}
             .sb-btn{width:100%;justify-content:center;min-height:54px;}
             .swap{display:none;}
-            .sb-opts{gap:4px;}
+            .sb-opts{gap:4px;padding:10px 12px;}
             .opt-btn{font-size:11px;padding:6px 10px;}
             .res-inner{flex-direction:column;text-align:center;gap:12px;}
             .res-air{min-width:auto;justify-content:center;}
@@ -232,18 +239,95 @@
             .res-price .cta{width:100%;justify-content:center;padding:12px;}
             .dest-grid{grid-template-columns:1fr 1fr;}
             .dest-lg{grid-column:span 2;}
-            .feat-grid{grid-template-columns:1fr;}
-            .agent-box{flex-direction:column;text-align:center;}
-            .agent-btns{justify-content:center;}
+            .feat-grid{grid-template-columns:1fr 1fr;}
+            .agent-box{flex-direction:column;text-align:center;padding:28px 20px;}
+            .agent-btns{justify-content:center;flex-wrap:wrap;}
             nav .nav-links{display:none;}
+            .ft-inner{grid-template-columns:1fr 1fr;gap:28px;}
         }
-        @media(max-width:480px){
-            .hero{padding:80px 14px 30px;}
+        /* RESPONSIVE — Large phones / iPhone Pro Max / Android large */
+        @media(max-width:640px){
+            nav{padding:0 14px;height:60px;}
+            .logo img{height:42px;border-radius:9px;padding:3px;}
+            .logo span{font-size:24px;}
+            .nav-wa{padding:7px 12px;font-size:12px;border-radius:8px;}
+            .nav-wa i{font-size:15px;}
+            .lang-btn{padding:6px 10px;font-size:12px;}
+            .lang-btn .f{font-size:17px;}
+            .hero{padding:76px 14px 30px;min-height:auto;}
             .hero h1{font-size:28px;letter-spacing:-1px;}
-            .dest-grid{grid-template-columns:1fr;}
+            .hero p{font-size:14px;max-width:100%;}
+            .sb-box{border-radius:18px;}
+            .sb-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
+            .sb-tab{padding:14px 10px;font-size:12px;gap:5px;white-space:nowrap;min-width:0;}
+            .sb-tab i{font-size:15px;}
+            .sb-fields{padding:10px;gap:6px;}
+            .sf input,.sf select{min-height:54px;font-size:16px;padding:28px 12px 8px;border-radius:12px;}
+            .sf label{font-size:9px;top:8px;left:12px;}
+            .sb-btn{min-height:50px;font-size:14px;border-radius:12px;}
+            .sb-opts{padding:8px 10px;gap:3px;}
+            .opt-btn{padding:5px 8px;font-size:10px;border-radius:7px;}
+            .dest-grid{grid-template-columns:1fr;gap:12px;}
             .dest-lg{grid-column:span 1;aspect-ratio:4/3;}
+            .dest-lg .dest-name{font-size:22px;}
+            .feat-grid{grid-template-columns:1fr;gap:10px;}
+            .feat{padding:22px 18px;border-radius:16px;}
+            .agent{padding:40px 14px;}
+            .agent-box{padding:24px 18px;gap:18px;border-radius:18px;}
+            .agent-box img{width:72px;height:72px;}
+            .agent-box h3{font-size:18px;}
+            .agent-btns{flex-direction:column;width:100%;gap:6px;}
+            .agent-btns a{justify-content:center;width:100%;}
+            .sec-h h2{font-size:26px;}
+            .sec-h p{font-size:13px;}
+            .results{margin:20px auto 0;padding:0 4px;}
+            .res-card{border-radius:14px;margin-bottom:8px;}
+            .res-inner{padding:14px;}
+            .res-ep .time{font-size:18px;}
+            .res-price .amt{font-size:22px;}
+            .ft-inner{grid-template-columns:1fr;gap:24px;text-align:center;}
+            .ft-social{justify-content:center;}
+            footer{padding:40px 14px 30px;}
             .wa-float span{display:none;}
-            .wa-float{padding:14px;border-radius:50%;}
+            .wa-float{padding:14px;border-radius:50%;bottom:16px;right:16px;}
+            /* Autocomplete full width on mobile */
+            .ac{border-radius:12px;max-height:260px;}
+            .ac-i{padding:12px 14px;min-height:48px;}
+            /* Dropdowns */
+            .dd{min-width:220px;border-radius:12px;}
+            .lang-dd{min-width:150px;}
+        }
+        /* RESPONSIVE — Small phones / iPhone SE / older Android */
+        @media(max-width:380px){
+            nav{padding:0 10px;height:56px;}
+            .logo img{height:36px;}
+            .logo span{font-size:20px;}
+            .nav-wa span{display:none;}
+            .nav-wa{padding:8px;border-radius:8px;}
+            .lang-btn{padding:5px 8px;}
+            .lang-btn .f{font-size:15px;}
+            .lang-btn span:not(.f){display:none;}
+            .hero h1{font-size:24px;}
+            .hero p{font-size:13px;}
+            .sb-tab{font-size:11px;padding:12px 6px;}
+            .sf input,.sf select{min-height:50px;font-size:16px;}
+            .sb-btn{min-height:48px;font-size:13px;}
+            .dest-name{font-size:17px;}
+            .dest-lg .dest-name{font-size:19px;}
+            .agent-box img{width:64px;height:64px;}
+            .agent-box h3{font-size:16px;}
+            .sec-h h2{font-size:22px;}
+        }
+        /* Fix iOS zoom on input focus — keep font-size >= 16px */
+        @supports(-webkit-touch-callout:none){
+            .sf input,.sf select{font-size:16px;}
+        }
+        /* Safe area for devices with notch */
+        @supports(padding:max(0px)){
+            nav{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right));}
+            .hero{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right));}
+            .wa-float{right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));}
+            footer{padding-bottom:max(30px,env(safe-area-inset-bottom));}
         }
     </style>
 </head>
@@ -252,7 +336,7 @@
 <!-- NAV -->
 <nav id="nav">
     <a href="/" class="logo">
-        <img src="/static/logo-riotravel.png" alt="Rio Travel">
+        <img src="/static/logo-riotravel-sm.png" alt="Rio Travel">
         <span>Rio<span class="a">Travel</span></span>
     </a>
     <div class="nav-r">
@@ -462,7 +546,7 @@
 <footer>
     <div class="ft-inner">
         <div class="ft-col">
-            <div class="ft-logo"><img src="/static/logo-riotravel.png" alt="Rio Travel"><span>Rio<span class="a">Travel</span></span></div>
+            <div class="ft-logo"><img src="/static/logo-riotravel-sm.png" alt="Rio Travel"><span>Rio<span class="a">Travel</span></span></div>
             <p>Sua agencia de viagens nos EUA. Atendimento personalizado em Portugues, Ingles e Espanhol.</p>
             <div class="ft-social">
                 <a href="https://wa.me/14352146939" target="_blank"><i class="bi bi-whatsapp"></i></a>
@@ -505,43 +589,128 @@ let paxA=1,paxC=0,paxI=0,paxCB=0,paxDB=0;
 
 // ========== AIRPORTS ==========
 const AP=[
-    {c:'GRU',n:'Guarulhos Intl',ci:'Sao Paulo',co:'Brasil'},{c:'GIG',n:'Galeao Intl',ci:'Rio de Janeiro',co:'Brasil'},
-    {c:'BSB',n:'Juscelino Kubitschek',ci:'Brasilia',co:'Brasil'},{c:'CNF',n:'Confins Intl',ci:'Belo Horizonte',co:'Brasil'},
-    {c:'SSA',n:'Luis Eduardo Magalhaes',ci:'Salvador',co:'Brasil'},{c:'REC',n:'Guararapes Intl',ci:'Recife',co:'Brasil'},
+    // === BRASIL (todos principais) ===
+    {c:'GRU',n:'Guarulhos Intl',ci:'Sao Paulo',co:'Brasil'},{c:'CGH',n:'Congonhas',ci:'Sao Paulo',co:'Brasil'},
+    {c:'VCP',n:'Viracopos',ci:'Campinas',co:'Brasil'},{c:'GIG',n:'Galeao Intl',ci:'Rio de Janeiro',co:'Brasil'},
+    {c:'SDU',n:'Santos Dumont',ci:'Rio de Janeiro',co:'Brasil'},{c:'BSB',n:'Presidente JK',ci:'Brasilia',co:'Brasil'},
+    {c:'CNF',n:'Confins Intl',ci:'Belo Horizonte',co:'Brasil'},{c:'PLU',n:'Pampulha',ci:'Belo Horizonte',co:'Brasil'},
+    {c:'SSA',n:'Luis Eduardo Magalhaes',ci:'Salvador',co:'Brasil'},{c:'REC',n:'Guararapes',ci:'Recife',co:'Brasil'},
     {c:'CWB',n:'Afonso Pena',ci:'Curitiba',co:'Brasil'},{c:'POA',n:'Salgado Filho',ci:'Porto Alegre',co:'Brasil'},
     {c:'FOR',n:'Pinto Martins',ci:'Fortaleza',co:'Brasil'},{c:'FLN',n:'Hercilio Luz',ci:'Florianopolis',co:'Brasil'},
-    {c:'NAT',n:'Natal Intl',ci:'Natal',co:'Brasil'},{c:'VCP',n:'Viracopos',ci:'Campinas',co:'Brasil'},
-    {c:'SLC',n:'Salt Lake City Intl',ci:'Salt Lake City',co:'USA'},{c:'JFK',n:'John F Kennedy',ci:'New York',co:'USA'},
+    {c:'NAT',n:'Sao Goncalo',ci:'Natal',co:'Brasil'},{c:'BEL',n:'Val de Cans',ci:'Belem',co:'Brasil'},
+    {c:'MAO',n:'Eduardo Gomes',ci:'Manaus',co:'Brasil'},{c:'GYN',n:'Santa Genoveva',ci:'Goiania',co:'Brasil'},
+    {c:'SLZ',n:'Marechal Cunha Machado',ci:'Sao Luis',co:'Brasil'},{c:'MCZ',n:'Zumbi dos Palmares',ci:'Maceio',co:'Brasil'},
+    {c:'AJU',n:'Santa Maria',ci:'Aracaju',co:'Brasil'},{c:'THE',n:'Senador Petronio Portella',ci:'Teresina',co:'Brasil'},
+    {c:'CGB',n:'Marechal Rondon',ci:'Cuiaba',co:'Brasil'},{c:'CGR',n:'Intl de Campo Grande',ci:'Campo Grande',co:'Brasil'},
+    {c:'VIX',n:'Eurico de Aguiar Salles',ci:'Vitoria',co:'Brasil'},{c:'NVT',n:'Navegantes',ci:'Navegantes',co:'Brasil'},
+    {c:'IGU',n:'Cataratas Intl',ci:'Foz do Iguacu',co:'Brasil'},{c:'JPA',n:'Castro Pinto',ci:'Joao Pessoa',co:'Brasil'},
+    {c:'PMW',n:'Palmas Airport',ci:'Palmas',co:'Brasil'},{c:'PVH',n:'Governador Jorge T',ci:'Porto Velho',co:'Brasil'},
+    {c:'RBR',n:'Placido de Castro',ci:'Rio Branco',co:'Brasil'},{c:'MCP',n:'Alberto Alcolumbre',ci:'Macapa',co:'Brasil'},
+    {c:'BVB',n:'Atlas Brasil Cantanhede',ci:'Boa Vista',co:'Brasil'},{c:'LDB',n:'Londrina Airport',ci:'Londrina',co:'Brasil'},
+    {c:'UDI',n:'Ten Cel Aviador Cesar',ci:'Uberlandia',co:'Brasil'},{c:'JOI',n:'Joinville Airport',ci:'Joinville',co:'Brasil'},
+    {c:'IOS',n:'Jorge Amado',ci:'Ilheus',co:'Brasil'},{c:'BPS',n:'Porto Seguro',ci:'Porto Seguro',co:'Brasil'},
+    // === MEXICO (todos principais) ===
+    {c:'MEX',n:'Benito Juarez Intl',ci:'Mexico City',co:'Mexico'},{c:'CUN',n:'Cancun Intl',ci:'Cancun',co:'Mexico'},
+    {c:'GDL',n:'Miguel Hidalgo',ci:'Guadalajara',co:'Mexico'},{c:'MTY',n:'Mariano Escobedo',ci:'Monterrey',co:'Mexico'},
+    {c:'SJD',n:'Los Cabos Intl',ci:'San Jose del Cabo',co:'Mexico'},{c:'PVR',n:'Gustavo Diaz Ordaz',ci:'Puerto Vallarta',co:'Mexico'},
+    {c:'TIJ',n:'General Abelardo Rodriguez',ci:'Tijuana',co:'Mexico'},{c:'MID',n:'Manuel Crescencio Rejon',ci:'Merida',co:'Mexico'},
+    {c:'CZM',n:'Cozumel Intl',ci:'Cozumel',co:'Mexico'},{c:'HMO',n:'General Ignacio Pesqueira',ci:'Hermosillo',co:'Mexico'},
+    {c:'CUL',n:'Federal de Bachigualato',ci:'Culiacan',co:'Mexico'},{c:'BJX',n:'Del Bajio Intl',ci:'Leon/Guanajuato',co:'Mexico'},
+    {c:'OAX',n:'Xoxocotlan Intl',ci:'Oaxaca',co:'Mexico'},{c:'VSA',n:'Carlos Rovirosa',ci:'Villahermosa',co:'Mexico'},
+    {c:'AGU',n:'Jesus Teran Intl',ci:'Aguascalientes',co:'Mexico'},{c:'ZIH',n:'Ixtapa-Zihuatanejo Intl',ci:'Ixtapa',co:'Mexico'},
+    {c:'QRO',n:'Queretaro Intercontinental',ci:'Queretaro',co:'Mexico'},{c:'MLM',n:'Francisco J Mujica',ci:'Morelia',co:'Mexico'},
+    {c:'TAM',n:'General Francisco Javier Mina',ci:'Tampico',co:'Mexico'},{c:'ACA',n:'General Juan N Alvarez',ci:'Acapulco',co:'Mexico'},
+    {c:'CME',n:'Ciudad del Carmen',ci:'Ciudad del Carmen',co:'Mexico'},{c:'SLP',n:'Ponciano Arriaga',ci:'San Luis Potosi',co:'Mexico'},
+    {c:'PBC',n:'Hermanos Serdan',ci:'Puebla',co:'Mexico'},{c:'ZCL',n:'General Leobardo C Ruiz',ci:'Zacatecas',co:'Mexico'},
+    {c:'DGO',n:'Guadalupe Victoria',ci:'Durango',co:'Mexico'},{c:'CJS',n:'Abraham Gonzalez',ci:'Ciudad Juarez',co:'Mexico'},
+    {c:'REX',n:'General Lucio Blanco',ci:'Reynosa',co:'Mexico'},{c:'NLD',n:'Quetzalcoatl Intl',ci:'Nuevo Laredo',co:'Mexico'},
+    {c:'MZT',n:'General Rafael Buelna',ci:'Mazatlan',co:'Mexico'},{c:'HUX',n:'Bahias de Huatulco',ci:'Huatulco',co:'Mexico'},
+    {c:'TRC',n:'Francisco Sarabia',ci:'Torreon',co:'Mexico'},{c:'CHH',n:'General Roberto Fierro',ci:'Chihuahua',co:'Mexico'},
+    {c:'LMM',n:'Federal del Valle del Fuerte',ci:'Los Mochis',co:'Mexico'},{c:'TAP',n:'Tapachula Intl',ci:'Tapachula',co:'Mexico'},
+    {c:'TGZ',n:'Angel Albino Corzo',ci:'Tuxtla Gutierrez',co:'Mexico'},{c:'CTM',n:'Chetumal Intl',ci:'Chetumal',co:'Mexico'},
+    // === USA (todos principais + regionais) ===
+    {c:'SLC',n:'Salt Lake City Intl',ci:'Salt Lake City',co:'USA'},{c:'JFK',n:'John F Kennedy Intl',ci:'New York',co:'USA'},
+    {c:'LGA',n:'LaGuardia',ci:'New York',co:'USA'},{c:'EWR',n:'Newark Liberty',ci:'Newark',co:'USA'},
     {c:'LAX',n:'Los Angeles Intl',ci:'Los Angeles',co:'USA'},{c:'MIA',n:'Miami Intl',ci:'Miami',co:'USA'},
-    {c:'MCO',n:'Orlando Intl',ci:'Orlando',co:'USA'},{c:'EWR',n:'Newark Liberty',ci:'Newark',co:'USA'},
-    {c:'ORD',n:'O\'Hare Intl',ci:'Chicago',co:'USA'},{c:'DFW',n:'Dallas Fort Worth',ci:'Dallas',co:'USA'},
-    {c:'ATL',n:'Hartsfield-Jackson',ci:'Atlanta',co:'USA'},{c:'DEN',n:'Denver Intl',ci:'Denver',co:'USA'},
-    {c:'SFO',n:'San Francisco Intl',ci:'San Francisco',co:'USA'},{c:'SEA',n:'Seattle-Tacoma',ci:'Seattle',co:'USA'},
-    {c:'BOS',n:'Logan Intl',ci:'Boston',co:'USA'},{c:'IAH',n:'George Bush',ci:'Houston',co:'USA'},
+    {c:'MCO',n:'Orlando Intl',ci:'Orlando',co:'USA'},{c:'ORD',n:'O\'Hare Intl',ci:'Chicago',co:'USA'},
+    {c:'MDW',n:'Midway Intl',ci:'Chicago',co:'USA'},{c:'DFW',n:'Dallas Fort Worth',ci:'Dallas',co:'USA'},
+    {c:'DAL',n:'Love Field',ci:'Dallas',co:'USA'},{c:'ATL',n:'Hartsfield-Jackson',ci:'Atlanta',co:'USA'},
+    {c:'DEN',n:'Denver Intl',ci:'Denver',co:'USA'},{c:'SFO',n:'San Francisco Intl',ci:'San Francisco',co:'USA'},
+    {c:'SEA',n:'Seattle-Tacoma',ci:'Seattle',co:'USA'},{c:'BOS',n:'Logan Intl',ci:'Boston',co:'USA'},
+    {c:'IAH',n:'George Bush Intl',ci:'Houston',co:'USA'},{c:'HOU',n:'Hobby Airport',ci:'Houston',co:'USA'},
     {c:'LAS',n:'Harry Reid Intl',ci:'Las Vegas',co:'USA'},{c:'PHX',n:'Sky Harbor',ci:'Phoenix',co:'USA'},
     {c:'FLL',n:'Fort Lauderdale Intl',ci:'Fort Lauderdale',co:'USA'},{c:'TPA',n:'Tampa Intl',ci:'Tampa',co:'USA'},
-    {c:'HNL',n:'Daniel Inouye',ci:'Honolulu',co:'USA'},{c:'CUN',n:'Cancun Intl',ci:'Cancun',co:'Mexico'},
-    {c:'MEX',n:'Benito Juarez',ci:'Mexico City',co:'Mexico'},{c:'BOG',n:'El Dorado',ci:'Bogota',co:'Colombia'},
-    {c:'LIM',n:'Jorge Chavez',ci:'Lima',co:'Peru'},{c:'SCL',n:'Arturo Merino',ci:'Santiago',co:'Chile'},
-    {c:'EZE',n:'Ezeiza',ci:'Buenos Aires',co:'Argentina'},{c:'PTY',n:'Tocumen',ci:'Panama City',co:'Panama'},
-    {c:'LIS',n:'Humberto Delgado',ci:'Lisboa',co:'Portugal'},{c:'LHR',n:'Heathrow',ci:'London',co:'UK'},
-    {c:'CDG',n:'Charles de Gaulle',ci:'Paris',co:'France'},{c:'MAD',n:'Barajas',ci:'Madrid',co:'Spain'},
-    {c:'FCO',n:'Fiumicino',ci:'Rome',co:'Italy'},{c:'FRA',n:'Frankfurt Intl',ci:'Frankfurt',co:'Germany'},
-    {c:'DXB',n:'Dubai Intl',ci:'Dubai',co:'UAE'},{c:'NRT',n:'Narita',ci:'Tokyo',co:'Japan'},
-    {c:'OPO',n:'Francisco Sa Carneiro',ci:'Porto',co:'Portugal'},{c:'BCN',n:'El Prat',ci:'Barcelona',co:'Spain'},
-    {c:'MDE',n:'Jose Maria Cordova',ci:'Medellin',co:'Colombia'},{c:'AMS',n:'Schiphol',ci:'Amsterdam',co:'Netherlands'},
-    {c:'IST',n:'Istanbul Airport',ci:'Istanbul',co:'Turkey'},{c:'SJU',n:'Luis Munoz Marin',ci:'San Juan',co:'Puerto Rico'},
-    {c:'PUJ',n:'Punta Cana Intl',ci:'Punta Cana',co:'Dominican Rep'},{c:'SJD',n:'Los Cabos Intl',ci:'San Jose del Cabo',co:'Mexico'},
-    {c:'PVR',n:'Licenciado Gustavo Diaz',ci:'Puerto Vallarta',co:'Mexico'},{c:'SDQ',n:'Las Americas',ci:'Santo Domingo',co:'Dominican Rep'},
-    {c:'HAV',n:'Jose Marti',ci:'Havana',co:'Cuba'},{c:'UIO',n:'Mariscal Sucre',ci:'Quito',co:'Ecuador'},
-    {c:'GYE',n:'Jose Joaquin de Olmedo',ci:'Guayaquil',co:'Ecuador'},{c:'MVD',n:'Carrasco Intl',ci:'Montevideo',co:'Uruguay'},
-    {c:'ASU',n:'Silvio Pettirossi',ci:'Asuncion',co:'Paraguay'},{c:'VVI',n:'Viru Viru',ci:'Santa Cruz',co:'Bolivia'},
-    {c:'SJO',n:'Juan Santamaria',ci:'San Jose',co:'Costa Rica'},{c:'MBJ',n:'Sangster Intl',ci:'Montego Bay',co:'Jamaica'},
-    {c:'NAS',n:'Lynden Pindling',ci:'Nassau',co:'Bahamas'},{c:'AUA',n:'Queen Beatrix',ci:'Aruba',co:'Aruba'},
-    {c:'OGG',n:'Kahului Airport',ci:'Maui',co:'USA'},{c:'MSP',n:'Minneapolis-Saint Paul',ci:'Minneapolis',co:'USA'},
-    {c:'DTW',n:'Detroit Metro',ci:'Detroit',co:'USA'},{c:'CLT',n:'Charlotte Douglas',ci:'Charlotte',co:'USA'},
-    {c:'LGA',n:'LaGuardia',ci:'New York',co:'USA'},
     {c:'IAD',n:'Dulles Intl',ci:'Washington DC',co:'USA'},{c:'DCA',n:'Reagan National',ci:'Washington DC',co:'USA'},
+    {c:'BWI',n:'Baltimore-Washington',ci:'Baltimore',co:'USA'},{c:'MSP',n:'Minneapolis-St Paul',ci:'Minneapolis',co:'USA'},
+    {c:'DTW',n:'Detroit Metro',ci:'Detroit',co:'USA'},{c:'CLT',n:'Charlotte Douglas',ci:'Charlotte',co:'USA'},
+    {c:'PHL',n:'Philadelphia Intl',ci:'Philadelphia',co:'USA'},{c:'SAN',n:'San Diego Intl',ci:'San Diego',co:'USA'},
+    {c:'PDX',n:'Portland Intl',ci:'Portland',co:'USA'},{c:'AUS',n:'Austin-Bergstrom',ci:'Austin',co:'USA'},
+    {c:'SAT',n:'San Antonio Intl',ci:'San Antonio',co:'USA'},{c:'RDU',n:'Raleigh-Durham',ci:'Raleigh',co:'USA'},
+    {c:'BNA',n:'Nashville Intl',ci:'Nashville',co:'USA'},{c:'MCI',n:'Kansas City Intl',ci:'Kansas City',co:'USA'},
+    {c:'STL',n:'St Louis Lambert',ci:'St Louis',co:'USA'},{c:'IND',n:'Indianapolis Intl',ci:'Indianapolis',co:'USA'},
+    {c:'CLE',n:'Cleveland Hopkins',ci:'Cleveland',co:'USA'},{c:'CMH',n:'John Glenn Columbus',ci:'Columbus',co:'USA'},
+    {c:'PIT',n:'Pittsburgh Intl',ci:'Pittsburgh',co:'USA'},{c:'MKE',n:'General Mitchell',ci:'Milwaukee',co:'USA'},
+    {c:'OMA',n:'Eppley Airfield',ci:'Omaha',co:'USA'},{c:'JAX',n:'Jacksonville Intl',ci:'Jacksonville',co:'USA'},
+    {c:'RSW',n:'Southwest Florida',ci:'Fort Myers',co:'USA'},{c:'SRQ',n:'Sarasota-Bradenton',ci:'Sarasota',co:'USA'},
+    {c:'PBI',n:'Palm Beach Intl',ci:'West Palm Beach',co:'USA'},{c:'SMF',n:'Sacramento Intl',ci:'Sacramento',co:'USA'},
+    {c:'SJC',n:'San Jose Intl',ci:'San Jose',co:'USA'},{c:'OAK',n:'Oakland Intl',ci:'Oakland',co:'USA'},
+    {c:'BUR',n:'Hollywood Burbank',ci:'Burbank',co:'USA'},{c:'SNA',n:'John Wayne',ci:'Orange County',co:'USA'},
+    {c:'HNL',n:'Daniel Inouye Intl',ci:'Honolulu',co:'USA'},{c:'OGG',n:'Kahului Airport',ci:'Maui',co:'USA'},
+    {c:'KOA',n:'Kona Intl',ci:'Kona',co:'USA'},{c:'LIH',n:'Lihue Airport',ci:'Kauai',co:'USA'},
+    {c:'ANC',n:'Ted Stevens Intl',ci:'Anchorage',co:'USA'},{c:'ABQ',n:'Albuquerque Intl',ci:'Albuquerque',co:'USA'},
+    {c:'TUS',n:'Tucson Intl',ci:'Tucson',co:'USA'},{c:'ELP',n:'El Paso Intl',ci:'El Paso',co:'USA'},
+    {c:'BOI',n:'Boise Airport',ci:'Boise',co:'USA'},{c:'RNO',n:'Reno-Tahoe Intl',ci:'Reno',co:'USA'},
+    {c:'BUF',n:'Buffalo Niagara',ci:'Buffalo',co:'USA'},{c:'SYR',n:'Syracuse Hancock',ci:'Syracuse',co:'USA'},
+    {c:'ROC',n:'Greater Rochester',ci:'Rochester',co:'USA'},{c:'ALB',n:'Albany Intl',ci:'Albany',co:'USA'},
+    {c:'BDL',n:'Bradley Intl',ci:'Hartford',co:'USA'},{c:'PVD',n:'T.F. Green',ci:'Providence',co:'USA'},
+    {c:'MEM',n:'Memphis Intl',ci:'Memphis',co:'USA'},{c:'MSY',n:'Louis Armstrong',ci:'New Orleans',co:'USA'},
+    {c:'SDF',n:'Louisville Intl',ci:'Louisville',co:'USA'},{c:'CVG',n:'Cincinnati/Northern Kentucky',ci:'Cincinnati',co:'USA'},
+    {c:'DSM',n:'Des Moines Intl',ci:'Des Moines',co:'USA'},{c:'OKC',n:'Will Rogers World',ci:'Oklahoma City',co:'USA'},
+    {c:'TUL',n:'Tulsa Intl',ci:'Tulsa',co:'USA'},{c:'LIT',n:'Clinton National',ci:'Little Rock',co:'USA'},
+    {c:'CHS',n:'Charleston Intl',ci:'Charleston',co:'USA'},{c:'SAV',n:'Savannah/Hilton Head',ci:'Savannah',co:'USA'},
+    {c:'MYR',n:'Myrtle Beach Intl',ci:'Myrtle Beach',co:'USA'},{c:'BHM',n:'Birmingham-Shuttlesworth',ci:'Birmingham',co:'USA'},
+    {c:'JAC',n:'Jackson Hole Airport',ci:'Jackson Hole',co:'USA'},{c:'PSP',n:'Palm Springs Intl',ci:'Palm Springs',co:'USA'},
+    {c:'GEG',n:'Spokane Intl',ci:'Spokane',co:'USA'},{c:'BZN',n:'Bozeman Yellowstone',ci:'Bozeman',co:'USA'},
+    {c:'SJU',n:'Luis Munoz Marin',ci:'San Juan',co:'Puerto Rico'},
+    // === AMERICA LATINA ===
+    {c:'BOG',n:'El Dorado Intl',ci:'Bogota',co:'Colombia'},{c:'MDE',n:'Jose Maria Cordova',ci:'Medellin',co:'Colombia'},
+    {c:'CTG',n:'Rafael Nunez',ci:'Cartagena',co:'Colombia'},{c:'CLO',n:'Alfonso Bonilla Aragon',ci:'Cali',co:'Colombia'},
+    {c:'LIM',n:'Jorge Chavez Intl',ci:'Lima',co:'Peru'},{c:'CUZ',n:'Alejandro Velasco Astete',ci:'Cusco',co:'Peru'},
+    {c:'SCL',n:'Arturo Merino Benitez',ci:'Santiago',co:'Chile'},{c:'EZE',n:'Ministro Pistarini',ci:'Buenos Aires',co:'Argentina'},
+    {c:'AEP',n:'Aeroparque Jorge Newbery',ci:'Buenos Aires',co:'Argentina'},{c:'PTY',n:'Tocumen Intl',ci:'Panama City',co:'Panama'},
+    {c:'SJO',n:'Juan Santamaria',ci:'San Jose',co:'Costa Rica'},{c:'LIR',n:'Daniel Oduber',ci:'Liberia',co:'Costa Rica'},
+    {c:'GUA',n:'La Aurora Intl',ci:'Guatemala City',co:'Guatemala'},{c:'SAL',n:'El Salvador Intl',ci:'San Salvador',co:'El Salvador'},
+    {c:'TGU',n:'Toncontin',ci:'Tegucigalpa',co:'Honduras'},{c:'SAP',n:'Ramon Villeda Morales',ci:'San Pedro Sula',co:'Honduras'},
+    {c:'MGA',n:'Augusto C Sandino',ci:'Managua',co:'Nicaragua'},{c:'BZE',n:'Philip Goldson',ci:'Belize City',co:'Belize'},
+    {c:'UIO',n:'Mariscal Sucre',ci:'Quito',co:'Ecuador'},{c:'GYE',n:'Jose Joaquin de Olmedo',ci:'Guayaquil',co:'Ecuador'},
+    {c:'MVD',n:'Carrasco Intl',ci:'Montevideo',co:'Uruguay'},{c:'ASU',n:'Silvio Pettirossi',ci:'Asuncion',co:'Paraguay'},
+    {c:'VVI',n:'Viru Viru Intl',ci:'Santa Cruz',co:'Bolivia'},{c:'LPB',n:'El Alto Intl',ci:'La Paz',co:'Bolivia'},
+    {c:'CCS',n:'Simon Bolivar Intl',ci:'Caracas',co:'Venezuela'},
+    // === CARIBE ===
+    {c:'PUJ',n:'Punta Cana Intl',ci:'Punta Cana',co:'Dominican Rep'},{c:'SDQ',n:'Las Americas',ci:'Santo Domingo',co:'Dominican Rep'},
+    {c:'HAV',n:'Jose Marti Intl',ci:'Havana',co:'Cuba'},{c:'VRA',n:'Juan Gualberto Gomez',ci:'Varadero',co:'Cuba'},
+    {c:'MBJ',n:'Sangster Intl',ci:'Montego Bay',co:'Jamaica'},{c:'KIN',n:'Norman Manley',ci:'Kingston',co:'Jamaica'},
+    {c:'NAS',n:'Lynden Pindling',ci:'Nassau',co:'Bahamas'},{c:'AUA',n:'Queen Beatrix',ci:'Aruba',co:'Aruba'},
+    {c:'CUR',n:'Hato Intl',ci:'Curacao',co:'Curacao'},{c:'SXM',n:'Princess Juliana',ci:'St Maarten',co:'St Maarten'},
+    {c:'POS',n:'Piarco Intl',ci:'Port of Spain',co:'Trinidad'},
+    // === EUROPA ===
+    {c:'LIS',n:'Humberto Delgado',ci:'Lisboa',co:'Portugal'},{c:'OPO',n:'Francisco Sa Carneiro',ci:'Porto',co:'Portugal'},
+    {c:'LHR',n:'Heathrow',ci:'London',co:'UK'},{c:'LGW',n:'Gatwick',ci:'London',co:'UK'},
+    {c:'CDG',n:'Charles de Gaulle',ci:'Paris',co:'France'},{c:'ORY',n:'Orly',ci:'Paris',co:'France'},
+    {c:'MAD',n:'Adolfo Suarez Barajas',ci:'Madrid',co:'Spain'},{c:'BCN',n:'El Prat',ci:'Barcelona',co:'Spain'},
+    {c:'FCO',n:'Fiumicino',ci:'Rome',co:'Italy'},{c:'MXP',n:'Malpensa',ci:'Milan',co:'Italy'},
+    {c:'FRA',n:'Frankfurt Intl',ci:'Frankfurt',co:'Germany'},{c:'MUC',n:'Franz Josef Strauss',ci:'Munich',co:'Germany'},
+    {c:'AMS',n:'Schiphol',ci:'Amsterdam',co:'Netherlands'},{c:'ZRH',n:'Zurich Airport',ci:'Zurich',co:'Switzerland'},
+    {c:'IST',n:'Istanbul Airport',ci:'Istanbul',co:'Turkey'},{c:'ATH',n:'Eleftherios Venizelos',ci:'Athens',co:'Greece'},
+    {c:'DUB',n:'Dublin Airport',ci:'Dublin',co:'Ireland'},
+    // === OUTROS ===
+    {c:'DXB',n:'Dubai Intl',ci:'Dubai',co:'UAE'},{c:'DOH',n:'Hamad Intl',ci:'Doha',co:'Qatar'},
+    {c:'NRT',n:'Narita Intl',ci:'Tokyo',co:'Japan'},{c:'HND',n:'Haneda',ci:'Tokyo',co:'Japan'},
+    {c:'ICN',n:'Incheon Intl',ci:'Seoul',co:'South Korea'},{c:'SIN',n:'Changi',ci:'Singapore',co:'Singapore'},
+    {c:'HKG',n:'Hong Kong Intl',ci:'Hong Kong',co:'Hong Kong'},{c:'BKK',n:'Suvarnabhumi',ci:'Bangkok',co:'Thailand'},
+    {c:'SYD',n:'Kingsford Smith',ci:'Sydney',co:'Australia'},{c:'JNB',n:'OR Tambo Intl',ci:'Johannesburg',co:'South Africa'},
+    {c:'CAI',n:'Cairo Intl',ci:'Cairo',co:'Egypt'},{c:'ADD',n:'Bole Intl',ci:'Addis Ababa',co:'Ethiopia'},
+    {c:'TLV',n:'Ben Gurion',ci:'Tel Aviv',co:'Israel'},
 ];
 
 // ========== i18n ==========
