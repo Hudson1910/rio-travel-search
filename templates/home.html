@@ -227,8 +227,14 @@
         .res-tag i{font-size:11px;}
         [data-theme="light"] .res-tag{color:#64748b;background:rgba(0,0,0,.04);}
         /* Price Insight Panel */
-        .pi-panel{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;margin-bottom:16px;}
+        .pi-panel{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;margin-bottom:16px;transition:all .3s;}
         [data-theme="light"] .pi-panel{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
+        .pi-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+        .pi-toggle .pi-arrow{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);font-size:14px;transition:all .3s;flex-shrink:0;}
+        .pi-toggle .pi-arrow.collapsed{transform:rotate(180deg);}
+        [data-theme="light"] .pi-toggle .pi-arrow{background:rgba(0,0,0,.04);color:#94a3b8;}
+        .pi-body{overflow:hidden;transition:max-height .35s ease,opacity .25s ease;max-height:500px;opacity:1;}
+        .pi-body.collapsed{max-height:0;opacity:0;margin-top:0;}
         .pi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
         .pi-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;font-family:Inter;}
         .pi-badge.low{background:rgba(6,214,160,.12);color:#06d6a0;}
@@ -1494,10 +1500,14 @@ ${airlines.map(a=>`<div class="fl-chip" data-filter="airline" data-val="${a.name
             const typHighPct=(tHi/rangeMax)*100;
             const markerColor=lvl==='low'?'#06d6a0':lvl==='high'?'#ff5252':'#38bdf8';
             piHTML=`<div class="pi-panel">
-<div class="pi-top">
+<div class="pi-toggle" onclick="togglePI()">
+<div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
 <div class="pi-badge ${lvl}"><i class="bi ${lvlIcon[lvl]}"></i> ${(lvlLabel[lvl]||{})[lang]||lvlLabel[lvl]?.en||''} — $${pi.current}</div>
 <div class="pi-trend ${trend}"><i class="bi ${trendIcon[trend]}"></i> ${(trendLabel[trend]||{})[lang]||trendLabel[trend]?.en||''}</div>
 </div>
+<div class="pi-arrow" id="piArrow"><i class="bi bi-chevron-up"></i></div>
+</div>
+<div class="pi-body" id="piBody" style="margin-top:12px;">
 <div class="pi-range"><span>$${lo||'?'}</span>
 <div class="pi-range-bar">
 <div class="pi-range-fill" style="position:absolute;left:${typLowPct}%;width:${typHighPct-typLowPct}%;height:100%;background:rgba(56,189,248,.2);border-radius:3px;"></div>
@@ -1508,9 +1518,10 @@ ${airlines.map(a=>`<div class="fl-chip" data-filter="airline" data-val="${a.name
 <div class="pcal-title"><i class="bi bi-calendar3"></i> ${lang==='pt'?'Precos por dia':lang==='es'?'Precios por dia':'Prices by date'}</div>
 <div class="pcal-grid" id="piCalendar"></div>
 </div>
+</div>
 </div>`;
         }
-        list.innerHTML=filtersHTML+piHTML+flights.map((fl,i)=>renderFlightCard(fl,i,f,tt,d,trip,cabin)).join('');
+        list.innerHTML=filtersHTML+piHTML+'<div id="flCardsList">'+flights.map((fl,i)=>renderFlightCard(fl,i,f,tt,d,trip,cabin)).join('')+'</div>';
         // Fetch price calendar (async, appends when ready)
         fetch(`/api/priceGraph?origin=${f}&destination=${tt}&date=${d}&currency=USD`).then(r=>r.json()).then(pg=>{
             const prices=pg.prices||[];
@@ -1647,9 +1658,12 @@ function flSort(type){
 function flToggle(filterType,val){
     if(!window._allFlights)return;
     const af=window._activeFilters;
-    if(af[filterType]===val){af[filterType]=null;}else{af[filterType]=val;}
+    // Parse val to int for stops
+    const parsedVal=filterType==='stops'?parseInt(val):val;
+    if(af[filterType]===parsedVal){af[filterType]=null;}else{af[filterType]=parsedVal;}
     document.querySelectorAll(`.fl-chip[data-filter="${filterType}"]`).forEach(c=>{
-        c.classList.toggle('on',c.dataset.val==val&&af[filterType]!==null);
+        const cv=filterType==='stops'?parseInt(c.dataset.val):c.dataset.val;
+        c.classList.toggle('on',cv===parsedVal&&af[filterType]!==null);
     });
     flApply();
 }
@@ -1661,23 +1675,29 @@ function flReset(){
 function flApply(){
     const af=window._activeFilters;
     let filtered=[...window._allFlights];
-    if(af.stops!==null)filtered=filtered.filter(f=>f.stops===af.stops);
+    if(af.stops!==null){
+        if(af.stops>=2)filtered=filtered.filter(f=>f.stops>=2);
+        else filtered=filtered.filter(f=>f.stops===af.stops);
+    }
     if(af.airline!==null)filtered=filtered.filter(f=>f.airline===af.airline);
     if(af.sort==='cheap')filtered.sort((a,b)=>a.price-b.price);
-    // Re-render only flight cards (keep filters + insight panel)
-    const cards=document.querySelectorAll('.res-card');
-    cards.forEach(c=>c.remove());
-    const list=document.getElementById('resList');
+    // Remove only flight cards, keep filters + pi-panel
+    const container=document.getElementById('flCardsList');
+    if(!container)return;
     const sp=window._searchParams;
     document.getElementById('resCount').textContent=`${filtered.length} ${t('found')}`;
     if(!filtered.length){
-        list.insertAdjacentHTML('beforeend',`<div class="res-card" style="text-align:center;padding:30px;color:var(--t3);font-size:13px;">${lang==='pt'?'Nenhum voo com esses filtros':lang==='es'?'Ningún vuelo con estos filtros':'No flights match these filters'}</div>`);
+        container.innerHTML=`<div class="res-card" style="text-align:center;padding:30px;color:var(--t3);font-size:13px;">${lang==='pt'?'Nenhum voo com esses filtros':lang==='es'?'Ningún vuelo con estos filtros':'No flights match these filters'}</div>`;
         return;
     }
-    const cardsHTML=filtered.map((fl,i)=>{
-        return renderFlightCard(fl,i,sp.f,sp.tt,sp.d,sp.trip,sp.cabin);
-    }).join('');
-    list.insertAdjacentHTML('beforeend',cardsHTML);
+    container.innerHTML=filtered.map((fl,i)=>renderFlightCard(fl,i,sp.f,sp.tt,sp.d,sp.trip,sp.cabin)).join('');
+}
+function togglePI(){
+    const body=document.getElementById('piBody');
+    const arrow=document.getElementById('piArrow');
+    if(!body)return;
+    body.classList.toggle('collapsed');
+    arrow.classList.toggle('collapsed');
 }
 
 // ========== SEARCH CARS ==========
