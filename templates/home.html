@@ -348,7 +348,7 @@ function searchFlights() {
             html += `<div class="result-card" style="position:relative;">
                 ${i === 0 ? '<div class="best-deal">MELHOR PRECO</div>' : ''}
                 <div class="result-airline">
-                    <img src="https://pics.avs.io/80/80/${airlineCode || 'XX'}.png" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22><rect fill=%22%231a2040%22 width=%2240%22 height=%2240%22 rx=%228%22/><text x=%2220%22 y=%2226%22 fill=%22%23fff%22 text-anchor=%22middle%22 font-size=%2214%22>&#9992;</text></svg>'">
+                    <img src="${f.airlineLogo || 'https://pics.avs.io/80/80/'+(airlineCode||'XX')+'.png'}" onerror="this.src='https://pics.avs.io/80/80/'+(airlineCode||'XX')+'.png'">
                     <div><div class="name">${airline}</div><div class="code">${airlineCode}</div></div>
                 </div>
                 <div class="result-route">
