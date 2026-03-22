@@ -226,6 +226,30 @@
         .res-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);background:rgba(255,255,255,.05);}
         .res-tag i{font-size:11px;}
         [data-theme="light"] .res-tag{color:#64748b;background:rgba(0,0,0,.04);}
+        /* Price Insight Panel */
+        .pi-panel{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;margin-bottom:16px;}
+        [data-theme="light"] .pi-panel{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
+        .pi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
+        .pi-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;font-family:Inter;}
+        .pi-badge.low{background:rgba(6,214,160,.12);color:#06d6a0;}
+        .pi-badge.typical{background:rgba(56,189,248,.1);color:#38bdf8;}
+        .pi-badge.high{background:rgba(255,82,82,.1);color:#ff5252;}
+        .pi-badge i{font-size:14px;}
+        .pi-trend{font-size:11px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:4px;}
+        .pi-trend i{font-size:13px;}
+        .pi-trend.rising{color:#ff5252;}
+        .pi-trend.falling{color:#06d6a0;}
+        [data-theme="light"] .pi-trend{color:#94a3b8;}
+        [data-theme="light"] .pi-trend.rising{color:#ef4444;}
+        [data-theme="light"] .pi-trend.falling{color:#06d6a0;}
+        .pi-range{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:11px;color:rgba(255,255,255,.35);}
+        .pi-range-bar{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.06);position:relative;overflow:visible;}
+        [data-theme="light"] .pi-range-bar{background:rgba(0,0,0,.06);}
+        [data-theme="light"] .pi-range{color:#94a3b8;}
+        .pi-range-fill{height:100%;border-radius:3px;}
+        .pi-range-marker{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transform:translateX(-50%);}
+        .pi-chart{width:100%;height:50px;position:relative;}
+        .pi-chart canvas{width:100%!important;height:50px!important;}
         .skel{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:18px;height:90px;margin-bottom:10px;}
         @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
 
@@ -1313,14 +1337,37 @@ function doSearch(){
         const flights=data.flights||[];
         if(!flights.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--t3);"><i class="bi bi-airplane" style="font-size:32px;"></i><p style="margin-top:12px;">${t('noFlights')}</p>${data.error?`<p style="font-size:11px;margin-top:8px;color:var(--t4);">${data.error}</p>`:''}</div>`;document.getElementById('resCount').textContent='';return;}
         document.getElementById('resCount').textContent=`${flights.length} ${t('found')}`;
-        // Price insight badge
+        // Price insight panel
         const pi=data.priceInsight||{};
-        let piBadge='';
-        if(pi.current && pi.low && pi.low.length){
-            const lowVal=pi.low[0]?.value||0;
-            if(pi.current < lowVal) piBadge=`<div style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:8px;background:rgba(6,214,160,.1);color:#06d6a0;font-size:11px;font-weight:700;margin-bottom:10px;"><i class="bi bi-graph-down-arrow"></i> ${lang==='pt'?'Precos abaixo do normal':lang==='es'?'Precios debajo de lo normal':'Prices are below average'}</div>`;
+        let piHTML='';
+        if(pi.current){
+            const lvl=pi.level||'typical';
+            const lvlLabel={low:{pt:'Preco Baixo',en:'Low Price',es:'Precio Bajo'},typical:{pt:'Preco Normal',en:'Typical Price',es:'Precio Normal'},high:{pt:'Preco Alto',en:'High Price',es:'Precio Alto'}};
+            const lvlIcon={low:'bi-graph-down-arrow',typical:'bi-dash-lg',high:'bi-graph-up-arrow'};
+            const trendLabel={rising:{pt:'Precos subindo — reserve agora',en:'Prices rising — book now',es:'Precios subiendo — reserve ahora'},falling:{pt:'Precos caindo — pode esperar',en:'Prices dropping — can wait',es:'Precios bajando — puede esperar'},stable:{pt:'Precos estaveis',en:'Prices stable',es:'Precios estables'}};
+            const trendIcon={rising:'bi-arrow-up-right',falling:'bi-arrow-down-right',stable:'bi-arrow-right'};
+            const trend=pi.trend||'stable';
+            // Range bar position (0-100%)
+            const lo=pi.low||0,tLo=pi.typicalLow||0,tHi=pi.typicalHigh||0;
+            const rangeMax=tHi*1.5||500;
+            const markerPos=Math.min(Math.max((pi.current/rangeMax)*100,2),98);
+            const typLowPct=(tLo/rangeMax)*100;
+            const typHighPct=(tHi/rangeMax)*100;
+            const markerColor=lvl==='low'?'#06d6a0':lvl==='high'?'#ff5252':'#38bdf8';
+            piHTML=`<div class="pi-panel">
+<div class="pi-top">
+<div class="pi-badge ${lvl}"><i class="bi ${lvlIcon[lvl]}"></i> ${(lvlLabel[lvl]||{})[lang]||lvlLabel[lvl]?.en||''} — $${pi.current}</div>
+<div class="pi-trend ${trend}"><i class="bi ${trendIcon[trend]}"></i> ${(trendLabel[trend]||{})[lang]||trendLabel[trend]?.en||''}</div>
+</div>
+<div class="pi-range"><span>$${lo||'?'}</span>
+<div class="pi-range-bar">
+<div class="pi-range-fill" style="position:absolute;left:${typLowPct}%;width:${typHighPct-typLowPct}%;height:100%;background:rgba(56,189,248,.2);border-radius:3px;"></div>
+<div class="pi-range-marker" style="left:${markerPos}%;background:${markerColor};"></div>
+</div><span>$${tHi||'?'}</span></div>
+<div class="pi-chart"><canvas id="piChart"></canvas></div>
+</div>`;
         }
-        list.innerHTML=(piBadge?`<div style="text-align:center;">${piBadge}</div>`:'')+flights.map((fl,i)=>{
+        list.innerHTML=piHTML+flights.map((fl,i)=>{
             const stops=fl.stops===0?t('direct'):fl.stops===1?t('stop1'):`${fl.stops} ${t('stops')}`;
             const stopsColor=fl.stops===0?'#06d6a0':fl.stops===1?'#ffb347':'#94a3b8';
             const tripLabel=trip==='rt'?t('rt'):t('ow');
@@ -1385,6 +1432,52 @@ ${tags.length?`<div class="res-tags">${tags.join('')}</div>`:''}
 <div class="res-bottom"><div class="res-price"><div class="amt">$${fl.price}</div><div class="pp">${t('pp')}</div></div>
 <a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
         }).join('');
+        // Draw price history chart
+        if(pi.history&&pi.history.length>1){
+            setTimeout(()=>{
+                const cvs=document.getElementById('piChart');
+                if(!cvs)return;
+                const ctx=cvs.getContext('2d');
+                const dpr=window.devicePixelRatio||1;
+                const rect=cvs.parentElement.getBoundingClientRect();
+                cvs.width=rect.width*dpr;cvs.height=50*dpr;
+                cvs.style.width=rect.width+'px';cvs.style.height='50px';
+                ctx.scale(dpr,dpr);
+                const w=rect.width,h=50;
+                const pts=pi.history;
+                const vals=pts.map(p=>p.v);
+                const mn=Math.min(...vals),mx=Math.max(...vals);
+                const range=mx-mn||1;
+                const pad=4;
+                // Draw area fill
+                ctx.beginPath();
+                pts.forEach((p,i)=>{
+                    const x=pad+(i/(pts.length-1))*(w-pad*2);
+                    const y=pad+((mx-p.v)/range)*(h-pad*2);
+                    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+                });
+                ctx.lineTo(w-pad,h);ctx.lineTo(pad,h);ctx.closePath();
+                const isDark=document.documentElement.getAttribute('data-theme')!=='light';
+                const grad=ctx.createLinearGradient(0,0,0,h);
+                grad.addColorStop(0,isDark?'rgba(56,189,248,.15)':'rgba(56,189,248,.1)');
+                grad.addColorStop(1,'rgba(56,189,248,0)');
+                ctx.fillStyle=grad;ctx.fill();
+                // Draw line
+                ctx.beginPath();
+                pts.forEach((p,i)=>{
+                    const x=pad+(i/(pts.length-1))*(w-pad*2);
+                    const y=pad+((mx-p.v)/range)*(h-pad*2);
+                    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+                });
+                ctx.strokeStyle='#38bdf8';ctx.lineWidth=2;ctx.stroke();
+                // Current price dot
+                const lastX=w-pad;
+                const lastY=pad+((mx-vals[vals.length-1])/range)*(h-pad*2);
+                ctx.beginPath();ctx.arc(lastX,lastY,4,0,Math.PI*2);
+                ctx.fillStyle=pi.level==='low'?'#06d6a0':pi.level==='high'?'#ff5252':'#38bdf8';
+                ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
+            },50);
+        }
     }).catch(e=>{btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('search')}`;list.innerHTML='<div style="text-align:center;padding:40px;color:var(--coral);">Error: '+e.message+'</div>';});
 }
 

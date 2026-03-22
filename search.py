@@ -142,14 +142,47 @@ def search_flights(origin, destination, depart_date, return_date=None,
 
         flights.sort(key=lambda x: x['price'])
 
+        # Price history for chart
+        price_history = ph.get('history', [])
+        history_points = [{'t': p['time'], 'v': p['value']} for p in price_history]
+
+        # Determine price level
+        current_price = price_summary.get('current', 0)
+        low_val = price_summary.get('low', [{}])[0].get('value', 0) if price_summary.get('low') else 0
+        typical_range = price_summary.get('typical', [])
+        typical_low = typical_range[0].get('value', 0) if len(typical_range) > 0 else 0
+        typical_high = typical_range[2].get('value', 0) if len(typical_range) > 2 else 0
+
+        if current_price and low_val and current_price < low_val:
+            price_level = 'low'
+        elif current_price and typical_high and current_price > typical_high:
+            price_level = 'high'
+        else:
+            price_level = 'typical'
+
+        # Trend: compare current to average of last 7 days
+        recent = [p['value'] for p in price_history[-7:]] if price_history else []
+        older = [p['value'] for p in price_history[-30:-7]] if len(price_history) > 7 else []
+        trend = 'stable'
+        if recent and older:
+            avg_recent = sum(recent) / len(recent)
+            avg_older = sum(older) / len(older)
+            if avg_recent > avg_older * 1.05:
+                trend = 'rising'
+            elif avg_recent < avg_older * 0.95:
+                trend = 'falling'
+
         return {
             'flights': flights,
             'total': len(all_flights),
             'priceInsight': {
-                'current': price_summary.get('current', 0),
-                'low': price_summary.get('low', []),
-                'typical': price_summary.get('typical', []),
-                'high': price_summary.get('high', []),
+                'current': current_price,
+                'low': low_val,
+                'typicalLow': typical_low,
+                'typicalHigh': typical_high,
+                'level': price_level,
+                'trend': trend,
+                'history': history_points,
             },
             'source': 'google_flights',
         }
