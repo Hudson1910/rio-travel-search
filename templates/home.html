@@ -106,9 +106,10 @@
         .sb-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,82,82,.3);}
         .sb-btn:disabled{opacity:.4;animation:none;cursor:default;transform:none;}
         /* Autocomplete */
-        .ac{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:14px;max-height:280px;overflow-y:auto;z-index:500;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:6px;}
+        .ac{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:16px;max-height:320px;overflow-y:auto;z-index:500;box-shadow:0 20px 60px rgba(0,0,0,.6);padding:6px;-webkit-overflow-scrolling:touch;}
         .ac.open{display:block;animation:fadeIn .12s;}
-        .ac-i{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:10px;cursor:pointer;transition:background .12s;}
+        .ac-i{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;cursor:pointer;transition:background .12s;min-height:56px;-webkit-tap-highlight-color:rgba(255,82,82,.1);}
+        .ac-i:active{background:rgba(255,82,82,.08);}
         .ac-i:hover{background:rgba(255,82,82,.06);}
         .ac-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,82,82,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Outfit;font-weight:800;font-size:13px;color:var(--coral);}
         .ac-city{font-size:14px;font-weight:600;color:var(--w);}
@@ -323,13 +324,13 @@
             <div id="fFields" class="sb-fields">
                 <div class="sf" style="flex:1.4;position:relative;">
                     <label class="tl">Origem</label>
-                    <input type="text" id="from" placeholder="Salt Lake City (SLC)" autocomplete="off">
+                    <input type="text" id="from" placeholder="Cidade ou aeroporto..." autocomplete="off" inputmode="search">
                     <div class="ac" id="fromAC"></div>
                 </div>
                 <button class="swap" onclick="swp()"><i class="bi bi-arrow-left-right"></i></button>
                 <div class="sf" style="flex:1.4;position:relative;">
                     <label class="tl">Destino</label>
-                    <input type="text" id="to" placeholder="Sao Paulo (GRU)" autocomplete="off">
+                    <input type="text" id="to" placeholder="Para onde?" autocomplete="off" inputmode="search">
                     <div class="ac" id="toAC"></div>
                 </div>
                 <div class="sf" style="flex:.9;">
@@ -493,6 +494,20 @@ const AP=[
     {c:'CDG',n:'Charles de Gaulle',ci:'Paris',co:'France'},{c:'MAD',n:'Barajas',ci:'Madrid',co:'Spain'},
     {c:'FCO',n:'Fiumicino',ci:'Rome',co:'Italy'},{c:'FRA',n:'Frankfurt Intl',ci:'Frankfurt',co:'Germany'},
     {c:'DXB',n:'Dubai Intl',ci:'Dubai',co:'UAE'},{c:'NRT',n:'Narita',ci:'Tokyo',co:'Japan'},
+    {c:'OPO',n:'Francisco Sa Carneiro',ci:'Porto',co:'Portugal'},{c:'BCN',n:'El Prat',ci:'Barcelona',co:'Spain'},
+    {c:'MDE',n:'Jose Maria Cordova',ci:'Medellin',co:'Colombia'},{c:'AMS',n:'Schiphol',ci:'Amsterdam',co:'Netherlands'},
+    {c:'IST',n:'Istanbul Airport',ci:'Istanbul',co:'Turkey'},{c:'SJU',n:'Luis Munoz Marin',ci:'San Juan',co:'Puerto Rico'},
+    {c:'PUJ',n:'Punta Cana Intl',ci:'Punta Cana',co:'Dominican Rep'},{c:'SJD',n:'Los Cabos Intl',ci:'San Jose del Cabo',co:'Mexico'},
+    {c:'PVR',n:'Licenciado Gustavo Diaz',ci:'Puerto Vallarta',co:'Mexico'},{c:'SDQ',n:'Las Americas',ci:'Santo Domingo',co:'Dominican Rep'},
+    {c:'HAV',n:'Jose Marti',ci:'Havana',co:'Cuba'},{c:'UIO',n:'Mariscal Sucre',ci:'Quito',co:'Ecuador'},
+    {c:'GYE',n:'Jose Joaquin de Olmedo',ci:'Guayaquil',co:'Ecuador'},{c:'MVD',n:'Carrasco Intl',ci:'Montevideo',co:'Uruguay'},
+    {c:'ASU',n:'Silvio Pettirossi',ci:'Asuncion',co:'Paraguay'},{c:'VVI',n:'Viru Viru',ci:'Santa Cruz',co:'Bolivia'},
+    {c:'SJO',n:'Juan Santamaria',ci:'San Jose',co:'Costa Rica'},{c:'MBJ',n:'Sangster Intl',ci:'Montego Bay',co:'Jamaica'},
+    {c:'NAS',n:'Lynden Pindling',ci:'Nassau',co:'Bahamas'},{c:'AUA',n:'Queen Beatrix',ci:'Aruba',co:'Aruba'},
+    {c:'OGG',n:'Kahului Airport',ci:'Maui',co:'USA'},{c:'MSP',n:'Minneapolis-Saint Paul',ci:'Minneapolis',co:'USA'},
+    {c:'DTW',n:'Detroit Metro',ci:'Detroit',co:'USA'},{c:'CLT',n:'Charlotte Douglas',ci:'Charlotte',co:'USA'},
+    {c:'LGA',n:'LaGuardia',ci:'New York',co:'USA'},
+    {c:'IAD',n:'Dulles Intl',ci:'Washington DC',co:'USA'},{c:'DCA',n:'Reagan National',ci:'Washington DC',co:'USA'},
 ];
 
 // ========== i18n ==========
@@ -649,22 +664,121 @@ function updatePax(){
     // Not using tl class for simplicity — direct update
 }
 
-// ========== AUTOCOMPLETE ==========
-['from','to'].forEach(id=>{
-    const input=document.getElementById(id);
-    const ac=document.getElementById(id+'AC');
-    input.onfocus=()=>showAC(input,ac);
-    input.oninput=()=>showAC(input,ac);
-});
-function showAC(input,ac){
-    const q=input.value.toLowerCase().replace(/\(.*\)/,'').trim();
-    let m=q.length===0?AP.slice(0,8):AP.filter(a=>a.c.toLowerCase().startsWith(q)||a.ci.toLowerCase().startsWith(q)||a.ci.toLowerCase().includes(q)||a.c.toLowerCase().includes(q)||a.n.toLowerCase().includes(q)).slice(0,8);
-    if(!m.length){ac.classList.remove('open');return;}
-    ac.innerHTML=m.map(a=>`<div class="ac-i" onmousedown="event.preventDefault();pickAP('${input.id}','${a.c}','${a.ci}')"><div class="ac-icon">${a.c}</div><div style="flex:1;min-width:0;"><div class="ac-city">${a.ci}</div><div class="ac-name">${a.n}</div></div><span class="ac-ctry">${a.co}</span></div>`).join('');
-    ac.classList.add('open');
+// ========== AUTOCOMPLETE (works on Desktop + Mobile + iPad + Android) ==========
+let acActive=null; // track which autocomplete is open
+
+function initAC(inputId, acId) {
+    const input = document.getElementById(inputId);
+    const ac = document.getElementById(acId);
+    let picking = false; // prevent blur from closing before pick
+
+    // Show on focus (popular airports)
+    input.addEventListener('focus', () => {
+        input.dataset.code = ''; // clear old code when user starts fresh
+        showAC(input, ac);
+    });
+
+    // Filter on input
+    input.addEventListener('input', () => {
+        showAC(input, ac);
+    });
+
+    // Close on blur — but wait for pick
+    input.addEventListener('blur', () => {
+        setTimeout(() => {
+            if (!picking) ac.classList.remove('open');
+        }, 250);
+    });
+
+    // Handle clicks/taps on results — use event delegation
+    ac.addEventListener('mousedown', e => { picking = true; });
+    ac.addEventListener('touchstart', e => { picking = true; }, {passive: true});
+
+    ac.addEventListener('click', e => {
+        const item = e.target.closest('.ac-i');
+        if (item) {
+            const code = item.dataset.code;
+            const city = item.dataset.city;
+            input.value = city + ' (' + code + ')';
+            input.dataset.code = code;
+            ac.classList.remove('open');
+            acActive = null;
+            // Move focus to next field
+            if (inputId === 'from') document.getElementById('to').focus();
+            else if (inputId === 'to') document.getElementById('dep')._flatpickr?.open();
+        }
+        picking = false;
+    });
 }
-function pickAP(id,code,city){document.getElementById(id).value=city+' ('+code+')';document.getElementById(id).dataset.code=code;document.querySelectorAll('.ac').forEach(a=>a.classList.remove('open'));}
-function swp(){const f=document.getElementById('from'),t=document.getElementById('to');const v=f.value;f.value=t.value;t.value=v;const c=f.dataset.code;f.dataset.code=t.dataset.code;t.dataset.code=c;}
+
+function showAC(input, ac) {
+    const raw = input.value.toLowerCase().replace(/\(.*\)/, '').trim();
+    let results;
+
+    if (raw.length === 0) {
+        // Show popular airports when empty
+        results = AP.slice(0, 10);
+    } else {
+        // Smart search: prioritize starts-with, then includes
+        const starts = AP.filter(a =>
+            a.c.toLowerCase().startsWith(raw) ||
+            a.ci.toLowerCase().startsWith(raw)
+        );
+        const includes = AP.filter(a =>
+            !starts.includes(a) && (
+                a.ci.toLowerCase().includes(raw) ||
+                a.n.toLowerCase().includes(raw) ||
+                a.co.toLowerCase().includes(raw) ||
+                a.c.toLowerCase().includes(raw)
+            )
+        );
+        results = [...starts, ...includes].slice(0, 10);
+    }
+
+    if (!results.length) {
+        ac.classList.remove('open');
+        return;
+    }
+
+    ac.innerHTML = results.map(a =>
+        `<div class="ac-i" data-code="${a.c}" data-city="${a.ci}">
+            <div class="ac-icon">${a.c}</div>
+            <div style="flex:1;min-width:0;">
+                <div class="ac-city">${highlight(a.ci, raw)} <span style="color:var(--t4);font-weight:400;font-size:12px;">(${a.c})</span></div>
+                <div class="ac-name">${a.n}</div>
+            </div>
+            <span class="ac-ctry">${a.co}</span>
+        </div>`
+    ).join('');
+    ac.classList.add('open');
+    acActive = ac;
+}
+
+// Highlight matching text
+function highlight(text, query) {
+    if (!query) return text;
+    const idx = text.toLowerCase().indexOf(query);
+    if (idx === -1) return text;
+    return text.substring(0, idx) + '<b style="color:var(--coral);">' + text.substring(idx, idx + query.length) + '</b>' + text.substring(idx + query.length);
+}
+
+// Initialize both fields
+initAC('from', 'fromAC');
+initAC('to', 'toAC');
+
+// Swap airports
+function swp() {
+    const f = document.getElementById('from'), t = document.getElementById('to');
+    const tmpVal = f.value; f.value = t.value; t.value = tmpVal;
+    const tmpCode = f.dataset.code; f.dataset.code = t.dataset.code; t.dataset.code = tmpCode;
+}
+
+// Close autocomplete when clicking outside
+document.addEventListener('click', e => {
+    if (!e.target.closest('.sf')) {
+        document.querySelectorAll('.ac').forEach(a => a.classList.remove('open'));
+    }
+});
 
 // ========== FLATPICKR DATES ==========
 const fpOpts={dateFormat:'Y-m-d',altInput:true,altFormat:'M d, Y',minDate:'today',theme:'dark',disableMobile:true};
