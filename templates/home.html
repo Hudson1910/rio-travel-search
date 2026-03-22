@@ -27,8 +27,8 @@
         nav{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:background .3s;}
         nav.scrolled{background:rgba(6,8,15,.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
         .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
-        .logo img{height:56px;}
-        .logo span{font-family:Outfit;font-weight:800;font-size:22px;color:var(--w);letter-spacing:-.8px;}
+        .logo img{height:72px;}
+        .logo span{font-family:Outfit;font-weight:900;font-size:28px;color:var(--w);letter-spacing:-1px;}
         .logo .a{color:var(--coral);}
         .nav-r{display:flex;align-items:center;gap:10px;}
         /* LANG */
@@ -55,7 +55,7 @@
 
         /* SEARCH */
         .sb{width:100%;max-width:880px;position:relative;z-index:10;}
-        .sb-box{background:var(--card);border:1px solid var(--border);border-radius:24px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);}
+        .sb-box{background:var(--card);border:1px solid var(--border);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.4);overflow:visible;}
         .sb-tabs{display:flex;border-bottom:1px solid var(--border);}
         .sb-tab{flex:1;padding:16px;border:none;background:none;color:var(--t3);font-size:13px;font-weight:600;cursor:pointer;font-family:Inter;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;border-bottom:2px solid transparent;}
         .sb-tab:hover{color:var(--t1);}
@@ -67,7 +67,7 @@
         .opt-btn:hover,.opt-btn.on{background:rgba(255,255,255,.04);color:var(--w);border-color:rgba(255,255,255,.1);}
         .opt-btn i{font-size:14px;}
         /* Dropdown generic */
-        .dd{display:none;position:absolute;top:calc(100% + 6px);left:0;background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:8px;box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:500;min-width:240px;}
+        .dd{display:none;position:absolute;bottom:calc(100% + 8px);left:0;background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:8px;box-shadow:0 -8px 48px rgba(0,0,0,.6);z-index:500;min-width:240px;}
         .dd.open{display:block;animation:fadeIn .15s;}
         .dd-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--t2);font-weight:500;transition:background .15s;}
         .dd-item:hover{background:rgba(255,255,255,.04);color:var(--w);}
@@ -194,14 +194,22 @@
         .btn-call{background:rgba(255,255,255,.05);color:var(--w);border:1px solid var(--border);}
 
         /* FOOTER */
-        footer{padding:40px 20px 28px;border-top:1px solid var(--border);text-align:center;}
-        footer .fb{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px;}
-        footer .fb img{height:28px;}
-        footer .fb span{font-family:Outfit;font-weight:700;font-size:15px;color:var(--t3);}
-        footer .fl{display:flex;gap:20px;justify-content:center;margin-bottom:16px;}
-        footer .fl a{color:var(--t4);text-decoration:none;font-size:12px;}
-        footer .fl a:hover{color:var(--t2);}
-        footer .copy{font-size:11px;color:var(--t5);}
+        footer{padding:60px 20px 40px;border-top:1px solid var(--border);background:var(--bg2);}
+        .ft-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+        .ft-col h4{font-family:Outfit;font-size:16px;font-weight:700;color:var(--w);margin-bottom:16px;}
+        .ft-col a{display:block;color:var(--t3);text-decoration:none;font-size:13px;padding:4px 0;transition:color .2s;}
+        .ft-col a:hover{color:var(--coral);}
+        .ft-col p{font-size:13px;color:var(--t4);line-height:1.6;}
+        .ft-col .ft-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+        .ft-col .ft-logo img{height:48px;}
+        .ft-col .ft-logo span{font-family:Outfit;font-weight:900;font-size:22px;color:var(--w);}
+        .ft-col .ft-logo .a{color:var(--coral);}
+        .ft-social{display:flex;gap:10px;margin-top:12px;}
+        .ft-social a{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:16px;transition:all .2s;text-decoration:none;}
+        .ft-social a:hover{background:var(--coral);color:var(--w);}
+        .ft-bottom{text-align:center;padding-top:24px;border-top:1px solid var(--border);max-width:1000px;margin:0 auto;}
+        .ft-bottom p{font-size:11px;color:var(--t5);}
+        @media(max-width:768px){.ft-inner{grid-template-columns:1fr;gap:24px;text-align:center;}.ft-social{justify-content:center;}}
 
         /* WA FLOAT */
         .wa-float{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:50px;background:#25d366;color:var(--w);text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 6px 24px rgba(37,211,102,.35);transition:all .3s;font-family:Inter;}
@@ -452,9 +460,35 @@
 
 <!-- FOOTER -->
 <footer>
-    <div class="fb"><img src="/static/logo-riotravel.png" alt="" style="height:24px;"><span>Rio Travel LLC</span></div>
-    <div class="fl"><a href="#">Voos</a><a href="#">Hoteis</a><a href="#">Tours</a><a href="mailto:contactus@riotravelpc.com">Contato</a></div>
-    <div class="copy">Park City, Utah &middot; &copy; 2026 Rio Travel LLC</div>
+    <div class="ft-inner">
+        <div class="ft-col">
+            <div class="ft-logo"><img src="/static/logo-riotravel.png" alt="Rio Travel"><span>Rio<span class="a">Travel</span></span></div>
+            <p>Sua agencia de viagens nos EUA. Atendimento personalizado em Portugues, Ingles e Espanhol.</p>
+            <div class="ft-social">
+                <a href="https://wa.me/14352146939" target="_blank"><i class="bi bi-whatsapp"></i></a>
+                <a href="https://instagram.com/riotravelllc" target="_blank"><i class="bi bi-instagram"></i></a>
+                <a href="mailto:contactus@riotravelpc.com"><i class="bi bi-envelope-fill"></i></a>
+                <a href="tel:+14352146939"><i class="bi bi-telephone-fill"></i></a>
+            </div>
+        </div>
+        <div class="ft-col">
+            <h4>Servicos</h4>
+            <a href="#">Passagens Aereas</a>
+            <a href="#">Hoteis</a>
+            <a href="#">Tours & Atividades</a>
+            <a href="#">Cruzeiros</a>
+            <a href="#">Aluguel de Carros</a>
+            <a href="#">Pacotes de Viagem</a>
+        </div>
+        <div class="ft-col">
+            <h4>Contato</h4>
+            <a href="tel:+14352146939"><i class="bi bi-telephone"></i> +1 (435) 214-6939</a>
+            <a href="mailto:contactus@riotravelpc.com"><i class="bi bi-envelope"></i> contactus@riotravelpc.com</a>
+            <a href="https://wa.me/14352146939" target="_blank"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+            <p style="margin-top:12px;"><i class="bi bi-geo-alt"></i> Park City, Utah — USA</p>
+        </div>
+    </div>
+    <div class="ft-bottom"><p>&copy; 2026 Rio Travel LLC. All rights reserved. IATA Accredited.</p></div>
 </footer>
 
 <!-- WA FLOAT -->
@@ -674,7 +708,13 @@ function initAC(inputId, acId) {
 
     // Show on focus (popular airports)
     input.addEventListener('focus', () => {
-        input.dataset.code = ''; // clear old code when user starts fresh
+        input.select(); // select all text so user can type fresh
+        input.dataset.code = '';
+        showAC(input, ac);
+    });
+
+    // Also handle click (for mobile where focus may not trigger)
+    input.addEventListener('click', () => {
         showAC(input, ac);
     });
 
