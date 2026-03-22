@@ -44,6 +44,9 @@
         .nav-links a.active { color:#fff; }
         .nav-links a.active::after { content:''; position:absolute; bottom:-4px; left:0; right:0; height:2px; background:var(--coral); border-radius:1px; }
         .nav-right { display:flex; align-items:center; gap:12px; }
+        .lang-switch { display:flex; gap:2px; background:rgba(255,255,255,0.04); border-radius:8px; padding:2px; border:1px solid rgba(255,255,255,0.06); }
+        .lang-btn { padding:5px 10px; border-radius:6px; border:none; background:transparent; color:var(--gray-500); font-size:11px; font-weight:700; cursor:pointer; font-family:'DM Sans'; transition:all 0.2s; letter-spacing:0.5px; }
+        .lang-btn.active { background:rgba(255,255,255,0.08); color:#fff; }
         .nav-phone { color:var(--gray-400); font-size:13px; font-weight:500; text-decoration:none; display:flex; align-items:center; gap:6px; }
         .nav-phone:hover { color:#fff; }
         .nav-cta { padding:8px 20px; border-radius:10px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.3s; border:none; cursor:pointer; }
@@ -221,12 +224,17 @@
         <span>Rio<span class="accent">Travel</span></span>
     </a>
     <div class="nav-links">
-        <a href="#" class="active">Voos</a>
-        <a href="#">Hoteis</a>
-        <a href="#">Cruzeiros</a>
-        <a href="#">Ofertas</a>
+        <a href="#" class="active" data-i18n="nav_flights">Voos</a>
+        <a href="#" data-i18n="nav_hotels">Hoteis</a>
+        <a href="#" data-i18n="nav_cruises">Cruzeiros</a>
+        <a href="#" data-i18n="nav_deals">Ofertas</a>
     </div>
     <div class="nav-right">
+        <div class="lang-switch">
+            <button class="lang-btn active" onclick="setLang('pt')">PT</button>
+            <button class="lang-btn" onclick="setLang('en')">EN</button>
+            <button class="lang-btn" onclick="setLang('es')">ES</button>
+        </div>
         <a href="tel:+14352146939" class="nav-phone"><i class="bi bi-telephone-fill"></i> (435) 214-6939</a>
         <a href="https://wa.me/14352146939" target="_blank" class="nav-cta"><i class="bi bi-whatsapp"></i> WhatsApp</a>
     </div>
@@ -241,20 +249,20 @@
 
     <div class="hero-content">
         <div class="hero-pill">
-            <span>Atendimento em Portugues para brasileiros nos EUA</span>
-            <span class="hero-pill-badge">NOVO</span>
+            <span data-i18n="hero_pill">Atendimento em Portugues para brasileiros nos EUA</span>
+            <span class="hero-pill-badge" data-i18n="hero_new">NOVO</span>
         </div>
-        <h1>Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span></h1>
-        <p class="hero-sub">Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.</p>
+        <h1 data-i18n-html="hero_title">Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span></h1>
+        <p class="hero-sub" data-i18n-html="hero_sub">Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.</p>
     </div>
 
     <!-- Search -->
     <div class="search-wrapper">
         <div class="search-box">
             <div class="search-tabs">
-                <button class="search-tab active" onclick="switchTab('flights')"><i class="bi bi-airplane-fill"></i> Voos</button>
-                <button class="search-tab" onclick="switchTab('hotels')"><i class="bi bi-building"></i> Hoteis</button>
-                <button class="search-tab" onclick="switchTab('cruises')"><i class="bi bi-water"></i> Cruzeiros</button>
+                <button class="search-tab active" onclick="switchTab('flights')"><i class="bi bi-airplane-fill"></i> <span data-i18n="nav_flights">Voos</span></button>
+                <button class="search-tab" onclick="switchTab('hotels')"><i class="bi bi-building"></i> <span data-i18n="nav_hotels">Hoteis</span></button>
+                <button class="search-tab" onclick="switchTab('cruises')"><i class="bi bi-water"></i> <span data-i18n="nav_cruises">Cruzeiros</span></button>
             </div>
 
             <div id="flightForm" class="search-form">
@@ -278,7 +286,7 @@
                     <label>Passageiros</label>
                     <select id="adults"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select>
                 </div>
-                <button class="search-btn" id="searchBtn" onclick="searchFlights()"><i class="bi bi-search"></i> Buscar</button>
+                <button class="search-btn" id="searchBtn" onclick="searchFlights()"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
             </div>
 
             <div id="hotelForm" class="search-form" style="display:none;">
@@ -298,13 +306,13 @@
                     <label>Hospedes</label>
                     <select id="hotelAdults"><option value="1">1</option><option value="2" selected>2</option><option value="3">3</option><option value="4">4</option></select>
                 </div>
-                <button class="search-btn" onclick="searchHotels()"><i class="bi bi-search"></i> Buscar</button>
+                <button class="search-btn" onclick="searchHotels()"><i class="bi bi-search"></i> <span data-i18n="btn_search">Buscar</span></button>
             </div>
 
             <div id="cruiseForm" class="search-form" style="display:none;">
                 <div style="padding:32px;text-align:center;width:100%;">
                     <i class="bi bi-water" style="font-size:36px;color:var(--sky);margin-bottom:12px;display:block;"></i>
-                    <p style="color:var(--gray-400);margin-bottom:20px;font-size:15px;">Para cruzeiros, fale diretamente com nosso agente para as melhores ofertas exclusivas.</p>
+                    <p style="color:var(--gray-400);margin-bottom:20px;font-size:15px;" data-i18n="cruise_text">Para cruzeiros, fale diretamente com nosso agente para as melhores ofertas exclusivas.</p>
                     <a href="https://wa.me/14352146939?text=Oi!%20Gostaria%20de%20informacoes%20sobre%20cruzeiros." target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#25d366;color:#fff;border-radius:14px;text-decoration:none;font-weight:700;font-size:14px;font-family:Outfit;transition:all 0.3s;" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'"><i class="bi bi-whatsapp"></i> Consultar Cruzeiros</a>
                 </div>
             </div>
@@ -325,9 +333,9 @@
 <section class="routes fade-up">
     <div class="routes-inner">
         <div class="section-header">
-            <div class="section-label"><i class="bi bi-fire"></i> Rotas Populares</div>
-            <h2>Destinos Mais Buscados</h2>
-            <p>Voos frequentes de brasileiros nos EUA</p>
+            <div class="section-label"><i class="bi bi-fire"></i> <span data-i18n="routes_label">Rotas Populares</span></div>
+            <h2 data-i18n="routes_title">Destinos Mais Buscados</h2>
+            <p data-i18n="routes_sub">Voos frequentes de brasileiros nos EUA</p>
         </div>
         <div class="routes-grid">
             <a class="route-card" onclick="quickSearch('MIA','GRU')">
@@ -362,25 +370,25 @@
 <section class="features fade-up" id="features">
     <div class="features-inner">
         <div class="section-header">
-            <div class="section-label"><i class="bi bi-stars"></i> Por que Rio Travel</div>
-            <h2>Viaje com Confianca</h2>
-            <p>Mais do que busca de voos — uma experiencia completa de viagem.</p>
+            <div class="section-label"><i class="bi bi-stars"></i> <span data-i18n="feat_label">Por que Rio Travel</span></div>
+            <h2 data-i18n="feat_title">Viaje com Confianca</h2>
+            <p data-i18n="feat_sub">Mais do que busca de voos — uma experiencia completa de viagem.</p>
         </div>
         <div class="features-grid">
             <div class="feat-card">
                 <div class="feat-icon" style="background:rgba(255,87,87,0.08);color:var(--coral);"><i class="bi bi-translate"></i></div>
-                <h3>Atendimento em Portugues</h3>
-                <p>Fale no seu idioma. Suporte completo para brasileiros morando nos EUA.</p>
+                <h3 data-i18n="feat1_title">Atendimento em Portugues</h3>
+                <p data-i18n="feat1_desc">Fale no seu idioma. Suporte completo para brasileiros morando nos EUA.</p>
             </div>
             <div class="feat-card">
                 <div class="feat-icon" style="background:rgba(6,214,160,0.08);color:var(--green);"><i class="bi bi-shield-check"></i></div>
-                <h3>Agente Certificado</h3>
-                <p>Agencia licenciada e certificada nos EUA. Seguranca total para sua viagem.</p>
+                <h3 data-i18n="feat2_title">Agente Certificado</h3>
+                <p data-i18n="feat2_desc">Agencia licenciada e certificada nos EUA. Seguranca total para sua viagem.</p>
             </div>
             <div class="feat-card">
                 <div class="feat-icon" style="background:rgba(76,201,240,0.08);color:var(--sky);"><i class="bi bi-lightning-charge-fill"></i></div>
-                <h3>Precos em Tempo Real</h3>
-                <p>Busca direto nas companhias aereas. Precos atualizados a cada segundo.</p>
+                <h3 data-i18n="feat3_title">Precos em Tempo Real</h3>
+                <p data-i18n="feat3_desc">Busca direto nas companhias aereas. Precos atualizados a cada segundo.</p>
             </div>
         </div>
     </div>
@@ -393,7 +401,7 @@
         <div class="agent-info">
             <h3>Hudson Valeriano</h3>
             <div class="role">Travel Advisor — Rio Travel LLC</div>
-            <p>40+ paises visitados. Especialista em voos internacionais e viagens para o Brasil. Atendimento personalizado via WhatsApp.</p>
+            <p data-i18n="agent_bio">40+ paises visitados. Especialista em voos internacionais e viagens para o Brasil. Atendimento personalizado via WhatsApp.</p>
             <div class="agent-actions">
                 <a href="https://wa.me/14352146939?text=Oi%20Hudson!%20Vi%20o%20site%20e%20preciso%20de%20ajuda%20com%20viagem." target="_blank" class="agent-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
                 <a href="tel:+14352146939" class="agent-call"><i class="bi bi-telephone-fill"></i> Ligar</a>
@@ -423,7 +431,7 @@
 <!-- WhatsApp Float -->
 <a href="https://wa.me/14352146939?text=Oi!%20Vi%20o%20site%20e%20preciso%20de%20ajuda%20com%20viagem." target="_blank" class="wa-float">
     <i class="bi bi-whatsapp"></i>
-    <span class="wa-text">Fale Conosco</span>
+    <span class="wa-text" data-i18n="wa_text">Fale Conosco</span>
 </a>
 
 <script>
@@ -465,40 +473,40 @@ function searchFlights(){
     const dep=document.getElementById('departure').value;
     const ret=document.getElementById('returnDate').value;
     const adults=document.getElementById('adults').value;
-    if(!origin||!dest||!dep){alert('Preencha origem, destino e data.');return;}
+    if(!origin||!dest||!dep){alert(t('error_fields'));return;}
 
     const btn=document.getElementById('searchBtn');
-    btn.disabled=true;btn.innerHTML='<i class="bi bi-hourglass-split"></i> Buscando...';
+    btn.disabled=true;btn.innerHTML=`<i class="bi bi-hourglass-split"></i> ${t('searching')}`;
 
     const results=document.getElementById('results');
     const list=document.getElementById('resultsList');
     results.style.display='block';
     list.innerHTML='<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';
     document.getElementById('resultsTitle').innerHTML=`<span class="route-badge">${origin} → ${dest}</span>`;
-    document.getElementById('resultsCount').textContent='Buscando melhores precos...';
+    document.getElementById('resultsCount').textContent=t('searching_best');
 
     let url=`/api/flights?origin=${origin}&destination=${dest}&departure=${dep}&adults=${adults}`;
     if(ret)url+=`&return=${ret}`;
 
     fetch(url).then(r=>r.json()).then(data=>{
-        btn.disabled=false;btn.innerHTML='<i class="bi bi-search"></i> Buscar';
+        btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('btn_search')}`;
         if(data.error){
             list.innerHTML=`<div style="text-align:center;padding:48px;"><i class="bi bi-exclamation-circle" style="font-size:36px;color:var(--coral);"></i><p style="margin-top:16px;color:var(--gray-400);">${data.error}</p></div>`;
             document.getElementById('resultsCount').textContent='';return;
         }
         const flights=data.flights||[];
         if(!flights.length){
-            list.innerHTML='<div style="text-align:center;padding:48px;"><i class="bi bi-airplane" style="font-size:36px;color:var(--gray-600);"></i><p style="margin-top:16px;color:var(--gray-500);">Nenhum voo encontrado. Tente outras datas.</p></div>';
-            document.getElementById('resultsCount').textContent='0 voos';return;
+            list.innerHTML=`<div style="text-align:center;padding:48px;"><i class="bi bi-airplane" style="font-size:36px;color:var(--gray-600);"></i><p style="margin-top:16px;color:var(--gray-500);">${t('no_flights')}</p></div>`;
+            document.getElementById('resultsCount').textContent=`0 ${t('flights_found')}`;return;
         }
-        document.getElementById('resultsCount').textContent=`${flights.length} voos encontrados`;
+        document.getElementById('resultsCount').textContent=`${flights.length} ${t('flights_found')}`;
         let html='';
         flights.forEach((f,i)=>{
-            const stopsText=f.stops===0?'Direto':f.stops===1?'1 parada':`${f.stops} paradas`;
+            const stopsText=f.stops===0?t('direct'):f.stops===1?t('stop_1'):`${f.stops} ${t('stops_n')}`;
             const stopsColor=f.stops===0?'var(--green)':f.stops===1?'var(--yellow)':'var(--gray-500)';
-            const wMsg=encodeURIComponent(`Oi Hudson! Vi no site um voo ${origin} → ${dest} em ${dep} por $${f.price}. Gostaria de reservar!`);
+            const wMsg=encodeURIComponent(t('wa_flight_msg').replace('{from}',origin).replace('{to}',dest).replace('{date}',dep).replace('{price}',f.price));
             html+=`<div class="result-card">
-                ${i===0?'<div class="best-badge"><i class="bi bi-trophy-fill"></i> Melhor Preco</div>':''}
+                ${i===0?`<div class="best-badge"><i class="bi bi-trophy-fill"></i> ${t('best_price')}</div>`:''}
                 <div class="result-inner">
                     <div class="result-airline">
                         <img class="result-airline-logo" src="${f.airlineLogo||'https://pics.avs.io/80/80/'+(f.airlineCode||'XX')+'.png'}" onerror="this.style.display='none'">
@@ -515,8 +523,8 @@ function searchFlights(){
                     </div>
                     <div class="result-pricing">
                         <div class="price"><span class="price-currency">US$ </span>${f.price}</div>
-                        <div class="per-person">por pessoa</div>
-                        <a href="https://wa.me/14352146939?text=${wMsg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> Reservar</a>
+                        <div class="per-person">${t('per_person')}</div>
+                        <a href="https://wa.me/14352146939?text=${wMsg}" target="_blank" class="cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a>
                     </div>
                 </div>
             </div>`;
@@ -524,7 +532,7 @@ function searchFlights(){
         list.innerHTML=html;
     }).catch(()=>{
         btn.disabled=false;btn.innerHTML='<i class="bi bi-search"></i> Buscar';
-        list.innerHTML='<div style="text-align:center;padding:48px;color:var(--coral);"><i class="bi bi-wifi-off" style="font-size:36px;"></i><p style="margin-top:16px;">Erro de conexao. Tente novamente.</p></div>';
+        list.innerHTML='<div style="text-align:center;padding:48px;color:var(--coral);"><i class="bi bi-wifi-off" style="font-size:36px;"></i><p style="margin-top:16px;">${t('error_conn')}</p></div>';
     });
 }
 
@@ -533,23 +541,23 @@ function searchHotels(){
     const dest=document.getElementById('hotelDest').value.trim();
     const ci=document.getElementById('checkin').value;
     const co=document.getElementById('checkout').value;
-    if(!dest||!ci||!co){alert('Preencha destino e datas.');return;}
+    if(!dest||!ci||!co){alert(t('alert_fill'));return;}
     const results=document.getElementById('results');
     const list=document.getElementById('resultsList');
     results.style.display='block';
     list.innerHTML='<div class="skeleton"></div><div class="skeleton"></div>';
     document.getElementById('resultsTitle').innerHTML=`Hoteis em ${dest}`;
-    document.getElementById('resultsCount').textContent='Buscando...';
+    document.getElementById('resultsCount').textContent=t('searching');
     fetch(`/api/hotels?destination=${dest}&checkin=${ci}&checkout=${co}&adults=${document.getElementById('hotelAdults').value}`)
     .then(r=>r.json()).then(data=>{
         const hotels=data.hotels||[];
-        document.getElementById('resultsCount').textContent=`${hotels.length} hoteis`;
-        if(!hotels.length){list.innerHTML='<div style="text-align:center;padding:48px;color:var(--gray-500);"><p>Nenhum hotel encontrado.</p></div>';return;}
+        document.getElementById('resultsCount').textContent=`${hotels.length} ${t('hotels_found')}`;
+        if(!hotels.length){list.innerHTML=`<div style="text-align:center;padding:48px;color:var(--gray-500);"><p>${t('no_hotels')}</p></div>`;return;}
         let html='';
         hotels.forEach((h,i)=>{
             const wMsg=encodeURIComponent(`Oi! Vi no site o hotel ${h.name} em ${dest} por $${h.price}/noite. Gostaria de reservar!`);
             html+=`<div class="result-card">
-                ${i===0?'<div class="best-badge"><i class="bi bi-trophy-fill"></i> Melhor Preco</div>':''}
+                ${i===0?`<div class="best-badge"><i class="bi bi-trophy-fill"></i> ${t('best_price')}</div>`:''}
                 <div class="result-inner">
                     ${h.photo?`<img src="${h.photo}" style="width:80px;height:60px;border-radius:12px;object-fit:cover;">`:''}
                     <div style="flex:1;"><div style="font-size:16px;font-weight:700;color:#fff;">${h.name}</div><div style="color:var(--yellow);font-size:12px;margin-top:4px;">${'&#9733;'.repeat(h.stars||0)}</div>${h.rating?`<div style="font-size:11px;color:var(--gray-500);margin-top:2px;">Nota ${h.rating}/10 (${h.reviewCount} avaliacoes)</div>`:''}</div>
@@ -561,6 +569,126 @@ function searchHotels(){
         list.innerHTML=html;
     }).catch(()=>{list.innerHTML='<div style="text-align:center;padding:48px;color:var(--coral);"><p>Erro. Tente novamente.</p></div>';});
 }
+// ===== MULTI-LANGUAGE SYSTEM =====
+const LANG = {
+    pt: {
+        nav_flights:'Voos', nav_hotels:'Hoteis', nav_cruises:'Cruzeiros', nav_deals:'Ofertas',
+        hero_pill:'Atendimento em Portugues para brasileiros nos EUA', hero_new:'NOVO',
+        hero_title:'Encontre as Melhores<br><span class="gradient">Ofertas de Voos</span>',
+        hero_sub:'Compare precos de <strong>passagens aereas</strong>, hoteis e cruzeiros em tempo real. Atendimento personalizado com agente certificado.',
+        btn_search:'Buscar', lbl_origin:'Origem', lbl_dest:'Destino', lbl_depart:'Ida', lbl_return:'Volta', lbl_pax:'Passageiros',
+        lbl_checkin:'Check-in', lbl_checkout:'Check-out', lbl_guests:'Hospedes', lbl_hotel_dest:'Destino',
+        cruise_text:'Para cruzeiros, fale diretamente com nosso agente para as melhores ofertas exclusivas.',
+        cruise_btn:'Consultar Cruzeiros',
+        routes_label:'Rotas Populares', routes_title:'Destinos Mais Buscados', routes_sub:'Voos frequentes de brasileiros nos EUA',
+        feat_label:'Por que Rio Travel', feat_title:'Viaje com Confianca', feat_sub:'Mais do que busca de voos — uma experiencia completa de viagem.',
+        feat1_title:'Atendimento em Portugues', feat1_desc:'Fale no seu idioma. Suporte completo para brasileiros morando nos EUA.',
+        feat2_title:'Agente Certificado', feat2_desc:'Agencia licenciada e certificada nos EUA. Seguranca total para sua viagem.',
+        feat3_title:'Precos em Tempo Real', feat3_desc:'Busca direto nas companhias aereas. Precos atualizados a cada segundo.',
+        agent_bio:'40+ paises visitados. Especialista em voos internacionais e viagens para o Brasil. Atendimento personalizado via WhatsApp.',
+        wa_text:'Fale Conosco',
+        best_price:'Melhor Preco', per_person:'por pessoa', per_night:'por noite', book:'Reservar',
+        searching:'Buscando...', searching_best:'Buscando melhores precos...',
+        flights_found:'voos encontrados', hotels_found:'hoteis encontrados',
+        no_flights:'Nenhum voo encontrado. Tente outras datas.', no_hotels:'Nenhum hotel encontrado.',
+        direct:'Direto', stop_1:'1 parada', stops_n:'paradas',
+        error_conn:'${t('error_conn')}', error_fields:'Preencha origem, destino e data.',
+        from:'ida', alert_fill:'Preencha destino e datas.',
+        wa_flight_msg:'Oi Hudson! Vi no site um voo {from} → {to} em {date} por ${price}. Gostaria de reservar!',
+        wa_hotel_msg:'Oi! Vi no site o hotel {name} em {dest} por ${price}/noite. Gostaria de reservar!',
+    },
+    en: {
+        nav_flights:'Flights', nav_hotels:'Hotels', nav_cruises:'Cruises', nav_deals:'Deals',
+        hero_pill:'Personalized service for travelers in the USA', hero_new:'NEW',
+        hero_title:'Find the Best<br><span class="gradient">Flight Deals</span>',
+        hero_sub:'Compare prices on <strong>flights</strong>, hotels and cruises in real time. Personalized service with a certified travel agent.',
+        btn_search:'Search', lbl_origin:'From', lbl_dest:'To', lbl_depart:'Depart', lbl_return:'Return', lbl_pax:'Passengers',
+        lbl_checkin:'Check-in', lbl_checkout:'Check-out', lbl_guests:'Guests', lbl_hotel_dest:'Destination',
+        cruise_text:'For cruises, speak directly with our agent for the best exclusive deals.',
+        cruise_btn:'Get Cruise Deals',
+        routes_label:'Popular Routes', routes_title:'Most Searched Destinations', routes_sub:'Frequent flights from the USA',
+        feat_label:'Why Rio Travel', feat_title:'Travel with Confidence', feat_sub:'More than flight search — a complete travel experience.',
+        feat1_title:'Multilingual Support', feat1_desc:'We speak your language. Full support in English, Portuguese and Spanish.',
+        feat2_title:'Certified Agent', feat2_desc:'Licensed and certified agency in the USA. Total security for your trip.',
+        feat3_title:'Real-Time Prices', feat3_desc:'Search directly from airlines. Prices updated every second.',
+        agent_bio:'40+ countries visited. Specialist in international flights and travel. Personalized service via WhatsApp.',
+        wa_text:'Contact Us',
+        best_price:'Best Price', per_person:'per person', per_night:'per night', book:'Book Now',
+        searching:'Searching...', searching_best:'Finding best prices...',
+        flights_found:'flights found', hotels_found:'hotels found',
+        no_flights:'No flights found. Try different dates.', no_hotels:'No hotels found.',
+        direct:'Direct', stop_1:'1 stop', stops_n:'stops',
+        error_conn:'Connection error. Please try again.', error_fields:'Please fill in origin, destination and date.',
+        from:'one way', alert_fill:'Please fill in destination and dates.',
+        wa_flight_msg:'Hi Hudson! I found a flight {from} → {to} on {date} for ${price}. I would like to book!',
+        wa_hotel_msg:'Hi! I found the hotel {name} in {dest} for ${price}/night. I would like to book!',
+    },
+    es: {
+        nav_flights:'Vuelos', nav_hotels:'Hoteles', nav_cruises:'Cruceros', nav_deals:'Ofertas',
+        hero_pill:'Atencion personalizada para viajeros en EE.UU.', hero_new:'NUEVO',
+        hero_title:'Encuentra las Mejores<br><span class="gradient">Ofertas de Vuelos</span>',
+        hero_sub:'Compara precios de <strong>vuelos</strong>, hoteles y cruceros en tiempo real. Atencion personalizada con agente certificado.',
+        btn_search:'Buscar', lbl_origin:'Origen', lbl_dest:'Destino', lbl_depart:'Ida', lbl_return:'Vuelta', lbl_pax:'Pasajeros',
+        lbl_checkin:'Entrada', lbl_checkout:'Salida', lbl_guests:'Huespedes', lbl_hotel_dest:'Destino',
+        cruise_text:'Para cruceros, hable directamente con nuestro agente para las mejores ofertas exclusivas.',
+        cruise_btn:'Consultar Cruceros',
+        routes_label:'Rutas Populares', routes_title:'Destinos Mas Buscados', routes_sub:'Vuelos frecuentes desde EE.UU.',
+        feat_label:'Por que Rio Travel', feat_title:'Viaja con Confianza', feat_sub:'Mas que busqueda de vuelos — una experiencia completa de viaje.',
+        feat1_title:'Atencion Multilingue', feat1_desc:'Hablamos tu idioma. Soporte completo en espanol, portugues e ingles.',
+        feat2_title:'Agente Certificado', feat2_desc:'Agencia licenciada y certificada en EE.UU. Seguridad total para tu viaje.',
+        feat3_title:'Precios en Tiempo Real', feat3_desc:'Busqueda directa en aerolineas. Precios actualizados cada segundo.',
+        agent_bio:'40+ paises visitados. Especialista en vuelos internacionales y viajes. Atencion personalizada por WhatsApp.',
+        wa_text:'Contactanos',
+        best_price:'Mejor Precio', per_person:'por persona', per_night:'por noche', book:'Reservar',
+        searching:'Buscando...', searching_best:'Buscando mejores precios...',
+        flights_found:'vuelos encontrados', hotels_found:'hoteles encontrados',
+        no_flights:'No se encontraron vuelos. Intenta otras fechas.', no_hotels:'No se encontraron hoteles.',
+        direct:'Directo', stop_1:'1 escala', stops_n:'escalas',
+        error_conn:'Error de conexion. Intenta de nuevo.', error_fields:'Completa origen, destino y fecha.',
+        from:'ida', alert_fill:'Completa destino y fechas.',
+        wa_flight_msg:'Hola Hudson! Vi en el sitio un vuelo {from} → {to} el {date} por ${price}. Me gustaria reservar!',
+        wa_hotel_msg:'Hola! Vi en el sitio el hotel {name} en {dest} por ${price}/noche. Me gustaria reservar!',
+    }
+};
+
+let currentLang = localStorage.getItem('rio_lang') || 'pt';
+
+function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('rio_lang', lang);
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent.trim() === lang.toUpperCase()));
+    document.documentElement.lang = lang === 'pt' ? 'pt' : lang === 'es' ? 'es' : 'en';
+
+    const t = LANG[lang];
+    // Update text content
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+    });
+    // Update HTML content (for bold/spans)
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (t[key]) el.innerHTML = t[key];
+    });
+    // Update labels
+    const labelMap = {
+        'origin': 'lbl_origin', 'destination': 'lbl_dest', 'departure': 'lbl_depart', 'returnDate': 'lbl_return', 'adults': 'lbl_pax',
+        'hotelDest': 'lbl_hotel_dest', 'checkin': 'lbl_checkin', 'checkout': 'lbl_checkout', 'hotelAdults': 'lbl_guests'
+    };
+    Object.entries(labelMap).forEach(([id, key]) => {
+        const field = document.getElementById(id);
+        if (field && field.parentElement) {
+            const label = field.parentElement.querySelector('label');
+            if (label && t[key]) label.textContent = t[key];
+        }
+    });
+}
+
+// Helper for JS-generated content
+function t(key) { return LANG[currentLang][key] || LANG['pt'][key] || key; }
+
+// Apply saved language on load
+setLang(currentLang);
 </script>
 </body>
 </html>
