@@ -63,34 +63,37 @@
         .trip-type-btn i { font-size:14px; }
 
         /* Airport autocomplete */
-        .airport-ac { position:absolute; top:100%; left:0; right:0; background:var(--bg3); border:1px solid rgba(255,255,255,0.08); border-radius:14px; margin-top:4px; max-height:220px; overflow-y:auto; display:none; z-index:100; box-shadow:0 12px 40px rgba(0,0,0,0.4); }
-        .airport-ac.show { display:block; }
-        .airport-item { display:flex; align-items:center; gap:12px; padding:12px 16px; cursor:pointer; transition:background 0.15s; border-bottom:1px solid rgba(255,255,255,0.03); }
-        .airport-item:last-child { border-bottom:none; }
-        .airport-item:hover { background:rgba(255,255,255,0.04); }
-        .airport-item .ac-code { font-family:'Outfit'; font-weight:800; font-size:16px; color:var(--coral); min-width:40px; }
-        .airport-item .ac-info { flex:1; }
-        .airport-item .ac-city { font-size:13px; font-weight:600; color:#fff; }
-        .airport-item .ac-name { font-size:11px; color:var(--gray-500); }
-        .airport-item .ac-country { font-size:11px; color:var(--gray-600); }
+        .airport-ac { position:absolute; top:calc(100% + 4px); left:0; right:0; background:#131830; border:1px solid rgba(255,255,255,0.1); border-radius:16px; max-height:280px; overflow-y:auto; display:none; z-index:500; box-shadow:0 20px 60px rgba(0,0,0,0.6); padding:6px; }
+        .airport-ac.show { display:block; animation:fadeUp 0.15s ease-out; }
+        .airport-ac::-webkit-scrollbar { width:4px; }
+        .airport-ac::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.1); border-radius:2px; }
+        .airport-item { display:flex; align-items:center; gap:14px; padding:14px 16px; cursor:pointer; transition:all 0.15s; border-radius:12px; margin-bottom:2px; }
+        .airport-item:hover { background:rgba(255,87,87,0.08); }
+        .airport-item .ac-icon { width:40px; height:40px; border-radius:10px; background:rgba(255,87,87,0.08); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .airport-item .ac-code { font-family:'Outfit'; font-weight:800; font-size:14px; color:var(--coral); }
+        .airport-item .ac-info { flex:1; min-width:0; }
+        .airport-item .ac-city { font-size:14px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .airport-item .ac-name { font-size:11px; color:var(--gray-500); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px; }
+        .airport-item .ac-country { font-size:11px; color:var(--gray-600); background:rgba(255,255,255,0.04); padding:2px 8px; border-radius:6px; white-space:nowrap; flex-shrink:0; }
 
         /* Passenger dropdown */
-        .pax-dropdown { position:absolute; top:calc(100% + 6px); left:0; right:0; background:var(--bg3); border:1px solid rgba(255,255,255,0.08); border-radius:18px; padding:8px; display:none; z-index:150; box-shadow:0 16px 48px rgba(0,0,0,0.5); min-width:260px; }
-        .pax-dropdown.show { display:block; }
-        .pax-row { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid rgba(255,255,255,0.04); }
+        .pax-dropdown { position:absolute; top:calc(100% + 6px); right:0; background:#131830; border:1px solid rgba(255,255,255,0.1); border-radius:20px; padding:12px; display:none; z-index:500; box-shadow:0 20px 60px rgba(0,0,0,0.6); min-width:300px; }
+        .pax-dropdown.show { display:block; animation:fadeUp 0.15s ease-out; }
+        .pax-row { display:flex; align-items:center; justify-content:space-between; padding:16px 14px; border-bottom:1px solid rgba(255,255,255,0.04); }
         .pax-info { }
-        .pax-label { font-size:14px; font-weight:600; color:#fff; }
-        .pax-age { font-size:11px; color:var(--gray-500); margin-top:2px; }
-        .pax-controls { display:flex; align-items:center; gap:12px; }
-        .pax-btn { width:32px; height:32px; border-radius:10px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.04); color:var(--gray-400); font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
-        .pax-btn:hover { border-color:var(--coral); color:var(--coral); background:rgba(255,87,87,0.06); }
-        .pax-count { font-family:'Outfit'; font-size:18px; font-weight:700; color:#fff; min-width:24px; text-align:center; }
-        .pax-done { width:100%; padding:12px; border:none; border-radius:12px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-family:'Outfit'; font-size:14px; font-weight:700; cursor:pointer; margin-top:6px; transition:all 0.2s; }
-        .pax-done:hover { transform:translateY(-1px); box-shadow:0 4px 16px rgba(255,87,87,0.3); }
+        .pax-icon { font-size:20px; margin-right:10px; }
+        .pax-label { font-size:15px; font-weight:700; color:#fff; display:flex; align-items:center; }
+        .pax-age { font-size:11px; color:var(--gray-500); margin-top:3px; }
+        .pax-controls { display:flex; align-items:center; gap:14px; }
+        .pax-btn { width:36px; height:36px; border-radius:12px; border:1.5px solid rgba(255,255,255,0.12); background:rgba(255,255,255,0.04); color:var(--gray-400); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all 0.2s; }
+        .pax-btn:hover { border-color:var(--coral); color:var(--coral); background:rgba(255,87,87,0.08); }
+        .pax-count { font-family:'Outfit'; font-size:20px; font-weight:800; color:#fff; min-width:28px; text-align:center; }
+        .pax-done { width:100%; padding:14px; border:none; border-radius:14px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-family:'Outfit'; font-size:15px; font-weight:700; cursor:pointer; margin-top:8px; transition:all 0.2s; letter-spacing:0.3px; }
+        .pax-done:hover { transform:translateY(-1px); box-shadow:0 6px 20px rgba(255,87,87,0.3); }
 
-        /* Better date picker */
-        .search-field input[type="date"] { color-scheme:dark; }
-        .search-field input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(0.6); cursor:pointer; font-size:18px; }
+        /* Date picker - modern */
+        .search-field input[type="date"] { color-scheme:dark; font-size:15px !important; padding-top:30px !important; padding-bottom:12px !important; min-height:62px; }
+        .search-field input[type="date"]::-webkit-calendar-picker-indicator { filter:invert(0.7); cursor:pointer; font-size:20px; padding:4px; }
         .nav-phone { color:var(--gray-400); font-size:13px; font-weight:500; text-decoration:none; display:flex; align-items:center; gap:6px; }
         .nav-phone:hover { color:#fff; }
         .nav-cta { padding:8px 20px; border-radius:10px; background:linear-gradient(135deg,var(--coral),var(--orange)); color:#fff; font-size:13px; font-weight:700; text-decoration:none; transition:all 0.3s; border:none; cursor:pointer; }
@@ -125,7 +128,7 @@
         .search-form { display:flex; gap:6px; padding:6px; align-items:stretch; }
         .search-field { flex:1; position:relative; min-width:0; }
         .search-field label { position:absolute; top:10px; left:16px; font-size:10px; font-weight:700; color:var(--gray-500); text-transform:uppercase; letter-spacing:1px; z-index:1; }
-        .search-field input, .search-field select { width:100%; padding:32px 16px 12px; border:1px solid rgba(255,255,255,0.06); border-radius:18px; font-size:15px; font-family:'DM Sans'; font-weight:600; color:#fff; background:rgba(255,255,255,0.03); transition:all 0.3s; appearance:none; }
+        .search-field input, .search-field select { width:100%; padding:34px 16px 14px; border:1px solid rgba(255,255,255,0.06); border-radius:18px; font-size:15px; font-family:'DM Sans'; font-weight:600; color:#fff; background:rgba(255,255,255,0.03); transition:all 0.3s; appearance:none; min-height:66px; }
         .search-field input:focus, .search-field select:focus { outline:none; border-color:var(--coral); background:rgba(255,87,87,0.04); box-shadow:0 0 0 3px rgba(255,87,87,0.08); }
         .search-field input::placeholder { color:var(--gray-600); font-weight:400; }
         .search-field select option { background:var(--bg3); color:#fff; }
@@ -364,35 +367,35 @@
                     <div class="pax-dropdown" id="paxDropdown">
                         <div class="pax-row">
                             <div class="pax-info">
-                                <div class="pax-label" data-i18n="pax_adults">Adultos</div>
+                                <div class="pax-label"><span class="pax-icon"><i class="bi bi-person-fill"></i></span> <span data-i18n="pax_adults">Adultos</span></div>
                                 <div class="pax-age" data-i18n="pax_adults_age">12+ anos</div>
                             </div>
                             <div class="pax-controls">
-                                <button class="pax-btn" onclick="changePax('adults',-1)"><i class="bi bi-dash"></i></button>
+                                <button class="pax-btn" onclick="changePax('adults',-1)"><i class="bi bi-dash-lg"></i></button>
                                 <span class="pax-count" id="adultsCount">1</span>
-                                <button class="pax-btn" onclick="changePax('adults',1)"><i class="bi bi-plus"></i></button>
+                                <button class="pax-btn" onclick="changePax('adults',1)"><i class="bi bi-plus-lg"></i></button>
                             </div>
                         </div>
                         <div class="pax-row">
                             <div class="pax-info">
-                                <div class="pax-label" data-i18n="pax_children">Criancas</div>
+                                <div class="pax-label"><span class="pax-icon"><i class="bi bi-person"></i></span> <span data-i18n="pax_children">Criancas</span></div>
                                 <div class="pax-age" data-i18n="pax_children_age">2-11 anos</div>
                             </div>
                             <div class="pax-controls">
-                                <button class="pax-btn" onclick="changePax('children',-1)"><i class="bi bi-dash"></i></button>
+                                <button class="pax-btn" onclick="changePax('children',-1)"><i class="bi bi-dash-lg"></i></button>
                                 <span class="pax-count" id="childrenCount">0</span>
-                                <button class="pax-btn" onclick="changePax('children',1)"><i class="bi bi-plus"></i></button>
+                                <button class="pax-btn" onclick="changePax('children',1)"><i class="bi bi-plus-lg"></i></button>
                             </div>
                         </div>
                         <div class="pax-row" style="border-bottom:none;">
                             <div class="pax-info">
-                                <div class="pax-label" data-i18n="pax_infants">Bebes</div>
+                                <div class="pax-label"><span class="pax-icon">&#128118;</span> <span data-i18n="pax_infants">Bebes</span></div>
                                 <div class="pax-age" data-i18n="pax_infants_age">0-23 meses</div>
                             </div>
                             <div class="pax-controls">
-                                <button class="pax-btn" onclick="changePax('infants',-1)"><i class="bi bi-dash"></i></button>
+                                <button class="pax-btn" onclick="changePax('infants',-1)"><i class="bi bi-dash-lg"></i></button>
                                 <span class="pax-count" id="infantsCount">0</span>
-                                <button class="pax-btn" onclick="changePax('infants',1)"><i class="bi bi-plus"></i></button>
+                                <button class="pax-btn" onclick="changePax('infants',1)"><i class="bi bi-plus-lg"></i></button>
                             </div>
                         </div>
                         <button class="pax-done" onclick="document.getElementById('paxDropdown').classList.remove('show')" data-i18n="pax_done">Pronto</button>
@@ -817,19 +820,29 @@ const AIRPORTS=[
 ];
 
 function searchAirport(input, acId) {
-    const q = input.value.toLowerCase();
+    const q = input.value.toLowerCase().replace(/\(.*\)/,'').trim();
     const ac = document.getElementById(acId);
-    if (q.length < 1) { ac.classList.remove('show'); return; }
-    const matches = AIRPORTS.filter(a =>
-        a.code.toLowerCase().includes(q) ||
-        a.city.toLowerCase().includes(q) ||
-        a.name.toLowerCase().includes(q) ||
-        a.country.toLowerCase().includes(q)
-    ).slice(0, 6);
+
+    // Show popular airports on empty focus
+    let matches;
+    if (q.length === 0) {
+        matches = AIRPORTS.slice(0, 8); // Show first 8 popular
+    } else {
+        matches = AIRPORTS.filter(a =>
+            a.code.toLowerCase().startsWith(q) ||
+            a.city.toLowerCase().startsWith(q) ||
+            a.city.toLowerCase().includes(q) ||
+            a.name.toLowerCase().includes(q) ||
+            a.country.toLowerCase().includes(q) ||
+            a.code.toLowerCase().includes(q)
+        ).slice(0, 8);
+    }
+
     if (!matches.length) { ac.classList.remove('show'); return; }
+
     ac.innerHTML = matches.map(a => `
-        <div class="airport-item" onclick="selectAirport('${input.id}','${a.code}','${a.city}','${acId}')">
-            <span class="ac-code">${a.code}</span>
+        <div class="airport-item" onmousedown="event.preventDefault();selectAirport('${input.id}','${a.code}','${a.city}','${acId}')">
+            <div class="ac-icon"><span class="ac-code">${a.code}</span></div>
             <div class="ac-info">
                 <div class="ac-city">${a.city}</div>
                 <div class="ac-name">${a.name}</div>
@@ -841,12 +854,20 @@ function searchAirport(input, acId) {
 }
 
 function selectAirport(inputId, code, city, acId) {
-    document.getElementById(inputId).value = code;
-    document.getElementById(inputId).dataset.display = `${city} (${code})`;
-    document.getElementById(inputId).value = `${city} (${code})`;
-    document.getElementById(inputId).dataset.code = code;
+    const input = document.getElementById(inputId);
+    input.value = `${city} (${code})`;
+    input.dataset.code = code;
     document.getElementById(acId).classList.remove('show');
 }
+
+// Hide autocomplete on blur with delay
+document.querySelectorAll('#origin, #destination').forEach(input => {
+    input.addEventListener('blur', () => {
+        setTimeout(() => {
+            document.querySelectorAll('.airport-ac').forEach(ac => ac.classList.remove('show'));
+        }, 200);
+    });
+});
 
 // Close autocomplete on click outside
 document.addEventListener('click', e => {
