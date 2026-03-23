@@ -267,6 +267,68 @@ def search_airport(query):
         return {'results': []}
 
 
+def search_hotel_locations(query, locale='en-gb'):
+    """Search hotel destinations via Booking.com API."""
+    try:
+        resp = requests.get(f'{BK_BASE}/v1/hotels/locations',
+            headers=BK_HEADERS,
+            params={'name': query, 'locale': locale},
+            timeout=10)
+        data = resp.json()
+
+        if not isinstance(data, list):
+            return {'results': []}
+
+        results = []
+        for item in data[:8]:
+            results.append({
+                'name': item.get('name', ''),
+                'label': item.get('label', ''),
+                'destId': item.get('dest_id', ''),
+                'destType': item.get('dest_type', ''),
+                'country': item.get('country', ''),
+                'hotels': item.get('nr_hotels', 0),
+                'lat': item.get('latitude', 0),
+                'lng': item.get('longitude', 0),
+            })
+
+        return {'results': results}
+
+    except Exception as e:
+        print(f"[Search] Hotel location error: {e}")
+        return {'results': []}
+
+
+def search_car_locations(query, locale='en-gb'):
+    """Search car rental locations via Booking.com API."""
+    try:
+        resp = requests.get(f'{BK_BASE}/v1/car-rental/locations',
+            headers=BK_HEADERS,
+            params={'name': query, 'locale': locale},
+            timeout=10)
+        data = resp.json()
+
+        if not isinstance(data, list):
+            return {'results': []}
+
+        results = []
+        for item in data[:8]:
+            results.append({
+                'name': item.get('name', ''),
+                'label': item.get('label', item.get('city', '')),
+                'city': item.get('city', ''),
+                'country': item.get('country', ''),
+                'lat': item.get('latitude', 0),
+                'lng': item.get('longitude', 0),
+            })
+
+        return {'results': results}
+
+    except Exception as e:
+        print(f"[Search] Car location error: {e}")
+        return {'results': []}
+
+
 def search_hotels(destination, checkin, checkout, adults=2, locale='en-gb'):
     """Search hotels via Booking.com API (new host)."""
     try:

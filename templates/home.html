@@ -634,9 +634,10 @@
             </div>
             <!-- HOTEL FIELDS -->
             <div id="hFields" class="sb-fields" style="display:none;">
-                <div class="sf" style="flex:2;">
+                <div class="sf" style="flex:2;position:relative;">
                     <label class="tl">Destino</label>
-                    <input type="text" id="hDest" placeholder="Miami, Cancun, Rio...">
+                    <input type="text" id="hDest" placeholder="Miami, Cancun, Rio..." autocomplete="off" inputmode="search">
+                    <div class="ac" id="hDestAC"></div>
                 </div>
                 <div class="sf" style="flex:.9;">
                     <label>Check-in</label>
@@ -658,9 +659,10 @@
             </div>
             <!-- CAR RENTAL FIELDS -->
             <div id="carFields" class="sb-fields" style="display:none;">
-                <div class="sf" style="flex:2;">
+                <div class="sf" style="flex:2;position:relative;">
                     <label class="tl">Local de Retirada</label>
-                    <input type="text" id="carLoc" placeholder="Miami, Cancun, Sao Paulo...">
+                    <input type="text" id="carLoc" placeholder="Miami, Cancun, Sao Paulo..." autocomplete="off" inputmode="search">
+                    <div class="ac" id="carLocAC"></div>
                 </div>
                 <div class="sf" style="flex:.9;">
                     <label class="tl">Retirada</label>
@@ -1618,6 +1620,59 @@ ${airlines.map(a=>`<div class="fl-chip" data-filter="airline" data-val="${a.name
         }
     }).catch(e=>{btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('search')}`;list.innerHTML='<div style="text-align:center;padding:40px;color:var(--coral);">Error: '+e.message+'</div>';});
 }
+
+// ========== SEARCH HOTELS ==========
+// ========== HOTEL & CAR AUTOCOMPLETE ==========
+let _hTimer=null,_cTimer=null;
+function setupLocAC(inputId,acId,apiUrl,renderFn){
+    const input=document.getElementById(inputId);
+    const ac=document.getElementById(acId);
+    if(!input||!ac)return;
+    input.addEventListener('input',()=>{
+        const q=input.value.trim();
+        if(q.length<2){ac.classList.remove('open');return;}
+        clearTimeout(inputId==='hDest'?_hTimer:_cTimer);
+        const timer=setTimeout(()=>{
+            const langMap={pt:'pt-br',en:'en-gb',es:'es'};
+            fetch(`${apiUrl}?q=${encodeURIComponent(q)}&lang=${langMap[lang]||'en-gb'}`).then(r=>r.json()).then(data=>{
+                const results=data.results||[];
+                if(!results.length){ac.classList.remove('open');return;}
+                ac.innerHTML=results.map(r=>renderFn(r)).join('');
+                ac.classList.add('open');
+                ac.querySelectorAll('.ac-i').forEach(item=>{
+                    item.addEventListener('click',()=>{
+                        input.value=item.dataset.label||item.dataset.name;
+                        ac.classList.remove('open');
+                    });
+                });
+            }).catch(()=>{});
+        },400);
+        if(inputId==='hDest')_hTimer=timer;else _cTimer=timer;
+    });
+    input.addEventListener('focus',()=>{if(ac.children.length&&input.value.length>=2)ac.classList.add('open');});
+    document.addEventListener('click',e=>{if(!input.contains(e.target)&&!ac.contains(e.target))ac.classList.remove('open');});
+}
+// Hotel autocomplete
+setupLocAC('hDest','hDestAC','/api/hotelLocations',r=>{
+    return `<div class="ac-i" data-label="${r.label||r.name}" data-name="${r.name}">
+<div class="ac-icon"><i class="bi bi-building" style="font-size:16px;"></i></div>
+<div style="flex:1;min-width:0;">
+<div class="ac-city">${r.name}</div>
+<div class="ac-name">${r.country||''}</div>
+</div>
+${r.hotels?`<span class="ac-ctry">${r.hotels.toLocaleString()} hotels</span>`:''}
+</div>`;
+});
+// Car autocomplete
+setupLocAC('carLoc','carLocAC','/api/carLocations',r=>{
+    return `<div class="ac-i" data-label="${r.label||r.name}" data-name="${r.name}">
+<div class="ac-icon"><i class="bi bi-geo-alt-fill" style="font-size:16px;"></i></div>
+<div style="flex:1;min-width:0;">
+<div class="ac-city">${r.label||r.name}</div>
+<div class="ac-name">${r.country||''}</div>
+</div>
+</div>`;
+});
 
 // ========== SEARCH HOTELS ==========
 function searchHotels(){

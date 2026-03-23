@@ -71,6 +71,28 @@ def api_search_airport():
     return jsonify(results)
 
 
+@app.route('/api/hotelLocations')
+def api_hotel_locations():
+    """Search hotel destinations via Booking.com."""
+    query = request.args.get('q', '').strip()
+    lang = request.args.get('lang', 'en-gb')
+    if not query or len(query) < 2:
+        return jsonify({'results': []})
+    results = search.search_hotel_locations(query, locale=lang)
+    return jsonify(results)
+
+
+@app.route('/api/carLocations')
+def api_car_locations():
+    """Search car rental locations via Booking.com."""
+    query = request.args.get('q', '').strip()
+    lang = request.args.get('lang', 'en-gb')
+    if not query or len(query) < 2:
+        return jsonify({'results': []})
+    results = search.search_car_locations(query, locale=lang)
+    return jsonify(results)
+
+
 @app.route('/api/cars')
 def api_cars():
     """Search car rentals via Booking.com."""
