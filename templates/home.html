@@ -226,6 +226,9 @@
         .res-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);background:rgba(255,255,255,.05);}
         .res-tag i{font-size:11px;}
         [data-theme="light"] .res-tag{color:#64748b;background:rgba(0,0,0,.04);}
+        /* Hotel/Car inner card text override for readability */
+        .res-inner .hotel-name,.res-inner .car-name{font-size:16px;font-weight:700;color:var(--w);}
+        [data-theme="light"] .res-inner .hotel-name,[data-theme="light"] .res-inner .car-name{color:#1a1a2e;}
         /* Price Insight Panel */
         .pi-panel{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;margin-bottom:16px;transition:all .3s;}
         [data-theme="light"] .pi-panel{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
@@ -1212,7 +1215,7 @@ document.querySelectorAll('.sb-tab').forEach(tab=>tab.onclick=()=>{
     document.getElementById('hFields').style.display=tt==='hotels'?'flex':'none';
     document.getElementById('tFields').style.display=tt==='tours'?'flex':'none';
     document.getElementById('carFields').style.display=tt==='cars'?'flex':'none';
-    document.getElementById('cFields').style.display=tt==='cruises'?'flex':'none';
+    const cF=document.getElementById('cFields');if(cF)cF.style.display='none';
     document.getElementById('sbOpts').style.display=tt==='flights'?'flex':'none';
     document.getElementById('results').style.display='none';
 });
@@ -1612,21 +1615,35 @@ function searchHotels(){
                 lang==='pt'?'Oi Hudson! Quero reservar este hotel:':lang==='es'?'Hola Hudson! Quiero reservar este hotel:':'Hi Hudson! I want to book this hotel:',
                 '',
                 '🏨 Hotel: '+ht.name,
-                '📍 '+(lang==='pt'?'Destino':lang==='es'?'Destino':'Destination')+': '+d,
+                '📍 '+(ht.address||d),
                 '📅 Check-in: '+ci,
                 '📅 Check-out: '+co,
                 '👥 '+(lang==='pt'?'Hospedes':lang==='es'?'Huespedes':'Guests')+': '+paxA,
                 ht.stars?'⭐ '+ht.stars+' '+(lang==='pt'?'estrelas':lang==='es'?'estrellas':'stars'):'',
-                ht.rating?'📊 Rating: '+ht.rating+'/10':'',
+                ht.rating?'📊 Rating: '+ht.rating+'/10 '+ht.ratingWord:'',
+                ht.isFreeCancel?'✅ '+(lang==='pt'?'Cancelamento gratis':lang==='es'?'Cancelacion gratis':'Free cancellation'):'',
                 '',
-                '💰 '+(lang==='pt'?'Preco':lang==='es'?'Precio':'Price')+': $'+ht.price+' '+(lang==='pt'?'por noite':lang==='es'?'por noche':'per night'),
+                '💰 '+(lang==='pt'?'Preco':lang==='es'?'Precio':'Price')+': $'+ht.price+' total',
             ].filter(l=>l).join('\n');
             const msg=encodeURIComponent(htMsg);
+            const stars=ht.stars?'★'.repeat(ht.stars)+'☆'.repeat(5-ht.stars):'';
+            const ratingColor=ht.rating>=8?'#06d6a0':ht.rating>=6?'#ffb347':'#ff5252';
+            const tags=[];
+            if(ht.distance)tags.push(`<span class="res-tag"><i class="bi bi-geo-alt"></i> ${ht.distance} ${ht.distanceUnit||'km'} ${lang==='pt'?'do centro':lang==='es'?'del centro':'from center'}</span>`);
+            if(ht.isFreeCancel)tags.push(`<span class="res-tag" style="color:#06d6a0;"><i class="bi bi-check-circle-fill"></i> ${lang==='pt'?'Cancelamento gratis':lang==='es'?'Cancelacion gratis':'Free cancel'}</span>`);
+            if(ht.isNoPrepay)tags.push(`<span class="res-tag" style="color:#38bdf8;"><i class="bi bi-credit-card"></i> ${lang==='pt'?'Sem pagamento antecipado':lang==='es'?'Sin pago anticipado':'No prepayment'}</span>`);
             return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
-<div class="res-header"><i class="bi bi-building"></i><div><div class="res-header-txt">${ht.name}</div><div class="res-header-sub">${d} · ${ci} → ${co}</div></div></div>
-<div class="res-inner" style="display:flex;align-items:center;gap:16px;">
-${ht.photo?`<img src="${ht.photo}" style="width:80px;height:60px;border-radius:10px;object-fit:cover;flex-shrink:0;">`:''}<div style="flex:1;"><div style="font-size:15px;font-weight:700;color:#1a1a2e;">${ht.name}</div><div style="color:#f59e0b;font-size:13px;margin-top:3px;">${'★'.repeat(ht.stars||0)}</div>${ht.rating?`<div style="font-size:12px;color:#64748b;margin-top:2px;">${ht.rating}/10</div>`:''}</div></div>
-<div class="res-bottom"><div class="res-price"><div class="amt">$${ht.price}</div><div class="pp">${t('pn')}</div></div>
+<div class="res-header"><i class="bi bi-building"></i><div><div class="res-header-txt">${ht.name}</div><div class="res-header-sub">${ht.address||d} · ${ci} → ${co}</div></div></div>
+<div class="res-inner" style="display:flex;gap:16px;align-items:stretch;">
+${ht.photo?`<img src="${ht.photo}" style="width:110px;min-height:90px;border-radius:10px;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none'">`:''}<div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+<div style="font-size:16px;font-weight:700;color:var(--w);">${ht.name}</div>
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+${stars?`<span style="color:#f59e0b;font-size:13px;letter-spacing:1px;">${stars}</span>`:''}
+${ht.rating?`<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${ratingColor};color:#fff;font-size:11px;font-weight:800;">${ht.rating}</span><span style="font-size:11px;color:rgba(255,255,255,.5);">${ht.ratingWord||''} ${ht.reviewCount?'('+ht.reviewCount+')':''}</span>`:''}
+</div>
+${tags.length?`<div class="res-tags">${tags.join('')}</div>`:''}
+</div></div>
+<div class="res-bottom"><div class="res-price"><div class="amt">$${ht.price}</div><div class="pp">total</div></div>
 <a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
         }).join('');
     });
@@ -1727,10 +1744,13 @@ function searchCars(){
             return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
 <div class="res-header"><i class="bi bi-car-front-fill"></i><div><div class="res-header-txt">${c.name}</div><div class="res-header-sub">${c.supplier} · ${c.type||c.group||''}</div></div></div>
 <div class="res-inner" style="display:flex;align-items:center;gap:16px;">
-${c.photo?`<img src="${c.photo}" style="width:100px;height:65px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,.9);padding:4px;flex-shrink:0;" onerror="this.style.display='none'">`:''}<div style="flex:1;">
-<div style="font-size:15px;font-weight:700;color:#1a1a2e;">${c.name}</div>
-<div style="font-size:12px;color:#64748b;margin-top:3px;">${c.supplier}${c.supplierRating?' · '+c.supplierRating+'/10':''}</div>
-${tags.length?`<div class="res-tags" style="margin-top:8px;">${tags.join('')}</div>`:''}
+${c.photo?`<img src="${c.photo}" style="width:110px;height:70px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,.9);padding:6px;flex-shrink:0;" onerror="this.style.display='none'">`:''}<div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+<div style="font-size:16px;font-weight:700;color:var(--w);">${c.name}</div>
+<div style="display:flex;align-items:center;gap:6px;">
+<span style="font-size:12px;color:rgba(255,255,255,.5);">${c.supplier}</span>
+${c.supplierRating?`<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:5px;background:rgba(6,214,160,.12);color:#06d6a0;font-size:10px;font-weight:800;">${c.supplierRating}/10</span>`:''}
+</div>
+${tags.length?`<div class="res-tags">${tags.join('')}</div>`:''}
 </div></div>
 <div class="res-bottom"><div class="res-price"><div class="amt">$${c.price}</div><div class="pp">${t('perDay')}</div></div>
 <a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
