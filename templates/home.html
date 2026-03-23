@@ -262,6 +262,33 @@
         .htl-checkin{font-size:10px;color:rgba(255,255,255,.3);display:flex;align-items:center;gap:3px;}
         [data-theme="light"] .htl-checkin{color:#94a3b8;}
         @media(max-width:640px){.htl-body{flex-direction:column;}.htl-img{width:100%;min-height:160px;max-height:200px;}}
+        /* Car rental card — matching hotel style */
+        .car-card{background:rgba(255,255,255,.08);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;margin-bottom:12px;transition:all .3s;position:relative;}
+        .car-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.2);}
+        [data-theme="light"] .car-card{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
+        [data-theme="light"] .car-card:hover{border-color:rgba(0,0,0,.1);box-shadow:0 8px 24px rgba(0,0,0,.08);}
+        .car-body{display:flex;gap:0;}
+        .car-img{width:220px;min-height:160px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);padding:16px;position:relative;}
+        .car-img img{max-width:100%;max-height:120px;object-fit:contain;}
+        .car-group{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;background:rgba(56,189,248,.9);color:#fff;}
+        [data-theme="light"] .car-img{background:#f8fafc;}
+        .car-info{flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:8px;}
+        .car-name{font-family:Outfit;font-size:18px;font-weight:800;color:var(--w);}
+        [data-theme="light"] .car-name{color:#1a1a2e;}
+        .car-supplier{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.5);}
+        .car-supplier img{height:20px;border-radius:4px;object-fit:contain;}
+        [data-theme="light"] .car-supplier{color:#64748b;}
+        .car-specs{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+        .car-spec{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);}
+        .car-spec i{font-size:14px;color:rgba(255,255,255,.4);}
+        [data-theme="light"] .car-spec{background:#f1f5f9;color:#475569;}
+        [data-theme="light"] .car-spec i{color:#94a3b8;}
+        .car-bottom{display:flex;align-items:center;justify-content:space-between;padding:0 18px 16px;gap:10px;}
+        .car-price{font-family:Outfit;font-size:26px;font-weight:800;color:var(--w);}
+        .car-price-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px;}
+        [data-theme="light"] .car-price{color:#1a1a2e;}
+        [data-theme="light"] .car-price-sub{color:#94a3b8;}
+        @media(max-width:640px){.car-body{flex-direction:column;}.car-img{width:100%;min-height:120px;max-height:160px;}}
         /* Price Insight Panel */
         .pi-panel{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;margin-bottom:16px;transition:all .3s;}
         [data-theme="light"] .pi-panel{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
@@ -1819,28 +1846,60 @@ function searchCars(){
         const cars=data.cars||[];
         if(!cars.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--t3);"><i class="bi bi-car-front" style="font-size:32px;"></i><p style="margin-top:12px;">${t('noCars')}</p>${data.error?`<p style="font-size:11px;margin-top:8px;color:var(--t4);">${data.error}</p>`:''}</div>`;document.getElementById('resCount').textContent='';return;}
         document.getElementById('resCount').textContent=`${cars.length} ${t('carsFound')}`;
+        const pickupLabel=lang==='pt'?'Retirada':lang==='es'?'Retiro':'Pickup';
+        const dropoffLabel=lang==='pt'?'Devolucao':lang==='es'?'Devolucion':'Dropoff';
+        const seatsLabel=lang==='pt'?'Assentos':lang==='es'?'Asientos':'Seats';
+        const doorsLabel=lang==='pt'?'Portas':lang==='es'?'Puertas':'Doors';
+        const bagsLabel=lang==='pt'?'Malas':lang==='es'?'Maletas':'Bags';
+        const totalLabel=lang==='pt'?'total':lang==='es'?'total':'total';
         list.innerHTML=cars.map((c,i)=>{
-            const msg=encodeURIComponent((lang==='pt'?`Oi Hudson! Quero alugar:\n\n🚗 ${c.name}\n📍 ${c.pickup}\n📅 Retirada: ${pickup}\n📅 Devolucao: ${dropoff}\n💰 $${c.price} ${t('perDay')}\n🏢 ${c.supplier}`:lang==='es'?`Hola Hudson! Quiero alquilar:\n\n🚗 ${c.name}\n📍 ${c.pickup}\n📅 Retiro: ${pickup}\n📅 Devolucion: ${dropoff}\n💰 $${c.price} ${t('perDay')}\n🏢 ${c.supplier}`:`Hi Hudson! I want to rent:\n\n🚗 ${c.name}\n📍 ${c.pickup}\n📅 Pickup: ${pickup}\n📅 Dropoff: ${dropoff}\n💰 $${c.price} ${t('perDay')}\n🏢 ${c.supplier}`));
-            const tags=[];
-            if(c.seats)tags.push(`<span class="res-tag"><i class="bi bi-people-fill"></i> ${c.seats}</span>`);
-            if(c.transmission)tags.push(`<span class="res-tag"><i class="bi bi-gear-fill"></i> ${c.transmission}</span>`);
-            if(c.doors)tags.push(`<span class="res-tag"><i class="bi bi-door-open-fill"></i> ${c.doors}</span>`);
-            if(c.bags)tags.push(`<span class="res-tag"><i class="bi bi-luggage-fill"></i> ${c.bags}</span>`);
-            if(c.ac)tags.push(`<span class="res-tag"><i class="bi bi-snow"></i> A/C</span>`);
-            if(c.fuel)tags.push(`<span class="res-tag"><i class="bi bi-fuel-pump"></i> ${c.fuel}</span>`);
-            return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
-<div class="res-header"><i class="bi bi-car-front-fill"></i><div><div class="res-header-txt">${c.name}</div><div class="res-header-sub">${c.supplier} · ${c.type||c.group||''}</div></div></div>
-<div class="res-inner" style="display:flex;align-items:center;gap:16px;">
-${c.photo?`<img src="${c.photo}" style="width:110px;height:70px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,.9);padding:6px;flex-shrink:0;" onerror="this.style.display='none'">`:''}<div style="flex:1;display:flex;flex-direction:column;gap:6px;">
-<div style="font-size:16px;font-weight:700;color:var(--w);">${c.name}</div>
-<div style="display:flex;align-items:center;gap:6px;">
-<span style="font-size:12px;color:rgba(255,255,255,.5);">${c.supplier}</span>
-${c.supplierRating?`<span style="display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:5px;background:rgba(6,214,160,.12);color:#06d6a0;font-size:10px;font-weight:800;">${c.supplierRating}/10</span>`:''}
+            const msgLines=[
+                lang==='pt'?'Oi Hudson! Quero alugar este carro:':lang==='es'?'Hola Hudson! Quiero alquilar este auto:':'Hi Hudson! I want to rent this car:',
+                '',
+                '🚗 '+c.name+' ('+( c.group||c.type||'')+')',
+                '🏢 '+(lang==='pt'?'Locadora':lang==='es'?'Empresa':'Supplier')+': '+c.supplier,
+                '📍 '+c.pickup,
+                '📅 '+pickupLabel+': '+pickup,
+                '📅 '+dropoffLabel+': '+dropoff,
+                '',
+                c.seats?'💺 '+seatsLabel+': '+c.seats:'',
+                c.transmission?'⚙️ '+c.transmission:'',
+                c.ac?'❄️ A/C':'',
+                c.doors?'🚪 '+doorsLabel+': '+c.doors:'',
+                '',
+                '💰 '+(lang==='pt'?'Preco':lang==='es'?'Precio':'Price')+': $'+c.price+' '+totalLabel,
+            ].filter(l=>l).join('\n');
+            const msg=encodeURIComponent(msgLines);
+            return `<div class="car-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
+<div class="car-body">
+<div class="car-img">
+${c.photo?`<img src="${c.photo}" alt="${c.name}" onerror="this.style.display='none'">`:'<i class="bi bi-car-front" style="font-size:48px;color:rgba(255,255,255,.2);"></i>'}
+${c.group?`<div class="car-group">${c.group}</div>`:''}
 </div>
-${tags.length?`<div class="res-tags">${tags.join('')}</div>`:''}
-</div></div>
-<div class="res-bottom"><div class="res-price"><div class="amt">$${c.price}</div><div class="pp">${t('perDay')}</div></div>
-<a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
+<div class="car-info">
+<div class="car-name">${c.name}</div>
+<div class="car-supplier">
+${c.supplierLogo?`<img src="${c.supplierLogo}" alt="${c.supplier}" onerror="this.style.display='none'">`:''} ${c.supplier}
+${c.supplierRating?`<span style="padding:2px 7px;border-radius:5px;background:rgba(6,214,160,.12);color:#06d6a0;font-size:10px;font-weight:800;">${c.supplierRating}/10</span>`:''}
+</div>
+<div class="car-specs">
+${c.seats?`<div class="car-spec"><i class="bi bi-people-fill"></i> ${c.seats} ${seatsLabel}</div>`:''}
+${c.doors?`<div class="car-spec"><i class="bi bi-door-open-fill"></i> ${c.doors} ${doorsLabel}</div>`:''}
+${c.transmission?`<div class="car-spec"><i class="bi bi-gear-fill"></i> ${c.transmission}</div>`:''}
+${c.ac?`<div class="car-spec"><i class="bi bi-snow"></i> A/C</div>`:''}
+${c.bags?`<div class="car-spec"><i class="bi bi-luggage-fill"></i> ${c.bags} ${bagsLabel}</div>`:''}
+${c.fuel&&c.fuel!=='N/A'?`<div class="car-spec"><i class="bi bi-fuel-pump-fill"></i> ${c.fuel}</div>`:''}
+</div>
+<div style="display:flex;align-items:center;gap:6px;margin-top:2px;">
+<span class="htl-checkin"><i class="bi bi-calendar-check"></i> ${pickupLabel}: ${pickup}</span>
+<span class="htl-checkin"><i class="bi bi-calendar-x"></i> ${dropoffLabel}: ${dropoff}</span>
+</div>
+</div>
+</div>
+<div class="car-bottom">
+<div><div class="car-price">$${c.price}</div><div class="car-price-sub">${totalLabel}</div></div>
+<a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a>
+</div></div>`;
         }).join('');
     }).catch(e=>{list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--coral);">Error: ${e.message}</div>`;});
 }
