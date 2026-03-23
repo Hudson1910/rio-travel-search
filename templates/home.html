@@ -226,9 +226,42 @@
         .res-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);background:rgba(255,255,255,.05);}
         .res-tag i{font-size:11px;}
         [data-theme="light"] .res-tag{color:#64748b;background:rgba(0,0,0,.04);}
-        /* Hotel/Car inner card text override for readability */
-        .res-inner .hotel-name,.res-inner .car-name{font-size:16px;font-weight:700;color:var(--w);}
-        [data-theme="light"] .res-inner .hotel-name,[data-theme="light"] .res-inner .car-name{color:#1a1a2e;}
+        /* Hotel card — Expedia style */
+        .htl-card{background:rgba(255,255,255,.08);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;margin-bottom:12px;transition:all .3s;position:relative;}
+        .htl-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.2);}
+        [data-theme="light"] .htl-card{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
+        [data-theme="light"] .htl-card:hover{border-color:rgba(0,0,0,.1);box-shadow:0 8px 24px rgba(0,0,0,.08);}
+        .htl-body{display:flex;gap:0;}
+        .htl-img{width:220px;min-height:180px;flex-shrink:0;position:relative;overflow:hidden;}
+        .htl-img img{width:100%;height:100%;object-fit:cover;}
+        .htl-badge{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
+        .htl-info{flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:8px;}
+        .htl-name{font-family:Outfit;font-size:17px;font-weight:800;color:var(--w);line-height:1.25;}
+        [data-theme="light"] .htl-name{color:#1a1a2e;}
+        .htl-loc{font-size:12px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:4px;}
+        [data-theme="light"] .htl-loc{color:#94a3b8;}
+        .htl-stars{color:#f59e0b;font-size:12px;letter-spacing:1px;}
+        .htl-rating{display:inline-flex;align-items:center;gap:6px;}
+        .htl-rating-badge{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:800;color:#fff;}
+        .htl-rating-text{font-size:12px;font-weight:600;color:rgba(255,255,255,.6);}
+        .htl-rating-count{font-size:11px;color:rgba(255,255,255,.3);}
+        [data-theme="light"] .htl-rating-text{color:#475569;}
+        [data-theme="light"] .htl-rating-count{color:#94a3b8;}
+        .htl-tags{display:flex;flex-wrap:wrap;gap:5px;}
+        .htl-tag{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:600;background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);}
+        .htl-tag.green{background:rgba(6,214,160,.08);color:#06d6a0;}
+        .htl-tag.blue{background:rgba(56,189,248,.08);color:#38bdf8;}
+        [data-theme="light"] .htl-tag{background:rgba(0,0,0,.03);color:#64748b;}
+        [data-theme="light"] .htl-tag.green{background:rgba(6,214,160,.06);color:#059669;}
+        [data-theme="light"] .htl-tag.blue{background:rgba(56,189,248,.06);color:#0284c7;}
+        .htl-bottom{display:flex;align-items:center;justify-content:space-between;padding:0 18px 16px;gap:10px;}
+        .htl-price{font-family:Outfit;font-size:26px;font-weight:800;color:var(--w);}
+        .htl-price-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px;}
+        [data-theme="light"] .htl-price{color:#1a1a2e;}
+        [data-theme="light"] .htl-price-sub{color:#94a3b8;}
+        .htl-checkin{font-size:10px;color:rgba(255,255,255,.3);display:flex;align-items:center;gap:3px;}
+        [data-theme="light"] .htl-checkin{color:#94a3b8;}
+        @media(max-width:640px){.htl-body{flex-direction:column;}.htl-img{width:100%;min-height:160px;max-height:200px;}}
         /* Price Insight Panel */
         .pi-panel{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;margin-bottom:16px;transition:all .3s;}
         [data-theme="light"] .pi-panel{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
@@ -638,14 +671,6 @@
                     <input type="text" id="carDropoff" placeholder="Selecionar" readonly>
                 </div>
                 <button class="sb-btn" onclick="searchCars()"><i class="bi bi-search"></i> <span class="tl">Buscar Carros</span></button>
-            </div>
-            <!-- CRUISE -->
-            <div id="cFields" class="sb-fields" style="display:none;">
-                <div style="padding:28px;text-align:center;width:100%;">
-                    <i class="bi bi-water" style="font-size:36px;color:var(--sky);display:block;margin-bottom:12px;"></i>
-                    <p class="tl" style="color:var(--t3);margin-bottom:16px;">Para cruzeiros, fale com nosso agente para ofertas exclusivas.</p>
-                    <a href="https://wa.me/14352146939?text=Oi!%20Quero%20informacoes%20sobre%20cruzeiros." target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:#25d366;color:var(--w);border-radius:12px;text-decoration:none;font-weight:700;font-size:14px;"><i class="bi bi-whatsapp"></i> <span class="tl">Consultar Cruzeiros</span></a>
-                </div>
             </div>
         </div>
     </div>
@@ -1181,10 +1206,6 @@ function setLang(l){
     if(agentP)agentP.textContent=t('agentBio');
 
     // ---- CRUISE TAB ----
-    const cruiseP=document.querySelector('#cFields p.tl');
-    if(cruiseP)cruiseP.textContent=t('cruise');
-    const cruiseBtn=document.querySelector('#cFields a span.tl');
-    if(cruiseBtn)cruiseBtn.textContent=t('cruiseBtn');
 
     // ---- WA FLOAT ----
     const waSpan=document.querySelector('.wa-float span.tl');
@@ -1215,7 +1236,6 @@ document.querySelectorAll('.sb-tab').forEach(tab=>tab.onclick=()=>{
     document.getElementById('hFields').style.display=tt==='hotels'?'flex':'none';
     document.getElementById('tFields').style.display=tt==='tours'?'flex':'none';
     document.getElementById('carFields').style.display=tt==='cars'?'flex':'none';
-    const cF=document.getElementById('cFields');if(cF)cF.style.display='none';
     document.getElementById('sbOpts').style.display=tt==='flights'?'flex':'none';
     document.getElementById('results').style.display='none';
 });
@@ -1613,38 +1633,52 @@ function searchHotels(){
         list.innerHTML=h.map((ht,i)=>{
             const htMsg=[
                 lang==='pt'?'Oi Hudson! Quero reservar este hotel:':lang==='es'?'Hola Hudson! Quiero reservar este hotel:':'Hi Hudson! I want to book this hotel:',
-                '',
-                '🏨 Hotel: '+ht.name,
-                '📍 '+(ht.address||d),
-                '📅 Check-in: '+ci,
-                '📅 Check-out: '+co,
+                '','🏨 Hotel: '+ht.name,
+                '📍 '+(ht.address?ht.address+', ':'')+ht.city,
+                '📅 Check-in: '+ci+(ht.checkin?.from?' ('+ht.checkin.from+')':''),
+                '📅 Check-out: '+co+(ht.checkout?.until?' ('+ht.checkout.until+')':''),
                 '👥 '+(lang==='pt'?'Hospedes':lang==='es'?'Huespedes':'Guests')+': '+paxA,
-                ht.stars?'⭐ '+ht.stars+' '+(lang==='pt'?'estrelas':lang==='es'?'estrellas':'stars'):'',
-                ht.rating?'📊 Rating: '+ht.rating+'/10 '+ht.ratingWord:'',
+                ht.stars?'⭐ '+Math.round(ht.stars)+' '+(lang==='pt'?'estrelas':lang==='es'?'estrellas':'stars'):'',
+                ht.rating?'📊 '+ht.rating+'/10 — '+ht.ratingWord+' ('+ht.reviewCount+' reviews)':'',
                 ht.isFreeCancel?'✅ '+(lang==='pt'?'Cancelamento gratis':lang==='es'?'Cancelacion gratis':'Free cancellation'):'',
-                '',
-                '💰 '+(lang==='pt'?'Preco':lang==='es'?'Precio':'Price')+': $'+ht.price+' total',
+                '','💰 '+(lang==='pt'?'Preco':lang==='es'?'Precio':'Price')+': $'+ht.price+' total',
             ].filter(l=>l).join('\n');
             const msg=encodeURIComponent(htMsg);
-            const stars=ht.stars?'★'.repeat(ht.stars)+'☆'.repeat(5-ht.stars):'';
-            const ratingColor=ht.rating>=8?'#06d6a0':ht.rating>=6?'#ffb347':'#ff5252';
-            const tags=[];
-            if(ht.distance)tags.push(`<span class="res-tag"><i class="bi bi-geo-alt"></i> ${ht.distance} ${ht.distanceUnit||'km'} ${lang==='pt'?'do centro':lang==='es'?'del centro':'from center'}</span>`);
-            if(ht.isFreeCancel)tags.push(`<span class="res-tag" style="color:#06d6a0;"><i class="bi bi-check-circle-fill"></i> ${lang==='pt'?'Cancelamento gratis':lang==='es'?'Cancelacion gratis':'Free cancel'}</span>`);
-            if(ht.isNoPrepay)tags.push(`<span class="res-tag" style="color:#38bdf8;"><i class="bi bi-credit-card"></i> ${lang==='pt'?'Sem pagamento antecipado':lang==='es'?'Sin pago anticipado':'No prepayment'}</span>`);
-            return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
-<div class="res-header"><i class="bi bi-building"></i><div><div class="res-header-txt">${ht.name}</div><div class="res-header-sub">${ht.address||d} · ${ci} → ${co}</div></div></div>
-<div class="res-inner" style="display:flex;gap:16px;align-items:stretch;">
-${ht.photo?`<img src="${ht.photo}" style="width:110px;min-height:90px;border-radius:10px;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none'">`:''}<div style="flex:1;display:flex;flex-direction:column;gap:6px;">
-<div style="font-size:16px;font-weight:700;color:var(--w);">${ht.name}</div>
-<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
-${stars?`<span style="color:#f59e0b;font-size:13px;letter-spacing:1px;">${stars}</span>`:''}
-${ht.rating?`<span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:6px;background:${ratingColor};color:#fff;font-size:11px;font-weight:800;">${ht.rating}</span><span style="font-size:11px;color:rgba(255,255,255,.5);">${ht.ratingWord||''} ${ht.reviewCount?'('+ht.reviewCount+')':''}</span>`:''}
+            const starCount=Math.round(ht.stars||0);
+            const stars=starCount>0?'★'.repeat(starCount)+'☆'.repeat(Math.max(0,5-starCount)):'';
+            const rc=ht.rating>=9?'#06d6a0':ht.rating>=7?'#38bdf8':ht.rating>=5?'#ffb347':'#ff5252';
+            const freeCancelLabel=lang==='pt'?'Cancelamento gratis':lang==='es'?'Cancelacion gratis':'Free cancellation';
+            const noPrepayLabel=lang==='pt'?'Sem pagamento antecipado':lang==='es'?'Sin pago anticipado':'No prepayment';
+            const fromCenterLabel=lang==='pt'?'do centro':lang==='es'?'del centro':'from center';
+            const checkinLabel=lang==='pt'?'Check-in':lang==='es'?'Check-in':'Check-in';
+            const totalLabel=lang==='pt'?'total':lang==='es'?'total':'total';
+            const nightsLabel=lang==='pt'?'noites':lang==='es'?'noches':'nights';
+            return `<div class="htl-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
+<div class="htl-body">
+<div class="htl-img">
+${ht.photo?`<img src="${ht.photo}" alt="${ht.name}" onerror="this.parentElement.style.display='none'" loading="lazy">`:''}
+${ht.isFreeCancel?`<div class="htl-badge green" style="background:rgba(6,214,160,.9);color:#fff;"><i class="bi bi-check-circle-fill"></i> ${freeCancelLabel}</div>`:''}
 </div>
-${tags.length?`<div class="res-tags">${tags.join('')}</div>`:''}
-</div></div>
-<div class="res-bottom"><div class="res-price"><div class="amt">$${ht.price}</div><div class="pp">total</div></div>
-<a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
+<div class="htl-info">
+<div class="htl-name">${ht.name}</div>
+${stars?`<div class="htl-stars">${stars}</div>`:''}
+<div class="htl-loc"><i class="bi bi-geo-alt-fill"></i> ${ht.address?ht.address+', ':''}${ht.city}${ht.distance?' · '+ht.distance+' '+( ht.distanceUnit||'km')+' '+fromCenterLabel:''}</div>
+${ht.rating?`<div class="htl-rating">
+<span class="htl-rating-badge" style="background:${rc};">${ht.rating}</span>
+<span class="htl-rating-text">${ht.ratingWord||''}</span>
+<span class="htl-rating-count">${ht.reviewCount?ht.reviewCount+' reviews':''}</span>
+</div>`:''}
+<div class="htl-tags">
+${ht.checkin?.from?`<span class="htl-tag"><i class="bi bi-clock"></i> ${checkinLabel} ${ht.checkin.from}</span>`:''}
+${ht.checkout?.until?`<span class="htl-tag"><i class="bi bi-clock-history"></i> Check-out ${ht.checkout.until}</span>`:''}
+${ht.isNoPrepay?`<span class="htl-tag blue"><i class="bi bi-credit-card"></i> ${noPrepayLabel}</span>`:''}
+</div>
+</div>
+</div>
+<div class="htl-bottom">
+<div><div class="htl-price">$${ht.price}</div><div class="htl-price-sub">${totalLabel}</div></div>
+<a href="https://wa.me/14352146939?text=${msg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a>
+</div></div>`;
         }).join('');
     });
 }
