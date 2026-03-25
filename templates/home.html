@@ -119,7 +119,7 @@
 
         /* ===== SEARCH BOX ===== */
         .sb { width: 100%; max-width: 880px; position: relative; z-index: 100; }
-        .sb-box { background: var(--white); border: none; border-radius: var(--radius-xl); box-shadow: var(--shadow-xl); overflow: visible; }
+        .sb-box { background: var(--white); border: none; border-radius: var(--radius-xl); box-shadow: var(--shadow-xl); overflow: visible !important; }
         .sb-tabs { display: flex; border-bottom: 1px solid #e8eaed; }
         .sb-tab { flex: 1; padding: 16px; border: none; background: none; color: var(--text-tertiary); font-size: 13px; font-weight: 600; cursor: pointer; font-family: Inter; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all .2s; border-bottom: 3px solid transparent; margin-bottom: -1px; }
         .sb-tab:hover { color: var(--text-primary); background: #f8f9fa; }
@@ -133,7 +133,7 @@
         .opt-btn i { font-size: 14px; }
 
         /* Dropdown generic */
-        .dd { display: none; position: absolute; top: calc(100% + 8px); left: 0; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; box-shadow: var(--shadow-xl); z-index: 9999; min-width: 240px; }
+        .dd { display: none; position: fixed; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; box-shadow: 0 12px 48px rgba(0,0,0,.2); z-index: 9999; min-width: 240px; max-height: 70vh; overflow-y: auto; }
         .dd.open { display: block; animation: fadeIn .15s; }
         .dd-item { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--text-secondary); font-weight: 500; transition: background .15s; }
         .dd-item:hover { background: #f5f6f8; color: var(--text-primary); }
@@ -156,7 +156,7 @@
         .pax-sec { padding: 6px 14px; font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid #e8eaed; margin-top: 4px; }
 
         /* Search fields */
-        .sb-fields { display: flex; padding: 12px; gap: 6px; align-items: stretch; position: relative; z-index: 1; }
+        .sb-fields { display: flex; padding: 12px; gap: 6px; align-items: stretch; position: relative; }
         .sf { flex: 1; position: relative; }
         .sf label { position: absolute; top: 10px; left: 14px; font-size: 10px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .8px; z-index: 1; pointer-events: none; }
         .sf input,.sf select { width: 100%; padding: 30px 14px 10px; border: 1.5px solid #dadce0; border-radius: var(--radius); font-size: 14px; font-family: Inter; font-weight: 600; color: var(--text-primary); background: #fff; transition: all .2s; min-height: 60px; }
@@ -1435,8 +1435,22 @@ document.querySelectorAll('.sb-tab').forEach(tab=>tab.onclick=()=>{
 // ========== TRIP TYPE ==========
 function setTrip(t){trip=t;document.getElementById('optRT').classList.toggle('on',t==='rt');document.getElementById('optOW').classList.toggle('on',t==='ow');document.getElementById('retWrap').style.display=t==='ow'?'none':'block';}
 
+// ========== POSITION DROPDOWN ==========
+function posDD(btnId,ddId){
+    const btn=document.getElementById(btnId);
+    const dd=document.getElementById(ddId);
+    const r=btn.getBoundingClientRect();
+    dd.style.left=r.left+'px';
+    dd.style.top=(r.bottom+8)+'px';
+    // If overflows right, align to right edge
+    setTimeout(()=>{
+        const dr=dd.getBoundingClientRect();
+        if(dr.right>window.innerWidth-12){dd.style.left=(window.innerWidth-dr.width-12)+'px';}
+    },10);
+}
+
 // ========== CABIN CLASS ==========
-document.getElementById('classBtn').onclick=e=>{e.stopPropagation();document.getElementById('classDD').classList.toggle('open');closeExcept('classDD');};
+document.getElementById('classBtn').onclick=e=>{e.stopPropagation();document.getElementById('classDD').classList.toggle('open');posDD('classBtn','classDD');closeExcept('classDD');};
 document.querySelectorAll('#classDD .dd-item').forEach(i=>i.onclick=()=>{
     cabin=i.dataset.c;
     document.querySelectorAll('#classDD .dd-item').forEach(x=>x.classList.toggle('on',x.dataset.c===cabin));
@@ -1445,7 +1459,7 @@ document.querySelectorAll('#classDD .dd-item').forEach(i=>i.onclick=()=>{
 });
 
 // ========== PASSENGERS ==========
-document.getElementById('paxBtn').onclick=e=>{e.stopPropagation();document.getElementById('paxDD').classList.toggle('open');closeExcept('paxDD');};
+document.getElementById('paxBtn').onclick=e=>{e.stopPropagation();document.getElementById('paxDD').classList.toggle('open');posDD('paxBtn','paxDD');closeExcept('paxDD');};
 function pax(type,d){
     if(type==='a'){paxA=Math.max(1,Math.min(9,paxA+d));document.getElementById('pA').textContent=paxA;}
     if(type==='c'){paxC=Math.max(0,Math.min(6,paxC+d));document.getElementById('pC').textContent=paxC;}
