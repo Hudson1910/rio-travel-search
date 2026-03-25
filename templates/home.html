@@ -444,10 +444,40 @@
         .ft-bottom p { font-size: 11px; color: #475569; }
         @media(max-width:768px){.ft-inner{grid-template-columns:1fr;gap:24px;text-align:center;}.ft-social{justify-content:center;}}
 
-        /* ===== WA FLOAT ===== */
-        .wa-float { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 50px; background: #25d366; color: #fff; text-decoration: none; font-size: 14px; font-weight: 700; box-shadow: 0 4px 20px rgba(37,211,102,.35); transition: all .3s; font-family: Inter; }
-        .wa-float:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,.45); }
-        .wa-float i { font-size: 22px; }
+        /* ===== AI CHAT WIDGET ===== */
+        .chat-fab{position:fixed;bottom:20px;right:20px;z-index:999;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#4a90d9);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 4px 20px rgba(26,115,232,.4);transition:all .3s;}
+        .chat-fab:hover{transform:scale(1.08);box-shadow:0 8px 28px rgba(26,115,232,.5);}
+        .chat-fab.open{border-radius:16px;background:var(--coral);}
+        .chat-badge{position:absolute;top:-2px;right:-2px;width:16px;height:16px;border-radius:50%;background:var(--coral);border:2px solid #fff;animation:pulse-badge 2s infinite;}
+        @keyframes pulse-badge{0%,100%{transform:scale(1);}50%{transform:scale(1.2);}}
+        .chat-window{position:fixed;bottom:90px;right:20px;width:380px;max-height:520px;background:#fff;border-radius:20px;box-shadow:0 12px 48px rgba(0,0,0,.15);z-index:998;display:none;flex-direction:column;overflow:hidden;border:1px solid rgba(0,0,0,.06);}
+        .chat-window.open{display:flex;animation:chatIn .25s ease;}
+        @keyframes chatIn{from{opacity:0;transform:translateY(20px) scale(.95);}to{opacity:1;transform:translateY(0) scale(1);}}
+        .chat-head{background:linear-gradient(135deg,var(--primary),#4a90d9);color:#fff;padding:18px 20px;display:flex;align-items:center;gap:12px;}
+        .chat-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+        .chat-head-info h4{font-size:15px;font-weight:700;font-family:Outfit;margin:0;}
+        .chat-head-info p{font-size:11px;opacity:.8;margin:0;}
+        .chat-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;margin-left:auto;flex-shrink:0;}
+        .chat-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;max-height:320px;-webkit-overflow-scrolling:touch;}
+        .chat-msg{max-width:85%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.5;animation:msgIn .2s ease;}
+        @keyframes msgIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+        .chat-msg.bot{background:#f0f2f5;color:#1a1a2e;align-self:flex-start;border-bottom-left-radius:4px;}
+        .chat-msg.user{background:var(--primary);color:#fff;align-self:flex-end;border-bottom-right-radius:4px;}
+        .chat-msg.typing{background:#f0f2f5;align-self:flex-start;border-bottom-left-radius:4px;}
+        .typing-dots{display:flex;gap:4px;padding:4px 0;}
+        .typing-dots span{width:6px;height:6px;border-radius:50%;background:#94a3b8;animation:typingBounce .8s infinite;}
+        .typing-dots span:nth-child(2){animation-delay:.15s;}
+        .typing-dots span:nth-child(3){animation-delay:.3s;}
+        @keyframes typingBounce{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+        .chat-quick{display:flex;flex-wrap:wrap;gap:6px;padding:0 16px 12px;}
+        .chat-qbtn{padding:7px 14px;border-radius:50px;border:1.5px solid var(--primary);background:none;color:var(--primary);font-size:12px;font-weight:600;cursor:pointer;font-family:Inter;transition:all .15s;white-space:nowrap;}
+        .chat-qbtn:hover{background:var(--primary);color:#fff;}
+        .chat-input{display:flex;gap:8px;padding:12px 16px;border-top:1px solid rgba(0,0,0,.06);}
+        .chat-input input{flex:1;padding:10px 14px;border:1.5px solid rgba(0,0,0,.1);border-radius:12px;font-size:13px;font-family:Inter;outline:none;transition:border .2s;}
+        .chat-input input:focus{border-color:var(--primary);}
+        .chat-input button{width:38px;height:38px;border-radius:50%;background:var(--primary);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s;flex-shrink:0;}
+        .chat-input button:hover{background:#1565c0;}
+        .wa-float { display:none; }
 
         /* ===== RESPONSIVE ===== */
         @media(max-width:1024px) {
@@ -514,8 +544,8 @@
             .ft-inner { grid-template-columns: 1fr; gap: 24px; text-align: center; }
             .ft-social { justify-content: center; }
             footer { padding: 40px 14px 30px; }
-            .wa-float span { display: none; }
-            .wa-float { padding: 14px; border-radius: 50%; bottom: 16px; right: 16px; }
+            .chat-fab{width:52px;height:52px;font-size:22px;bottom:16px;right:16px;}
+            .chat-window{width:calc(100vw - 24px);right:12px;bottom:80px;max-height:70vh;border-radius:16px;}
             .ac { border-radius: 10px; max-height: 260px; }
             .ac-i { padding: 12px 14px; min-height: 48px; }
             .dd { min-width: 220px; border-radius: 10px; }
@@ -886,8 +916,27 @@
     <div class="ft-bottom"><p>&copy; 2026 Rio Travel LLC. All rights reserved. IATA Accredited.</p></div>
 </footer>
 
-<!-- WA FLOAT -->
-<a href="https://wa.me/14352146939?text=Oi!%20Preciso%20de%20ajuda%20com%20viagem." target="_blank" class="wa-float"><i class="bi bi-whatsapp"></i> <span class="tl">Fale Conosco</span></a>
+<!-- AI CHAT WIDGET -->
+<button class="chat-fab" id="chatFab" onclick="toggleChat()">
+    <i class="bi bi-robot"></i>
+    <div class="chat-badge" id="chatBadge"></div>
+</button>
+<div class="chat-window" id="chatWindow">
+    <div class="chat-head">
+        <div class="chat-avatar"><i class="bi bi-robot"></i></div>
+        <div class="chat-head-info">
+            <h4>Rio Travel AI</h4>
+            <p>Assistente de viagens</p>
+        </div>
+        <div class="chat-dot"></div>
+    </div>
+    <div class="chat-body" id="chatBody"></div>
+    <div class="chat-quick" id="chatQuick"></div>
+    <div class="chat-input">
+        <input type="text" id="chatInput" placeholder="Digite sua pergunta..." onkeydown="if(event.key==='Enter')sendChat()">
+        <button onclick="sendChat()"><i class="bi bi-send-fill"></i></button>
+    </div>
+</div>
 
 <!-- FLATPICKR -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -2007,6 +2056,183 @@ function qSearch(f,tt){
     window.scrollTo({top:0,behavior:'smooth'});
     setTimeout(doSearch,300);
 }
+
+// ========== AI CHAT ==========
+const chatBody=document.getElementById('chatBody');
+const chatQuick=document.getElementById('chatQuick');
+const chatWindow=document.getElementById('chatWindow');
+let chatOpen=false,chatStarted=false;
+
+function toggleChat(){
+    chatOpen=!chatOpen;
+    chatWindow.classList.toggle('open',chatOpen);
+    const fab=document.getElementById('chatFab');
+    fab.innerHTML=chatOpen?'<i class="bi bi-x-lg"></i>':'<i class="bi bi-robot"></i><div class="chat-badge" id="chatBadge"></div>';
+    fab.classList.toggle('open',chatOpen);
+    if(!chatStarted){chatStarted=true;startChat();}
+}
+
+function startChat(){
+    const greetings={
+        pt:{hi:'Oi! Sou o assistente da Rio Travel. Como posso ajudar?',quick:['Voos baratos','Melhores destinos','Hoteis em Cancun','Aluguel de carro','Falar com Hudson']},
+        en:{hi:'Hi! I\'m Rio Travel\'s assistant. How can I help?',quick:['Cheap flights','Best destinations','Hotels in Cancun','Car rental','Talk to Hudson']},
+        es:{hi:'Hola! Soy el asistente de Rio Travel. Como puedo ayudar?',quick:['Vuelos baratos','Mejores destinos','Hoteles en Cancun','Alquiler de auto','Hablar con Hudson']}
+    };
+    const g=greetings[lang]||greetings.pt;
+    addMsg(g.hi,'bot');
+    showQuick(g.quick);
+}
+
+function addMsg(text,type){
+    const d=document.createElement('div');
+    d.className='chat-msg '+type;
+    d.innerHTML=text;
+    chatBody.appendChild(d);
+    chatBody.scrollTop=chatBody.scrollHeight;
+}
+
+function showTyping(){
+    const d=document.createElement('div');
+    d.className='chat-msg typing';
+    d.id='typingMsg';
+    d.innerHTML='<div class="typing-dots"><span></span><span></span><span></span></div>';
+    chatBody.appendChild(d);
+    chatBody.scrollTop=chatBody.scrollHeight;
+}
+function hideTyping(){const t=document.getElementById('typingMsg');if(t)t.remove();}
+
+function showQuick(opts){
+    chatQuick.innerHTML=opts.map(o=>`<button class="chat-qbtn" onclick="quickReply('${o.replace(/'/g,"\\'")}')"></ button>`).join('');
+    chatQuick.innerHTML=opts.map(o=>{
+        const escaped=o.replace(/'/g,"\\'");
+        return `<button class="chat-qbtn" onclick="quickReply('${escaped}')">${o}</button>`;
+    }).join('');
+}
+
+function quickReply(text){
+    addMsg(text,'user');
+    chatQuick.innerHTML='';
+    processMsg(text);
+}
+
+function sendChat(){
+    const inp=document.getElementById('chatInput');
+    const text=inp.value.trim();
+    if(!text)return;
+    addMsg(text,'user');
+    inp.value='';
+    chatQuick.innerHTML='';
+    processMsg(text);
+}
+
+function processMsg(text){
+    const low=text.toLowerCase();
+    showTyping();
+    const delay=600+Math.random()*800;
+
+    setTimeout(()=>{
+        hideTyping();
+
+        // FLIGHTS / VOOS
+        if(match(low,['voo','flight','vuelo','passagem','barato','cheap','preco','price'])){
+            const r=responses('flights');
+            addMsg(r.msg,'bot');
+            showQuick(r.quick);
+        }
+        // DESTINATIONS
+        else if(match(low,['destino','destination','cancun','miami','rio','lisboa','vegas','europe','carib','mexico','brasil','brazil','portugal'])){
+            const r=responses('destinations');
+            addMsg(r.msg,'bot');
+            showQuick(r.quick);
+        }
+        // HOTELS
+        else if(match(low,['hotel','hoteis','hosped','stay','booking','resort','all-inclusive','all inclusive'])){
+            const r=responses('hotels');
+            addMsg(r.msg,'bot');
+            showQuick(r.quick);
+        }
+        // CARS
+        else if(match(low,['carro','car','auto','rent','aluguel','rental'])){
+            const r=responses('cars');
+            addMsg(r.msg,'bot');
+            showQuick(r.quick);
+        }
+        // HUDSON / AGENT / WHATSAPP
+        else if(match(low,['hudson','agente','agent','whatsapp','falar','talk','humano','human','pessoa','person','hablar'])){
+            const r=responses('agent');
+            addMsg(r.msg,'bot');
+            showQuick(r.quick);
+        }
+        // PAYMENT
+        else if(match(low,['pagar','pay','pagamento','payment','pix','cartao','card','parcel','installment'])){
+            const r=responses('payment');
+            addMsg(r.msg,'bot');
+            showQuick(r.quick);
+        }
+        // DOCUMENTS / VISA
+        else if(match(low,['visto','visa','passaport','document','documento'])){
+            const r=responses('visa');
+            addMsg(r.msg,'bot');
+            showQuick(r.quick);
+        }
+        // GREETING
+        else if(match(low,['oi','ola','hello','hi','hey','hola','bom dia','boa tarde','boa noite','good'])){
+            const r=responses('greeting');
+            addMsg(r.msg,'bot');
+            showQuick(r.quick);
+        }
+        // DEFAULT — redirect to WhatsApp
+        else{
+            const r=responses('default');
+            addMsg(r.msg,'bot');
+            showQuick(r.quick);
+        }
+    },delay);
+}
+
+function match(text,keywords){return keywords.some(k=>text.includes(k));}
+
+function responses(topic){
+    const R={
+        pt:{
+            greeting:{msg:'Ola! Posso ajudar com voos, hoteis, carros ou destinos. O que voce procura?',quick:['Voos baratos','Hoteis','Destinos populares','Falar com Hudson']},
+            flights:{msg:'Para encontrar os melhores precos de voos, use nossa busca acima! Algumas dicas:<br><br>&#9992; <b>Las Vegas</b> a partir de $23<br>&#9992; <b>Miami</b> a partir de $80<br>&#9992; <b>Cancun</b> a partir de $121<br><br>Quer que eu busque um destino especifico?',quick:['Buscar voos','Melhores destinos','Falar com Hudson']},
+            destinations:{msg:'Nossos destinos mais populares saindo de Salt Lake City:<br><br>&#127758; <b>Cancun</b> — praias paradisiacas<br>&#127758; <b>Miami</b> — compras e praia<br>&#127758; <b>Rio de Janeiro</b> — cultura brasileira<br>&#127758; <b>Lisboa</b> — charme europeu<br>&#127758; <b>Las Vegas</b> — diversao garantida<br><br>Qual te interessa?',quick:['Cancun','Miami','Lisboa','Buscar voos']},
+            hotels:{msg:'Temos busca de hoteis integrada! Va na aba <b>Hoteis</b> na busca acima e encontre as melhores opcoes.<br><br>Dica: reserve com antecedencia para melhores precos!',quick:['Buscar hoteis','Destinos populares','Falar com Hudson']},
+            cars:{msg:'Aluguel de carros disponivel na aba <b>Carros</b> na busca acima! Comparamos precos das melhores locadoras.<br><br>Dica: reserve online e economize ate 40%!',quick:['Buscar carros','Voos baratos','Falar com Hudson']},
+            agent:{msg:'Claro! O Hudson esta disponivel pelo WhatsApp para atendimento personalizado.<br><br><a href="https://wa.me/14352146939?text=Oi%20Hudson!%20Vim%20do%20site%20e%20preciso%20de%20ajuda." target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#25d366;color:#fff;border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px;"><i class="bi bi-whatsapp"></i> Falar com Hudson</a>',quick:['Voos baratos','Destinos populares']},
+            payment:{msg:'Aceitamos diversas formas de pagamento:<br><br>&#128179; Cartao de credito<br>&#128179; Transferencia bancaria<br>&#128179; PIX (para brasileiros)<br>&#128179; Parcelamento<br><br>Para detalhes, fale com o Hudson!',quick:['Falar com Hudson','Voos baratos']},
+            visa:{msg:'Documentos variam por destino. Em geral:<br><br>&#128196; <b>EUA → Mexico:</b> passaporte valido<br>&#128196; <b>EUA → Brasil:</b> passaporte (visto nao precisa)<br>&#128196; <b>EUA → Europa:</b> passaporte valido<br><br>Para casos especificos, fale com o Hudson!',quick:['Falar com Hudson','Destinos populares']},
+            default:{msg:'Essa e uma otima pergunta! Para te dar a melhor resposta, vou te conectar com o Hudson diretamente.<br><br><a href="https://wa.me/14352146939?text=Oi%20Hudson!%20Vim%20do%20site%20e%20tenho%20uma%20duvida." target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#25d366;color:#fff;border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px;"><i class="bi bi-whatsapp"></i> Falar com Hudson</a>',quick:['Voos baratos','Destinos populares','Hoteis']},
+        },
+        en:{
+            greeting:{msg:'Hello! I can help with flights, hotels, cars or destinations. What are you looking for?',quick:['Cheap flights','Hotels','Popular destinations','Talk to Hudson']},
+            flights:{msg:'To find the best flight prices, use our search above! Some deals:<br><br>&#9992; <b>Las Vegas</b> from $23<br>&#9992; <b>Miami</b> from $80<br>&#9992; <b>Cancun</b> from $121<br><br>Want me to search a specific destination?',quick:['Search flights','Best destinations','Talk to Hudson']},
+            destinations:{msg:'Our most popular destinations from Salt Lake City:<br><br>&#127758; <b>Cancun</b> — paradise beaches<br>&#127758; <b>Miami</b> — shopping & beach<br>&#127758; <b>Rio de Janeiro</b> — Brazilian culture<br>&#127758; <b>Lisbon</b> — European charm<br>&#127758; <b>Las Vegas</b> — guaranteed fun<br><br>Which one interests you?',quick:['Cancun','Miami','Lisbon','Search flights']},
+            hotels:{msg:'We have integrated hotel search! Go to the <b>Hotels</b> tab above and find the best options.<br><br>Tip: book in advance for better prices!',quick:['Search hotels','Popular destinations','Talk to Hudson']},
+            cars:{msg:'Car rentals available in the <b>Cars</b> tab above! We compare prices from top agencies.<br><br>Tip: book online and save up to 40%!',quick:['Search cars','Cheap flights','Talk to Hudson']},
+            agent:{msg:'Of course! Hudson is available on WhatsApp for personalized assistance.<br><br><a href="https://wa.me/14352146939?text=Hi%20Hudson!%20I%20came%20from%20the%20website%20and%20need%20help." target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#25d366;color:#fff;border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px;"><i class="bi bi-whatsapp"></i> Talk to Hudson</a>',quick:['Cheap flights','Popular destinations']},
+            payment:{msg:'We accept multiple payment methods:<br><br>&#128179; Credit card<br>&#128179; Wire transfer<br>&#128179; PIX (for Brazilians)<br>&#128179; Installments<br><br>For details, talk to Hudson!',quick:['Talk to Hudson','Cheap flights']},
+            visa:{msg:'Documents vary by destination. In general:<br><br>&#128196; <b>USA → Mexico:</b> valid passport<br>&#128196; <b>USA → Brazil:</b> valid passport (no visa needed)<br>&#128196; <b>USA → Europe:</b> valid passport<br><br>For specific cases, talk to Hudson!',quick:['Talk to Hudson','Popular destinations']},
+            default:{msg:'Great question! Let me connect you with Hudson for the best answer.<br><br><a href="https://wa.me/14352146939?text=Hi%20Hudson!%20I%20have%20a%20question%20from%20the%20website." target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#25d366;color:#fff;border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px;"><i class="bi bi-whatsapp"></i> Talk to Hudson</a>',quick:['Cheap flights','Popular destinations','Hotels']},
+        },
+        es:{
+            greeting:{msg:'Hola! Puedo ayudarte con vuelos, hoteles, autos o destinos. Que buscas?',quick:['Vuelos baratos','Hoteles','Destinos populares','Hablar con Hudson']},
+            flights:{msg:'Para encontrar los mejores precios, usa nuestra busqueda arriba! Ofertas:<br><br>&#9992; <b>Las Vegas</b> desde $23<br>&#9992; <b>Miami</b> desde $80<br>&#9992; <b>Cancun</b> desde $121<br><br>Quieres que busque un destino especifico?',quick:['Buscar vuelos','Mejores destinos','Hablar con Hudson']},
+            destinations:{msg:'Nuestros destinos mas populares desde Salt Lake City:<br><br>&#127758; <b>Cancun</b> — playas paradisiacas<br>&#127758; <b>Miami</b> — compras y playa<br>&#127758; <b>Rio de Janeiro</b> — cultura brasilena<br>&#127758; <b>Lisboa</b> — encanto europeo<br>&#127758; <b>Las Vegas</b> — diversion garantizada<br><br>Cual te interesa?',quick:['Cancun','Miami','Lisboa','Buscar vuelos']},
+            hotels:{msg:'Tenemos busqueda de hoteles integrada! Ve a la pestana <b>Hoteles</b> arriba.<br><br>Consejo: reserva con anticipacion para mejores precios!',quick:['Buscar hoteles','Destinos populares','Hablar con Hudson']},
+            cars:{msg:'Alquiler de autos disponible en la pestana <b>Autos</b> arriba! Comparamos precios de las mejores agencias.<br><br>Consejo: reserva online y ahorra hasta 40%!',quick:['Buscar autos','Vuelos baratos','Hablar con Hudson']},
+            agent:{msg:'Claro! Hudson esta disponible por WhatsApp.<br><br><a href="https://wa.me/14352146939?text=Hola%20Hudson!%20Vine%20del%20sitio%20y%20necesito%20ayuda." target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#25d366;color:#fff;border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px;"><i class="bi bi-whatsapp"></i> Hablar con Hudson</a>',quick:['Vuelos baratos','Destinos populares']},
+            payment:{msg:'Aceptamos varias formas de pago:<br><br>&#128179; Tarjeta de credito<br>&#128179; Transferencia<br>&#128179; PIX (para brasilenos)<br>&#128179; Cuotas<br><br>Para detalles, habla con Hudson!',quick:['Hablar con Hudson','Vuelos baratos']},
+            visa:{msg:'Los documentos varian por destino. En general:<br><br>&#128196; <b>EUA → Mexico:</b> pasaporte valido<br>&#128196; <b>EUA → Brasil:</b> pasaporte (sin visa)<br>&#128196; <b>EUA → Europa:</b> pasaporte valido<br><br>Para casos especificos, habla con Hudson!',quick:['Hablar con Hudson','Destinos populares']},
+            default:{msg:'Excelente pregunta! Te conecto con Hudson para la mejor respuesta.<br><br><a href="https://wa.me/14352146939?text=Hola%20Hudson!%20Tengo%20una%20duda%20del%20sitio." target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#25d366;color:#fff;border-radius:10px;text-decoration:none;font-weight:700;margin-top:8px;"><i class="bi bi-whatsapp"></i> Hablar con Hudson</a>',quick:['Vuelos baratos','Destinos populares','Hoteles']},
+        }
+    };
+    return (R[lang]||R.pt)[topic]||(R.pt)[topic];
+}
+
+// Auto open chat after 8 seconds
+setTimeout(()=>{if(!chatOpen){document.getElementById('chatBadge').style.display='block';}},8000);
 
 // ========== PROMO CAROUSEL ==========
 let promoIdx=0,promoTimer;
