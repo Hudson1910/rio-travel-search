@@ -1518,6 +1518,7 @@ function initMdPickers(){
     }
 }
 
+let mdACTimer={};
 function setupMdAC(inputId,acId){
     const inp=document.getElementById(inputId);
     const ac=document.getElementById(acId);
@@ -1525,15 +1526,35 @@ function setupMdAC(inputId,acId){
     inp.addEventListener('input',()=>{
         const q=inp.value.trim().toLowerCase();
         if(q.length<2){ac.classList.remove('open');ac.innerHTML='';return;}
+        // Try local list first
         const matches=AP.filter(a=>a.ci.toLowerCase().includes(q)||a.c.toLowerCase().includes(q)||a.n.toLowerCase().includes(q)).slice(0,6);
-        if(!matches.length){ac.classList.remove('open');return;}
-        ac.innerHTML=matches.map(a=>`<div class="ac-i" data-code="${a.c}"><div class="ac-icon">${a.c}</div><div><div class="ac-city">${a.ci} (${a.c})</div><div class="ac-name">${a.n}</div></div></div>`).join('');
-        ac.classList.add('open');
-        ac.querySelectorAll('.ac-i').forEach(item=>{
-            item.onmousedown=e=>{e.preventDefault();inp.value=item.querySelector('.ac-city').textContent;inp.dataset.code=item.dataset.code;ac.classList.remove('open');};
-        });
+        if(matches.length){
+            renderMdAC(ac,inp,matches.map(a=>({code:a.c,city:a.ci,name:a.n})));
+        }
+        // Also search API for airports not in local list
+        clearTimeout(mdACTimer[inputId]);
+        mdACTimer[inputId]=setTimeout(()=>{
+            fetch('/api/searchAirport?q='+encodeURIComponent(q)).then(r=>r.json()).then(data=>{
+                const apiResults=(data.results||[]).map(r=>({code:r.code,city:r.city||r.name,name:r.name}));
+                if(apiResults.length){
+                    // Merge with local, avoid duplicates
+                    const codes=new Set(matches.map(m=>m.c));
+                    const merged=matches.map(a=>({code:a.c,city:a.ci,name:a.n}));
+                    apiResults.forEach(r=>{if(!codes.has(r.code)){merged.push(r);codes.add(r.code);}});
+                    renderMdAC(ac,inp,merged.slice(0,8));
+                }
+            }).catch(()=>{});
+        },300);
     });
     inp.addEventListener('blur',()=>setTimeout(()=>ac.classList.remove('open'),200));
+}
+
+function renderMdAC(ac,inp,items){
+    ac.innerHTML=items.map(a=>`<div class="ac-i" data-code="${a.code}"><div class="ac-icon">${a.code}</div><div><div class="ac-city">${a.city} (${a.code})</div><div class="ac-name">${a.name}</div></div></div>`).join('');
+    ac.classList.add('open');
+    ac.querySelectorAll('.ac-i').forEach(item=>{
+        item.onmousedown=e=>{e.preventDefault();inp.value=item.querySelector('.ac-city').textContent;inp.dataset.code=item.dataset.code;ac.classList.remove('open');};
+    });
 }
 
 function addMdLeg(){
@@ -1594,7 +1615,11 @@ async function searchMulti(){
             allHtml+=`<div style="margin-bottom:8px;margin-top:${i>0?'20px':'0'};"><span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:8px;background:var(--primary-light);color:var(--primary);font-size:12px;font-weight:800;"><i class="bi bi-airplane-fill"></i> ${legLabel} ${i+1}: ${leg.from} → ${leg.to} — ${leg.date}</span></div>`;
 
             if(!flights.length){
-                allHtml+=`<div style="text-align:center;padding:20px;color:var(--text-tertiary);font-size:13px;">${t('noFlights')}</div>`;
+                const noMsg=lang==='pt'?'Nenhum voo encontrado nesta rota. Tente outras datas ou solicite via WhatsApp.':lang==='es'?'No se encontraron vuelos en esta ruta. Prueba otras fechas o solicita por WhatsApp.':'No flights found on this route. Try other dates or request via WhatsApp.';
+                const waReq=encodeURIComponent(`${lang==='pt'?'Oi':'Hi'}! Preciso de voo ${leg.from}→${leg.to} em ${leg.date}, ${paxA} adulto(s), classe ${cabin}`);
+                allHtml+=`<div style="text-align:center;padding:20px;background:#fff;border-radius:12px;border:1px solid var(--border);">
+<p style="color:var(--text-tertiary);font-size:13px;margin-bottom:12px;">${noMsg}</p>
+<a href="https://wa.me/14352146939?text=${waReq}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#25d366;color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px;"><i class="bi bi-whatsapp"></i> ${lang==='pt'?'Solicitar via WhatsApp':lang==='es'?'Solicitar por WhatsApp':'Request via WhatsApp'}</a></div>`;
             }else{
                 totalMin+=flights[0].price;
                 flights.forEach((fl,fi)=>{
