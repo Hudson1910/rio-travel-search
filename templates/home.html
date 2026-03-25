@@ -629,6 +629,7 @@
                 <div style="display:flex;gap:3px;background:#f5f6f8;border-radius:8px;padding:2px;">
                     <button class="opt-btn on" id="optRT" onclick="setTrip('rt')"><i class="bi bi-arrow-left-right"></i> <span class="tl">Ida e Volta</span></button>
                     <button class="opt-btn" id="optOW" onclick="setTrip('ow')"><i class="bi bi-arrow-right"></i> <span class="tl">Somente Ida</span></button>
+                    <button class="opt-btn" id="optMD" onclick="setTrip('md')"><i class="bi bi-signpost-split"></i> <span class="tl">Multidestino</span></button>
                 </div>
                 <div style="position:relative;">
                     <button class="opt-btn" id="classBtn"><i class="bi bi-star"></i> <span id="classTxt" class="tl">Economica</span></button>
@@ -689,6 +690,65 @@
                     <input type="text" id="ret" placeholder="Selecionar" readonly>
                 </div>
                 <button class="sb-btn" id="searchBtn" onclick="doSearch()"><i class="bi bi-search"></i> <span class="tl">Buscar</span></button>
+            </div>
+            <!-- MULTI-DESTINATION FIELDS -->
+            <div id="mdFields" style="display:none;">
+                <div class="sb-fields" id="mdLeg1">
+                    <div style="font-size:11px;font-weight:800;color:var(--primary);padding:4px 8px;align-self:center;white-space:nowrap;">1</div>
+                    <div class="sf" style="flex:1.2;position:relative;">
+                        <label class="tl">Origem</label>
+                        <input type="text" id="mdFrom1" placeholder="Cidade..." autocomplete="off" inputmode="search">
+                        <div class="ac" id="mdFrom1AC"></div>
+                    </div>
+                    <div class="sf" style="flex:1.2;position:relative;">
+                        <label class="tl">Destino</label>
+                        <input type="text" id="mdTo1" placeholder="Destino..." autocomplete="off" inputmode="search">
+                        <div class="ac" id="mdTo1AC"></div>
+                    </div>
+                    <div class="sf" style="flex:.8;">
+                        <label class="tl">Data</label>
+                        <input type="text" id="mdDate1" placeholder="Selecionar" readonly>
+                    </div>
+                </div>
+                <div class="sb-fields" id="mdLeg2">
+                    <div style="font-size:11px;font-weight:800;color:var(--primary);padding:4px 8px;align-self:center;white-space:nowrap;">2</div>
+                    <div class="sf" style="flex:1.2;position:relative;">
+                        <label class="tl">Origem</label>
+                        <input type="text" id="mdFrom2" placeholder="Cidade..." autocomplete="off" inputmode="search">
+                        <div class="ac" id="mdFrom2AC"></div>
+                    </div>
+                    <div class="sf" style="flex:1.2;position:relative;">
+                        <label class="tl">Destino</label>
+                        <input type="text" id="mdTo2" placeholder="Destino..." autocomplete="off" inputmode="search">
+                        <div class="ac" id="mdTo2AC"></div>
+                    </div>
+                    <div class="sf" style="flex:.8;">
+                        <label class="tl">Data</label>
+                        <input type="text" id="mdDate2" placeholder="Selecionar" readonly>
+                    </div>
+                </div>
+                <div class="sb-fields" id="mdLeg3" style="display:none;">
+                    <div style="font-size:11px;font-weight:800;color:var(--primary);padding:4px 8px;align-self:center;white-space:nowrap;">3</div>
+                    <div class="sf" style="flex:1.2;position:relative;">
+                        <label class="tl">Origem</label>
+                        <input type="text" id="mdFrom3" placeholder="Cidade..." autocomplete="off" inputmode="search">
+                        <div class="ac" id="mdFrom3AC"></div>
+                    </div>
+                    <div class="sf" style="flex:1.2;position:relative;">
+                        <label class="tl">Destino</label>
+                        <input type="text" id="mdTo3" placeholder="Destino..." autocomplete="off" inputmode="search">
+                        <div class="ac" id="mdTo3AC"></div>
+                    </div>
+                    <div class="sf" style="flex:.8;">
+                        <label class="tl">Data</label>
+                        <input type="text" id="mdDate3" placeholder="Selecionar" readonly>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;padding:0 12px 12px;">
+                    <button class="opt-btn" id="mdAddBtn" onclick="addMdLeg()" style="font-size:12px;"><i class="bi bi-plus-circle"></i> <span class="tl">Adicionar trecho</span></button>
+                    <button class="opt-btn" id="mdRemBtn" onclick="removeMdLeg()" style="font-size:12px;display:none;"><i class="bi bi-dash-circle"></i> <span class="tl">Remover trecho</span></button>
+                    <button class="sb-btn" style="margin-left:auto;min-height:42px;font-size:13px;padding:0 20px;" onclick="searchMulti()"><i class="bi bi-whatsapp"></i> <span class="tl">Solicitar via WhatsApp</span></button>
+                </div>
             </div>
             <!-- HOTEL FIELDS -->
             <div id="hFields" class="sb-fields" style="display:none;">
@@ -1210,7 +1270,7 @@ const AP=[
 // ========== i18n ==========
 const I={
     pt:{flights:'Voos',hotels:'Hoteis',tours:'Tours',
-        rt:'Ida e Volta',ow:'Somente Ida',eco:'Economica',biz:'Executiva',first:'Primeira Classe',
+        rt:'Ida e Volta',ow:'Somente Ida',md:'Multidestino',addLeg:'Adicionar trecho',removeLeg:'Remover trecho',mdWhatsapp:'Solicitar via WhatsApp',eco:'Economica',biz:'Executiva',first:'Primeira Classe',
         from:'Origem',to:'Destino',dep:'Ida',ret:'Volta',search:'Buscar',searchTours:'Buscar Tours',
         adults:'Adultos',children:'Criancas',infants:'Bebes',bags:'Bagagem',cabin:'Mao',checked:'Despachada',done:'Pronto',
         adultsAge:'12+ anos',childrenAge:'2-11 anos',infantsAge:'0-23 meses',
@@ -1230,7 +1290,7 @@ const I={
         wamsg_head:'Oi Hudson! Quero reservar este voo:',wamsg_airline:'Companhia',wamsg_route:'Rota',wamsg_date:'Data',wamsg_dep:'Saida',wamsg_arr:'Chegada',wamsg_dur:'Duracao',wamsg_stops:'Paradas',wamsg_class:'Classe',wamsg_pax:'Passageiros',wamsg_price:'Preco',wamsg_bags:'Bagagem',wamsg_carry:'mao',wamsg_checked:'despachada',wamsg_adults:'adulto(s)',wamsg_children:'crianca(s)',wamsg_infants:'bebe(s)',wamsg_trip:'Tipo',
     },
     en:{flights:'Flights',hotels:'Hotels',tours:'Tours',
-        rt:'Round Trip',ow:'One Way',eco:'Economy',biz:'Business',first:'First Class',
+        rt:'Round Trip',ow:'One Way',md:'Multi-city',addLeg:'Add flight',removeLeg:'Remove flight',mdWhatsapp:'Request via WhatsApp',eco:'Economy',biz:'Business',first:'First Class',
         from:'From',to:'To',dep:'Depart',ret:'Return',search:'Search',searchTours:'Search Tours',
         adults:'Adults',children:'Children',infants:'Infants',bags:'Bags',cabin:'Cabin',checked:'Checked',done:'Done',
         adultsAge:'12+ years',childrenAge:'2-11 years',infantsAge:'0-23 months',
@@ -1250,7 +1310,7 @@ const I={
         wamsg_head:'Hi Hudson! I want to book this flight:',wamsg_airline:'Airline',wamsg_route:'Route',wamsg_date:'Date',wamsg_dep:'Departure',wamsg_arr:'Arrival',wamsg_dur:'Duration',wamsg_stops:'Stops',wamsg_class:'Class',wamsg_pax:'Passengers',wamsg_price:'Price',wamsg_bags:'Bags',wamsg_carry:'carry-on',wamsg_checked:'checked',wamsg_adults:'adult(s)',wamsg_children:'child(ren)',wamsg_infants:'infant(s)',wamsg_trip:'Type',
     },
     es:{flights:'Vuelos',hotels:'Hoteles',tours:'Tours',
-        rt:'Ida y Vuelta',ow:'Solo Ida',eco:'Economica',biz:'Ejecutiva',first:'Primera Clase',
+        rt:'Ida y Vuelta',ow:'Solo Ida',md:'Multidestino',addLeg:'Agregar tramo',removeLeg:'Quitar tramo',mdWhatsapp:'Solicitar por WhatsApp',eco:'Economica',biz:'Ejecutiva',first:'Primera Clase',
         from:'Origen',to:'Destino',dep:'Ida',ret:'Vuelta',search:'Buscar',searchTours:'Buscar Tours',
         adults:'Adultos',children:'Ninos',infants:'Bebes',bags:'Equipaje',cabin:'Mano',checked:'Facturado',done:'Listo',
         adultsAge:'12+ anos',childrenAge:'2-11 anos',infantsAge:'0-23 meses',
@@ -1433,7 +1493,77 @@ document.querySelectorAll('.sb-tab').forEach(tab=>tab.onclick=()=>{
 });
 
 // ========== TRIP TYPE ==========
-function setTrip(t){trip=t;document.getElementById('optRT').classList.toggle('on',t==='rt');document.getElementById('optOW').classList.toggle('on',t==='ow');document.getElementById('retWrap').style.display=t==='ow'?'none':'block';}
+let mdLegs=2;
+function setTrip(t){
+    trip=t;
+    document.getElementById('optRT').classList.toggle('on',t==='rt');
+    document.getElementById('optOW').classList.toggle('on',t==='ow');
+    document.getElementById('optMD').classList.toggle('on',t==='md');
+    document.getElementById('fFields').style.display=t==='md'?'none':'flex';
+    document.getElementById('mdFields').style.display=t==='md'?'block':'none';
+    if(t!=='md'){document.getElementById('retWrap').style.display=t==='ow'?'none':'block';}
+    if(t==='md')initMdPickers();
+}
+
+function initMdPickers(){
+    if(window.mdPickersInit)return;
+    window.mdPickersInit=true;
+    for(let i=1;i<=3;i++){
+        flatpickr('#mdDate'+i,{dateFormat:'Y-m-d',minDate:'today',disableMobile:true});
+    }
+    // Autocomplete for multi-dest fields
+    for(let i=1;i<=3;i++){
+        setupMdAC('mdFrom'+i,'mdFrom'+i+'AC');
+        setupMdAC('mdTo'+i,'mdTo'+i+'AC');
+    }
+}
+
+function setupMdAC(inputId,acId){
+    const inp=document.getElementById(inputId);
+    const ac=document.getElementById(acId);
+    if(!inp||!ac)return;
+    inp.addEventListener('input',()=>{
+        const q=inp.value.trim().toLowerCase();
+        if(q.length<2){ac.classList.remove('open');ac.innerHTML='';return;}
+        const matches=AP.filter(a=>a.ci.toLowerCase().includes(q)||a.c.toLowerCase().includes(q)||a.n.toLowerCase().includes(q)).slice(0,6);
+        if(!matches.length){ac.classList.remove('open');return;}
+        ac.innerHTML=matches.map(a=>`<div class="ac-i" data-code="${a.c}"><div class="ac-icon">${a.c}</div><div><div class="ac-city">${a.ci} (${a.c})</div><div class="ac-name">${a.n}</div></div></div>`).join('');
+        ac.classList.add('open');
+        ac.querySelectorAll('.ac-i').forEach(item=>{
+            item.onmousedown=e=>{e.preventDefault();inp.value=item.querySelector('.ac-city').textContent;inp.dataset.code=item.dataset.code;ac.classList.remove('open');};
+        });
+    });
+    inp.addEventListener('blur',()=>setTimeout(()=>ac.classList.remove('open'),200));
+}
+
+function addMdLeg(){
+    if(mdLegs>=3)return;
+    mdLegs++;
+    document.getElementById('mdLeg3').style.display='flex';
+    document.getElementById('mdAddBtn').style.display='none';
+    document.getElementById('mdRemBtn').style.display='flex';
+}
+
+function removeMdLeg(){
+    if(mdLegs<=2)return;
+    mdLegs--;
+    document.getElementById('mdLeg3').style.display='none';
+    document.getElementById('mdAddBtn').style.display='flex';
+    document.getElementById('mdRemBtn').style.display='none';
+}
+
+function searchMulti(){
+    let legs=[];
+    for(let i=1;i<=mdLegs;i++){
+        const from=document.getElementById('mdFrom'+i).value||'?';
+        const to=document.getElementById('mdTo'+i).value||'?';
+        const date=document.getElementById('mdDate'+i).value||'?';
+        legs.push(`Trecho ${i}: ${from} → ${to} (${date})`);
+    }
+    const paxInfo=`${paxA} adulto(s), ${paxC} crianca(s), ${paxI} bebe(s)`;
+    const msg=encodeURIComponent(`Oi! Preciso de cotacao multidestino:\n\n${legs.join('\n')}\n\nPassageiros: ${paxInfo}\nClasse: ${cabin}`);
+    window.open('https://wa.me/14352146939?text='+msg,'_blank');
+}
 
 // ========== POSITION DROPDOWN ==========
 function posDD(btnId,ddId){
