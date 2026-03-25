@@ -1601,7 +1601,7 @@ async function searchMulti(){
     res.scrollIntoView({behavior:'smooth'});
 
     const cabinMap={economy:'ECONOMY',premium:'PREMIUM_ECONOMY',business:'BUSINESS',first:'FIRST'};
-    const langMap={pt:'pt-BR',en:'en-US',es:'es-MX'};
+    const langMap={pt:'pt-BR',en:'en-US',es:'es-419'};
     let allHtml='';
     let totalMin=0;
 
@@ -1886,7 +1886,7 @@ function doSearch(){
     document.getElementById('resTitle').textContent=`${f} \u2192 ${tt}`;
     document.getElementById('resCount').textContent=t('searching');
     const cabinMap={economy:'ECONOMY',premium:'PREMIUM_ECONOMY',business:'BUSINESS',first:'FIRST'};
-    const langMap={pt:'pt-BR',en:'en-US',es:'es-MX'};
+    const langMap={pt:'pt-BR',en:'en-US',es:'es-419'};
     let url=`/api/flights?origin=${f}&destination=${tt}&departure=${d}&adults=${paxA}&children=${paxC}&infants=${paxI}&cabin=${cabinMap[cabin]||'ECONOMY'}&lang=${langMap[lang]||'en-US'}&currency=USD`;
     const r=document.getElementById('ret').value;
     if(trip==='rt'&&r)url+=`&return=${r}`;
