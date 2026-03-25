@@ -146,6 +146,11 @@ def api_deals():
     return jsonify({'deals': deals})
 
 
+@app.route('/blog')
+def blog():
+    return render_template('blog.html', config=config)
+
+
 @app.route('/contact')
 def contact():
     return render_template('contact.html', config=config)
