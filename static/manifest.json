@@ -1,7 +1,7 @@
 {
-    "name": "Rio Travel - Passagens e Hoteis",
+    "name": "Rio Travel — Passagens Aereas, Hoteis & Carros",
     "short_name": "Rio Travel",
-    "description": "Encontre voos, hoteis e cruzeiros com os melhores precos",
+    "description": "Compare e reserve passagens aereas, hoteis e aluguel de carros com os melhores precos. Agencia de viagens em Park City, Utah.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#05070e",
