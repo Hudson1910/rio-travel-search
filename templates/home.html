@@ -1580,8 +1580,9 @@ async function searchMulti(){
         const fromInp=document.getElementById('mdFrom'+i);
         const toInp=document.getElementById('mdTo'+i);
         const date=document.getElementById('mdDate'+i).value;
-        const from=fromInp.dataset.code||fromInp.value.match(/\(([A-Z]{3})\)/)?.[1]||'';
-        const to=toInp.dataset.code||toInp.value.match(/\(([A-Z]{3})\)/)?.[1]||'';
+        const from=(fromInp.dataset.code||fromInp.value.match(/\((\w{3})\)/i)?.[1]||fromInp.value.trim()).toUpperCase().substring(0,3);
+        const to=(toInp.dataset.code||toInp.value.match(/\((\w{3})\)/i)?.[1]||toInp.value.trim()).toUpperCase().substring(0,3);
+        console.log('Leg',i,':',from,'→',to,date);
         if(!from||!to||!date){
             const msg=lang==='pt'?'Preencha todos os trechos (origem, destino e data).':lang==='es'?'Complete todos los tramos.':'Fill in all legs (origin, destination, date).';
             alert(msg);return;
@@ -1608,8 +1609,10 @@ async function searchMulti(){
         const leg=legs[i];
         try{
             const url=`/api/flights?origin=${leg.from}&destination=${leg.to}&departure=${leg.date}&adults=${paxA}&children=${paxC}&infants=${paxI}&cabin=${cabinMap[cabin]||'ECONOMY'}&lang=${langMap[lang]||'en-US'}&currency=USD`;
+            console.log('Fetching:',url);
             const resp=await fetch(url);
             const data=await resp.json();
+            console.log('Response:',data.flights?.length,'flights, error:',data.error);
             const flights=(data.flights||[]).slice(0,3);
 
             allHtml+=`<div style="margin-bottom:8px;margin-top:${i>0?'20px':'0'};"><span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:8px;background:var(--primary-light);color:var(--primary);font-size:12px;font-weight:800;"><i class="bi bi-airplane-fill"></i> ${legLabel} ${i+1}: ${leg.from} → ${leg.to} — ${leg.date}</span></div>`;
