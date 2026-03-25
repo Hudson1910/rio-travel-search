@@ -33,624 +33,526 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
     <link rel="manifest" href="/static/manifest.json">
 
-    <meta name="theme-color" content="#0a0e1a">
+    <meta name="theme-color" content="#1a73e8">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     <style>
-        :root{--bg:#06080f;--bg2:#0c1018;--bg3:#121826;--bg4:#1a2236;--card:#141a2e;
-        --coral:#ff5252;--orange:#ff7b42;--gold:#ffb347;--sky:#38bdf8;--green:#06d6a0;--purple:#a78bfa;
-        --w:#fff;--t1:#e2e8f0;--t2:#94a3b8;--t3:#64748b;--t4:#475569;--t5:#334155;--border:rgba(255,255,255,0.06);
-        --res-bg:rgba(255,255,255,.08);--res-border:rgba(255,255,255,.12);--res-text:#fff;--res-sub:#94a3b8;
-        --nav-scroll:rgba(6,8,15,.92);--hero-bg:var(--bg);--sb-bg:var(--card);--feat-bg:var(--bg2);--footer-bg:var(--bg2);}
-        /* LIGHT MODE */
-        [data-theme="light"]{--bg:#f0f2f5;--bg2:#ffffff;--bg3:#f8f9fb;--bg4:#edf0f4;--card:#ffffff;
-        --w:#1a1a2e;--t1:#1e293b;--t2:#475569;--t3:#64748b;--t4:#94a3b8;--t5:#cbd5e1;--border:rgba(0,0,0,0.08);
-        --res-bg:#ffffff;--res-border:rgba(0,0,0,.1);--res-text:#1a1a2e;--res-sub:#64748b;
-        --nav-scroll:rgba(255,255,255,.92);--hero-bg:#f0f2f5;--sb-bg:#ffffff;--feat-bg:#ffffff;--footer-bg:#1a1a2e;}
-        [data-theme="light"] .logo span{color:#1a1a2e;}
-        [data-theme="light"] nav.scrolled{border-bottom-color:rgba(0,0,0,.06);}
-        [data-theme="light"] .hero::before{background:radial-gradient(circle,rgba(255,82,82,.04),transparent 70%);}
-        [data-theme="light"] .hero::after{background:radial-gradient(circle,rgba(56,189,248,.03),transparent 70%);}
-        [data-theme="light"] .sb-box{box-shadow:0 20px 60px rgba(0,0,0,.08);}
-        [data-theme="light"] .sf input,[data-theme="light"] .sf select{background:rgba(0,0,0,.02);color:#1a1a2e;}
-        [data-theme="light"] .sf input::placeholder{color:#94a3b8;}
-        [data-theme="light"] .ac{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 20px 60px rgba(0,0,0,.12);}
-        [data-theme="light"] .ac-i:hover{background:rgba(255,82,82,.04);}
-        [data-theme="light"] .ac-city{color:#1a1a2e;}
-        [data-theme="light"] .dd{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 8px 48px rgba(0,0,0,.12);}
-        [data-theme="light"] .dd-item:hover{background:rgba(0,0,0,.03);}
-        [data-theme="light"] .lang-dd{background:#fff;border-color:rgba(0,0,0,.08);box-shadow:0 16px 48px rgba(0,0,0,.12);}
-        [data-theme="light"] .lang-opt:hover{background:rgba(0,0,0,.03);}
-        [data-theme="light"] .lang-opt.on{background:rgba(255,82,82,.06);}
-        [data-theme="light"] .dest-ov{background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.65));}
-        [data-theme="light"] .feat{background:#fff;border-color:rgba(0,0,0,.06);}
-        [data-theme="light"] .agent-box{background:#fff;border-color:rgba(0,0,0,.06);}
-        [data-theme="light"] .btn-call{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.08);color:#1a1a2e;}
-        [data-theme="light"] footer{background:#1a1a2e;border-top-color:rgba(255,255,255,.06);}
-        [data-theme="light"] .ft-col h4{color:#fff;}
-        [data-theme="light"] .ft-col a{color:#94a3b8;}
-        [data-theme="light"] .ft-col p{color:#64748b;}
-        [data-theme="light"] .ft-col .ft-logo span{color:#fff;}
-        [data-theme="light"] .ft-bottom p{color:#475569;}
-        [data-theme="light"] .ft-social a{color:#94a3b8;background:rgba(255,255,255,.06);}
-        [data-theme="light"] .opt-btn:hover,[data-theme="light"] .opt-btn.on{background:rgba(0,0,0,.04);color:#1a1a2e;}
-        [data-theme="light"] .swap{background:#f0f2f5;border-color:rgba(0,0,0,.08);color:#64748b;}
-        [data-theme="light"] .pax-name{color:#1a1a2e;}
-        [data-theme="light"] .pax-n{color:#1a1a2e;}
-        [data-theme="light"] .pax-b{border-color:rgba(0,0,0,.1);color:#64748b;}
-        [data-theme="light"] .skel{background:linear-gradient(90deg,#e2e8f0 25%,#f1f5f9 50%,#e2e8f0 75%);background-size:200% 100%;}
-        *{margin:0;padding:0;box-sizing:border-box;}
-        html{scroll-behavior:smooth;}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-        h1,h2,h3,h4{font-family:'Outfit',sans-serif;}
-        @keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
-        @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,82,82,0.3);}70%{box-shadow:0 0 0 12px rgba(255,82,82,0);}}
-        .ani{opacity:0;transform:translateY(16px);transition:all .6s ease;}
-        .ani.v{opacity:1;transform:translateY(0);}
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #1557b0;
+            --primary-light: #e8f0fe;
+            --coral: #f56040;
+            --coral-hover: #e04e30;
+            --green: #0f9d58;
+            --gold: #f9ab00;
+            --sky: #4fc3f7;
+            --purple: #7c4dff;
+            --bg: #f5f6f8;
+            --white: #ffffff;
+            --card: #ffffff;
+            --text-primary: #1a1a2e;
+            --text-secondary: #5f6368;
+            --text-tertiary: #80868b;
+            --text-light: #9aa0a6;
+            --border: rgba(0,0,0,.08);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,.08);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,.1);
+            --shadow-xl: 0 16px 48px rgba(0,0,0,.12);
+            --radius: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
 
-        /* NAV */
-        nav{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;transition:background .3s;gap:8px;overflow:visible;}
-        nav.scrolled{background:var(--nav-scroll);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
-        /* Theme toggle */
-        .theme-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--t2);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;}
-        .theme-btn:hover{background:rgba(255,255,255,.06);color:var(--coral);}
-        [data-theme="light"] .theme-btn:hover{background:rgba(0,0,0,.04);}
-        .logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:1;min-width:0;}
-        .logo img{height:50px;width:50px;border-radius:12px;object-fit:cover;flex-shrink:0;}
-        .logo span{font-family:Outfit;font-weight:900;font-size:28px;color:var(--w);letter-spacing:-1px;text-shadow:0 2px 8px rgba(0,0,0,.3);white-space:nowrap;}
-        .logo .a{color:var(--coral);}
-        .nav-r{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-primary); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        h1,h2,h3,h4 { font-family: 'Outfit', sans-serif; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(245,96,64,.3); } 70% { box-shadow: 0 0 0 10px rgba(245,96,64,0); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+        /* ===== NAV ===== */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 28px; transition: all .3s; gap: 8px; overflow: visible; background: transparent; }
+        nav.scrolled { background: rgba(255,255,255,.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 1; min-width: 0; }
+        .logo img { height: 46px; width: 46px; border-radius: 10px; object-fit: cover; flex-shrink: 0; }
+        .logo span { font-family: Outfit; font-weight: 900; font-size: 26px; color: #fff; letter-spacing: -1px; white-space: nowrap; transition: color .3s; }
+        nav.scrolled .logo span { color: var(--text-primary); }
+        .logo .a { color: var(--coral); }
+        .nav-r { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+        /* Hidden theme button (keeping for JS compat) */
+        .theme-btn { display: none; }
+
         /* LANG */
-        .lang{position:relative;}
-        .lang-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--t2);font-size:13px;font-weight:600;cursor:pointer;font-family:Inter;}
-        .lang-btn .f{font-size:20px;line-height:1;}
-        .lang-dd{display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:6px;min-width:170px;box-shadow:0 16px 48px rgba(0,0,0,.6);z-index:300;}
-        .lang-dd.open{display:block;animation:fadeIn .15s;}
-        .lang-opt{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;cursor:pointer;font-size:14px;color:var(--t2);font-weight:500;transition:background .15s;}
-        .lang-opt:hover{background:rgba(255,255,255,.04);color:var(--w);}
-        .lang-opt.on{background:rgba(255,82,82,.08);color:var(--w);}
-        .lang-opt .f{font-size:22px;}
-        .nav-wa{display:flex;align-items:center;gap:6px;padding:9px 18px;border-radius:10px;background:linear-gradient(135deg,var(--coral),var(--orange));color:var(--w);font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;font-family:Inter;}
-        .nav-wa:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,82,82,.25);}
+        .lang { position: relative; }
+        .lang-btn { display: flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,.25); background: rgba(255,255,255,.15); color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; font-family: Inter; transition: all .3s; }
+        nav.scrolled .lang-btn { border-color: var(--border); background: var(--white); color: var(--text-secondary); }
+        .lang-btn .f { font-size: 20px; line-height: 1; }
+        .lang-dd { display: none; position: absolute; top: calc(100% + 8px); right: 0; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 6px; min-width: 170px; box-shadow: var(--shadow-xl); z-index: 300; }
+        .lang-dd.open { display: block; animation: fadeIn .15s; }
+        .lang-opt { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 8px; cursor: pointer; font-size: 14px; color: var(--text-secondary); font-weight: 500; transition: background .15s; }
+        .lang-opt:hover { background: #f5f6f8; color: var(--text-primary); }
+        .lang-opt.on { background: var(--primary-light); color: var(--primary); font-weight: 600; }
+        .lang-opt .f { font-size: 22px; }
+        .nav-wa { display: flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: 8px; background: #25d366; color: #fff; font-size: 13px; font-weight: 700; text-decoration: none; transition: all .2s; font-family: Inter; }
+        .nav-wa:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37,211,102,.3); }
 
-        /* HERO */
-        .hero{min-height:auto;display:flex;flex-direction:column;align-items:center;padding:88px 20px 40px;position:relative;overflow:hidden;}
-        .hero-text{text-align:center;max-width:750px;margin:0 auto 32px;position:relative;z-index:1;}
-        .hero h1{font-size:48px;font-weight:900;letter-spacing:-2.5px;line-height:1.08;margin-bottom:14px;color:var(--w);}
-        .hero h1 b{background:linear-gradient(135deg,var(--coral),var(--orange),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 480px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 100px 20px 50px;
+            position: relative; overflow: hidden;
+            background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&h=900&fit=crop') center/cover no-repeat;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(0,30,80,.55) 0%, rgba(0,20,60,.4) 60%, rgba(0,10,40,.5) 100%);
+        }
+        .hero-text { display: none; }
 
-        /* PROMO CAROUSEL */
-        .promo-banner{width:100%;max-width:1100px;margin:0 auto;padding:0 20px;position:relative;}
-        .promo-track{position:relative;width:100%;border-radius:20px;overflow:hidden;min-height:380px;}
-        .promo-slide{position:absolute;inset:0;display:flex;align-items:flex-end;opacity:0;transition:opacity .8s ease;pointer-events:none;}
-        .promo-slide.active{opacity:1;pointer-events:auto;}
-        .promo-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
-        .promo-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.15) 60%,transparent 100%);}
-        .promo-content{position:relative;z-index:1;padding:40px;max-width:420px;}
-        .promo-content h2{font-family:Outfit;font-size:36px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;letter-spacing:-1px;}
-        .promo-content p{font-size:15px;color:rgba(255,255,255,.85);line-height:1.5;margin-bottom:18px;}
-        .promo-btn{display:inline-flex;align-items:center;gap:6px;padding:12px 28px;border-radius:50px;background:var(--coral);color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;font-family:Inter;border:none;cursor:pointer;}
-        .promo-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,82,82,.4);background:var(--orange);}
-        /* Dots */
-        .promo-dots{display:flex;justify-content:center;gap:8px;margin-top:14px;}
-        .promo-dot{width:8px;height:8px;border-radius:50%;background:var(--t5);cursor:pointer;transition:all .3s;border:none;padding:0;}
-        .promo-dot.active{background:var(--coral);width:24px;border-radius:4px;}
-        [data-theme="light"] .promo-dot{background:#cbd5e1;}
-        /* Arrows */
-        .promo-arrows{position:absolute;top:50%;left:0;right:0;display:flex;justify-content:space-between;padding:0 8px;transform:translateY(-50%);z-index:5;pointer-events:none;}
-        .promo-arr{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;pointer-events:auto;opacity:0;transition:opacity .3s;}
-        .promo-banner:hover .promo-arr{opacity:1;}
-        .promo-arr:hover{background:rgba(0,0,0,.7);}
+        /* ===== SEARCH BOX ===== */
+        .sb { width: 100%; max-width: 880px; position: relative; z-index: 10; }
+        .sb-box { background: var(--white); border: none; border-radius: var(--radius-xl); box-shadow: var(--shadow-xl); overflow: visible; }
+        .sb-tabs { display: flex; border-bottom: 1px solid #e8eaed; }
+        .sb-tab { flex: 1; padding: 16px; border: none; background: none; color: var(--text-tertiary); font-size: 13px; font-weight: 600; cursor: pointer; font-family: Inter; display: flex; align-items: center; justify-content: center; gap: 7px; transition: all .2s; border-bottom: 3px solid transparent; margin-bottom: -1px; }
+        .sb-tab:hover { color: var(--text-primary); background: #f8f9fa; }
+        .sb-tab.on { color: var(--primary); border-bottom-color: var(--primary); }
+        .sb-tab i { font-size: 18px; }
+
+        /* Options row */
+        .sb-opts { display: flex; gap: 6px; padding: 12px 16px; border-bottom: 1px solid #e8eaed; flex-wrap: wrap; align-items: center; }
+        .opt-btn { padding: 7px 14px; border-radius: 20px; border: 1px solid #dadce0; background: none; color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; font-family: Inter; display: flex; align-items: center; gap: 5px; transition: all .15s; white-space: nowrap; }
+        .opt-btn:hover,.opt-btn.on { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+        .opt-btn i { font-size: 14px; }
+
+        /* Dropdown generic */
+        .dd { display: none; position: absolute; bottom: calc(100% + 8px); left: 0; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; box-shadow: var(--shadow-xl); z-index: 500; min-width: 240px; }
+        .dd.open { display: block; animation: fadeIn .15s; }
+        .dd-item { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 8px; cursor: pointer; font-size: 13px; color: var(--text-secondary); font-weight: 500; transition: background .15s; }
+        .dd-item:hover { background: #f5f6f8; color: var(--text-primary); }
+        .dd-item.on { color: var(--primary); }
+        .dd-item .dot { width: 8px; height: 8px; border-radius: 50%; border: 2px solid #dadce0; flex-shrink: 0; }
+        .dd-item.on .dot { background: var(--primary); border-color: var(--primary); }
+
+        /* Pax dropdown */
+        .pax-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 14px; }
+        .pax-row+.pax-row { border-top: 1px solid #e8eaed; }
+        .pax-l { display: flex; align-items: center; gap: 10px; }
+        .pax-l i { font-size: 20px; color: var(--text-tertiary); width: 24px; text-align: center; }
+        .pax-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+        .pax-age { font-size: 11px; color: var(--text-tertiary); }
+        .pax-ctrls { display: flex; align-items: center; gap: 10px; }
+        .pax-b { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #dadce0; background: none; color: var(--text-tertiary); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+        .pax-b:hover { border-color: var(--primary); color: var(--primary); }
+        .pax-n { font-family: Outfit; font-size: 18px; font-weight: 700; color: var(--text-primary); min-width: 24px; text-align: center; }
+        .pax-done { width: 100%; padding: 12px; border: none; border-radius: var(--radius); background: var(--primary); color: #fff; font-family: Outfit; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 6px; }
+        .pax-sec { padding: 6px 14px; font-size: 11px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 1px; border-top: 1px solid #e8eaed; margin-top: 4px; }
+
+        /* Search fields */
+        .sb-fields { display: flex; padding: 12px; gap: 6px; align-items: stretch; }
+        .sf { flex: 1; position: relative; }
+        .sf label { position: absolute; top: 10px; left: 14px; font-size: 10px; font-weight: 700; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: .8px; z-index: 1; pointer-events: none; }
+        .sf input,.sf select { width: 100%; padding: 30px 14px 10px; border: 1.5px solid #dadce0; border-radius: var(--radius); font-size: 14px; font-family: Inter; font-weight: 600; color: var(--text-primary); background: #fff; transition: all .2s; min-height: 60px; }
+        .sf input:focus,.sf select:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(26,115,232,.15); }
+        .sf input::placeholder { color: #bdc1c6; font-weight: 400; }
+        .sf select { appearance: none; cursor: pointer; }
+        .sf select option { background: #fff; color: var(--text-primary); }
+        .sf .flatpickr-input { cursor: pointer; }
+
+        /* Swap */
+        .swap { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid #dadce0; background: #fff; color: var(--text-tertiary); cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all .2s; flex-shrink: 0; align-self: center; margin: 0 -2px; z-index: 1; }
+        .swap:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+
+        /* Search btn */
+        .sb-btn { padding: 0 28px; border: none; border-radius: var(--radius); background: var(--coral); color: #fff; font-family: Outfit; font-size: 15px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; transition: all .2s; min-height: 60px; animation: pulse 2s infinite; }
+        .sb-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,96,64,.3); background: var(--coral-hover); }
+        .sb-btn:disabled { opacity: .4; animation: none; cursor: default; transform: none; }
+
+        /* Autocomplete */
+        .ac { display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius); max-height: 320px; overflow-y: auto; z-index: 500; box-shadow: var(--shadow-xl); padding: 6px; -webkit-overflow-scrolling: touch; }
+        .ac.open { display: block; animation: fadeIn .12s; }
+        .ac-i { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 8px; cursor: pointer; transition: background .12s; min-height: 56px; -webkit-tap-highlight-color: rgba(26,115,232,.1); }
+        .ac-i:active { background: var(--primary-light); }
+        .ac-i:hover { background: #f5f6f8; }
+        .ac-icon { width: 40px; height: 40px; border-radius: 8px; background: var(--primary-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-family: Outfit; font-weight: 800; font-size: 13px; color: var(--primary); }
+        .ac-city { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+        .ac-name { font-size: 11px; color: var(--text-tertiary); margin-top: 1px; }
+        .ac-ctry { font-size: 10px; color: var(--text-light); background: #f1f3f4; padding: 2px 8px; border-radius: 6px; flex-shrink: 0; }
+
+        /* ===== RESULTS ===== */
+        .results { display: none; max-width: 880px; width: 100%; margin: 36px auto 0; position: relative; z-index: 1; }
+        .res-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding: 0 4px; }
+        .res-head h2 { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+        .res-count { font-size: 13px; color: var(--text-tertiary); }
+        .res-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); margin-bottom: 14px; transition: all .3s; overflow: hidden; position: relative; padding: 18px; box-shadow: var(--shadow-sm); }
+        .res-card:hover { border-color: rgba(0,0,0,.12); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .res-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; padding: 0 2px; }
+        .res-header i { font-size: 16px; color: var(--text-light); }
+        .res-header-txt { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+        .res-header-sub { font-size: 12px; color: var(--text-light); }
+        .res-inner { background: #f8f9fa; border: 1px solid #e8eaed; border-radius: var(--radius); padding: 18px 20px; }
+        .res-airline-row { font-size: 13px; font-weight: 600; color: var(--text-secondary); margin-bottom: 14px; display: flex; align-items: center; gap: 6px; }
+        .res-airline-row .cabin-tag { font-size: 11px; color: var(--text-tertiary); font-weight: 500; }
+        .res-flight { display: flex; align-items: center; gap: 14px; }
+        .res-air-logo { width: 44px; height: 44px; border-radius: 8px; object-fit: contain; background: #fff; padding: 4px; flex-shrink: 0; border: 1px solid #e8eaed; }
+        .res-times { flex: 1; display: flex; align-items: center; gap: 8px; }
+        .res-ep { text-align: center; min-width: 50px; }
+        .res-ep .time { font-family: Outfit; font-size: 24px; font-weight: 800; color: var(--text-primary); line-height: 1.1; }
+        .res-ep .code { font-size: 11px; color: var(--text-tertiary); font-weight: 600; letter-spacing: .5px; margin-top: 2px; }
+        .res-line { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 0 4px; }
+        .res-line-bar { width: 100%; height: 2px; background: #dadce0; position: relative; }
+        .res-line-bar::before,.res-line-bar::after { content: ''; position: absolute; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: #9aa0a6; }
+        .res-line-bar::before { left: 0; }
+        .res-line-bar::after { right: 0; }
+        .res-dur { font-size: 11px; color: var(--text-tertiary); font-weight: 500; }
+        .res-stops { font-size: 10px; font-weight: 600; }
+        .res-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding: 0 2px; }
+        .res-price { display: flex; align-items: baseline; gap: 6px; }
+        .res-price .amt { font-family: Outfit; font-size: 32px; font-weight: 800; color: var(--text-primary); }
+        .res-price .pp { font-size: 12px; color: var(--text-tertiary); font-weight: 500; }
+        .res-cta { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: var(--coral); border-radius: 50px; color: #fff; font-size: 13px; font-weight: 700; text-decoration: none; transition: all .2s; font-family: Inter; white-space: nowrap; }
+        .res-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(245,96,64,.3); background: var(--coral-hover); }
+        .res-cta i { font-size: 16px; }
+        .best { position: absolute; top: 0; right: 0; padding: 5px 14px; background: var(--green); color: #fff; font-size: 10px; font-weight: 800; letter-spacing: .5px; border-radius: 0 16px 0 12px; text-transform: uppercase; z-index: 1; }
+        .res-layover { display: flex; align-items: center; gap: 6px; margin-top: 10px; padding: 8px 12px; border-radius: 8px; background: rgba(249,171,0,.06); font-size: 11px; color: #e37400; font-weight: 500; }
+        .res-layover i { font-size: 13px; }
+        .res-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .res-tag { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 600; color: var(--text-tertiary); background: #f1f3f4; }
+        .res-tag i { font-size: 11px; }
+
+        /* Hotel card */
+        .htl-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 12px; transition: all .3s; position: relative; box-shadow: var(--shadow-sm); }
+        .htl-card:hover { border-color: rgba(0,0,0,.12); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .htl-body { display: flex; gap: 0; }
+        .htl-img { width: 220px; min-height: 180px; flex-shrink: 0; position: relative; overflow: hidden; }
+        .htl-img img { width: 100%; height: 100%; object-fit: cover; }
+        .htl-badge { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; }
+        .htl-info { flex: 1; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+        .htl-name { font-family: Outfit; font-size: 17px; font-weight: 800; color: var(--text-primary); line-height: 1.25; }
+        .htl-loc { font-size: 12px; color: var(--text-tertiary); display: flex; align-items: center; gap: 4px; }
+        .htl-stars { color: #f59e0b; font-size: 12px; letter-spacing: 1px; }
+        .htl-rating { display: inline-flex; align-items: center; gap: 6px; }
+        .htl-rating-badge { padding: 4px 8px; border-radius: 6px; font-size: 12px; font-weight: 800; color: #fff; }
+        .htl-rating-text { font-size: 12px; font-weight: 600; color: var(--text-secondary); }
+        .htl-rating-count { font-size: 11px; color: var(--text-tertiary); }
+        .htl-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+        .htl-tag { display: inline-flex; align-items: center; gap: 3px; padding: 3px 8px; border-radius: 5px; font-size: 10px; font-weight: 600; background: #f1f3f4; color: var(--text-tertiary); }
+        .htl-tag.green { background: rgba(15,157,88,.06); color: #0f9d58; }
+        .htl-tag.blue { background: rgba(26,115,232,.06); color: var(--primary); }
+        .htl-bottom { display: flex; align-items: center; justify-content: space-between; padding: 0 18px 16px; gap: 10px; }
+        .htl-price { font-family: Outfit; font-size: 26px; font-weight: 800; color: var(--text-primary); }
+        .htl-price-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 1px; }
+        .htl-checkin { font-size: 10px; color: var(--text-tertiary); display: flex; align-items: center; gap: 3px; }
+        @media(max-width:640px){.htl-body{flex-direction:column;}.htl-img{width:100%;min-height:160px;max-height:200px;}}
+
+        /* Car card */
+        .car-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; margin-bottom: 12px; transition: all .3s; position: relative; box-shadow: var(--shadow-sm); }
+        .car-card:hover { border-color: rgba(0,0,0,.12); transform: translateY(-2px); box-shadow: var(--shadow-lg); }
+        .car-body { display: flex; gap: 0; }
+        .car-img { width: 220px; min-height: 160px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #f8f9fa; padding: 16px; position: relative; }
+        .car-img img { max-width: 100%; max-height: 120px; object-fit: contain; }
+        .car-group { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 6px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; background: rgba(26,115,232,.9); color: #fff; }
+        .car-info { flex: 1; padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+        .car-name { font-family: Outfit; font-size: 18px; font-weight: 800; color: var(--text-primary); }
+        .car-supplier { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-tertiary); }
+        .car-supplier img { height: 20px; border-radius: 4px; object-fit: contain; }
+        .car-specs { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+        .car-spec { display: inline-flex; align-items: center; gap: 5px; padding: 5px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; background: #f1f3f4; color: var(--text-secondary); }
+        .car-spec i { font-size: 14px; color: var(--text-tertiary); }
+        .car-bottom { display: flex; align-items: center; justify-content: space-between; padding: 0 18px 16px; gap: 10px; }
+        .car-price { font-family: Outfit; font-size: 26px; font-weight: 800; color: var(--text-primary); }
+        .car-price-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 1px; }
+        @media(max-width:640px){.car-body{flex-direction:column;}.car-img{width:100%;min-height:120px;max-height:160px;}}
+
+        /* Price Insight Panel */
+        .pi-panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; margin-bottom: 16px; box-shadow: var(--shadow-sm); }
+        .pi-toggle { display: flex; align-items: center; justify-content: space-between; cursor: pointer; }
+        .pi-toggle .pi-arrow { width: 28px; height: 28px; border-radius: 50%; background: #f1f3f4; display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); font-size: 14px; transition: all .3s; flex-shrink: 0; }
+        .pi-toggle .pi-arrow.collapsed { transform: rotate(180deg); }
+        .pi-body { overflow: hidden; transition: max-height .35s ease, opacity .25s ease; max-height: 500px; opacity: 1; }
+        .pi-body.collapsed { max-height: 0; opacity: 0; margin-top: 0; }
+        .pi-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+        .pi-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 700; font-family: Inter; }
+        .pi-badge.low { background: rgba(15,157,88,.1); color: #0f9d58; }
+        .pi-badge.typical { background: rgba(26,115,232,.08); color: var(--primary); }
+        .pi-badge.high { background: rgba(245,96,64,.08); color: var(--coral); }
+        .pi-badge i { font-size: 14px; }
+        .pi-trend { font-size: 11px; color: var(--text-tertiary); display: flex; align-items: center; gap: 4px; }
+        .pi-trend i { font-size: 13px; }
+        .pi-trend.rising { color: var(--coral); }
+        .pi-trend.falling { color: var(--green); }
+        .pi-range { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 11px; color: var(--text-tertiary); }
+        .pi-range-bar { flex: 1; height: 6px; border-radius: 3px; background: #e8eaed; position: relative; overflow: visible; }
+        .pi-range-fill { height: 100%; border-radius: 3px; }
+        .pi-range-marker { position: absolute; top: -4px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 1px 4px rgba(0,0,0,.2); transform: translateX(-50%); }
+        .pi-chart { width: 100%; height: 50px; position: relative; }
+        .pi-chart canvas { width: 100%!important; height: 50px!important; }
+        .pcal { margin-top: 12px; }
+        .pcal-title { font-size: 12px; font-weight: 700; color: var(--text-secondary); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+        .pcal-title i { font-size: 14px; }
+        .pcal-grid { display: flex; gap: 3px; overflow-x: auto; padding-bottom: 6px; }
+        .pcal-grid::-webkit-scrollbar { height: 4px; }
+        .pcal-grid::-webkit-scrollbar-thumb { background: #dadce0; border-radius: 2px; }
+        .pcal-day { display: flex; flex-direction: column; align-items: center; min-width: 48px; padding: 6px 4px; border-radius: 8px; cursor: pointer; transition: all .15s; border: 1px solid transparent; flex-shrink: 0; }
+        .pcal-day:hover { background: #f5f6f8; border-color: #e8eaed; }
+        .pcal-day.cheapest { background: rgba(15,157,88,.06); border-color: rgba(15,157,88,.2); }
+        .pcal-day.selected { background: var(--primary-light); border-color: var(--primary); }
+        .pcal-d { font-size: 10px; color: var(--text-tertiary); font-weight: 500; }
+        .pcal-p { font-size: 12px; font-weight: 800; color: var(--text-secondary); font-family: Outfit; margin-top: 2px; }
+        .pcal-day.cheapest .pcal-p { color: var(--green); }
+        .pcal-day.selected .pcal-p { color: var(--primary); }
+
+        /* Flight Filters */
+        .fl-filters { margin-bottom: 14px; }
+        .fl-tabs { display: flex; gap: 0; background: #f1f3f4; border-radius: var(--radius); overflow: hidden; margin-bottom: 10px; border: 1px solid #e8eaed; }
+        .fl-tab { flex: 1; padding: 12px; border: none; background: none; color: var(--text-tertiary); font-size: 13px; font-weight: 700; cursor: pointer; font-family: Inter; text-align: center; transition: all .2s; }
+        .fl-tab:hover { color: var(--text-secondary); }
+        .fl-tab.on { background: var(--white); color: var(--primary); box-shadow: inset 0 -2px 0 var(--primary); }
+        .fl-tab .fl-tab-price { font-size: 11px; color: var(--text-light); font-weight: 500; margin-top: 2px; }
+        .fl-tab.on .fl-tab-price { color: rgba(26,115,232,.6); }
+        .fl-chips { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; }
+        .fl-chips::-webkit-scrollbar { height: 3px; }
+        .fl-chips::-webkit-scrollbar-thumb { background: #dadce0; border-radius: 2px; }
+        .fl-chip { display: flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 50px; border: 1px solid #dadce0; background: var(--white); color: var(--text-secondary); font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: all .15s; font-family: Inter; flex-shrink: 0; }
+        .fl-chip:hover { border-color: #bdc1c6; color: var(--text-primary); }
+        .fl-chip.on { border-color: var(--primary); background: var(--primary-light); color: var(--primary); }
+        .fl-chip i { font-size: 13px; }
+        .fl-chip .fl-chip-count { font-size: 10px; background: #f1f3f4; padding: 1px 6px; border-radius: 50px; color: var(--text-light); }
+        .fl-chip.on .fl-chip-count { background: rgba(26,115,232,.1); color: var(--primary); }
+        .fl-reset { padding: 7px 14px; border-radius: 50px; border: none; background: none; color: var(--text-tertiary); font-size: 11px; font-weight: 600; cursor: pointer; font-family: Inter; flex-shrink: 0; transition: color .15s; }
+        .fl-reset:hover { color: var(--coral); }
+        .skel { background: linear-gradient(90deg, #e8eaed 25%, #f1f3f4 50%, #e8eaed 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: var(--radius-lg); height: 90px; margin-bottom: 10px; }
+
+        /* ===== PROMO CAROUSEL ===== */
+        .promo-banner { width: 100%; max-width: 1100px; margin: 0 auto; padding: 40px 20px 0; position: relative; }
+        .promo-track { position: relative; width: 100%; border-radius: var(--radius-xl); overflow: hidden; min-height: 380px; box-shadow: var(--shadow-lg); }
+        .promo-slide { position: absolute; inset: 0; display: flex; align-items: flex-end; opacity: 0; transition: opacity .8s ease; pointer-events: none; }
+        .promo-slide.active { opacity: 1; pointer-events: auto; }
+        .promo-slide img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .promo-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 60%, transparent 100%); }
+        .promo-content { position: relative; z-index: 1; padding: 40px; max-width: 420px; }
+        .promo-content h2 { font-family: Outfit; font-size: 36px; font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 10px; letter-spacing: -1px; }
+        .promo-content p { font-size: 15px; color: rgba(255,255,255,.85); line-height: 1.5; margin-bottom: 18px; }
+        .promo-btn { display: inline-flex; align-items: center; gap: 6px; padding: 12px 28px; border-radius: 50px; background: var(--coral); color: #fff; font-size: 14px; font-weight: 700; text-decoration: none; transition: all .2s; font-family: Inter; border: none; cursor: pointer; }
+        .promo-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,96,64,.35); background: var(--coral-hover); }
+        .promo-dots { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
+        .promo-dot { width: 8px; height: 8px; border-radius: 50%; background: #dadce0; cursor: pointer; transition: all .3s; border: none; padding: 0; }
+        .promo-dot.active { background: var(--primary); width: 24px; border-radius: 4px; }
+        .promo-arrows { position: absolute; top: 50%; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 8px; transform: translateY(-50%); z-index: 5; pointer-events: none; }
+        .promo-arr { width: 40px; height: 40px; border-radius: 50%; background: rgba(255,255,255,.85); border: none; color: var(--text-primary); font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; pointer-events: auto; opacity: 0; box-shadow: var(--shadow-md); }
+        .promo-banner:hover .promo-arr { opacity: 1; }
+        .promo-arr:hover { background: #fff; box-shadow: var(--shadow-lg); }
         @media(max-width:900px){.promo-track{min-height:300px;}.promo-content h2{font-size:28px;}.promo-content{padding:28px;}}
-        @media(max-width:640px){.promo-track{min-height:260px;border-radius:16px;}.promo-content{padding:20px;max-width:280px;}.promo-content h2{font-size:24px;}.promo-content p{font-size:13px;margin-bottom:14px;}.promo-btn{padding:10px 22px;font-size:13px;}.promo-arr{width:32px;height:32px;font-size:13px;}}
+        @media(max-width:640px){.promo-track{min-height:260px;border-radius:var(--radius-lg);}.promo-content{padding:20px;max-width:280px;}.promo-content h2{font-size:24px;}.promo-content p{font-size:13px;margin-bottom:14px;}.promo-btn{padding:10px 22px;font-size:13px;}.promo-arr{width:32px;height:32px;font-size:13px;}}
 
-        /* LAST MINUTE BANNER (below search box) */
-        .deals-banner{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 20px;margin-top:12px;border-radius:14px;background:rgba(255,82,82,.06);border:1px solid rgba(255,82,82,.12);cursor:pointer;transition:all .2s;position:relative;z-index:10;}
-        .deals-banner:hover{background:rgba(255,82,82,.1);border-color:rgba(255,82,82,.2);}
-        [data-theme="light"] .deals-banner{background:rgba(255,82,82,.04);border-color:rgba(255,82,82,.1);}
-        [data-theme="light"] .deals-banner:hover{background:rgba(255,82,82,.08);}
-        .deals-banner-icon{font-size:18px;color:var(--coral);}
-        .deals-banner-title{font-size:13px;font-weight:800;color:var(--coral);}
-        .deals-banner-text{font-size:13px;color:var(--t2);font-weight:500;}
-        .deals-banner-link{font-size:13px;font-weight:700;color:var(--w);text-decoration:underline;text-underline-offset:2px;}
-        [data-theme="light"] .deals-banner-link{color:#1a1a2e;}
-        @media(max-width:640px){.deals-banner{flex-wrap:wrap;gap:4px 8px;padding:10px 14px;}.deals-banner-text{font-size:12px;}}
-
-        /* DEALS SECTION */
-        .deals-sec{padding:0 20px 60px;max-width:1100px;margin:0 auto;}
-        .deals-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px;gap:16px;flex-wrap:wrap;}
-        .deals-head h2{font-family:Outfit;font-size:28px;font-weight:800;color:var(--w);letter-spacing:-.5px;}
-        [data-theme="light"] .deals-head h2{color:#1a1a2e;}
-        .deals-head p{font-size:14px;color:var(--t3);margin-top:2px;}
-        .deals-see-all{padding:10px 22px;border-radius:50px;border:1.5px solid var(--border);background:none;color:var(--t1);font-size:13px;font-weight:700;cursor:pointer;font-family:Inter;transition:all .2s;white-space:nowrap;}
-        .deals-see-all:hover{border-color:var(--coral);color:var(--coral);}
-        [data-theme="light"] .deals-see-all{border-color:rgba(0,0,0,.15);color:#1a1a2e;}
-        .deals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
-        .deal-card{border-radius:16px;overflow:hidden;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all .3s;position:relative;}
-        .deal-card:hover{transform:translateY(-4px);border-color:rgba(255,82,82,.25);box-shadow:0 12px 36px rgba(0,0,0,.25);}
-        [data-theme="light"] .deal-card{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
-        [data-theme="light"] .deal-card:hover{border-color:rgba(255,82,82,.15);box-shadow:0 12px 36px rgba(0,0,0,.08);}
-        .deal-img-wrap{position:relative;width:100%;height:160px;overflow:hidden;}
-        .deal-img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
-        .deal-card:hover .deal-img{transform:scale(1.06);}
-        .deal-hot{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:6px;background:var(--coral);color:#fff;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:4px;}
-        .deal-hot i{font-size:11px;}
-        .deal-info{padding:14px 16px;}
-        .deal-route{font-size:11px;color:var(--t3);font-weight:600;display:flex;align-items:center;gap:4px;}
-        .deal-route i{font-size:10px;}
-        .deal-city{font-family:Outfit;font-size:18px;font-weight:800;color:var(--w);margin-top:4px;}
-        [data-theme="light"] .deal-city{color:#1a1a2e;}
-        .deal-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
-        .deal-price-wrap{display:flex;align-items:baseline;gap:4px;}
-        .deal-from{font-size:11px;color:var(--t3);font-weight:500;}
-        .deal-price{font-family:Outfit;font-size:24px;font-weight:800;color:var(--coral);}
-        .deal-date{font-size:11px;color:var(--t3);font-weight:500;text-align:right;}
-        .deal-arrow{width:32px;height:32px;border-radius:50%;background:rgba(255,82,82,.08);display:flex;align-items:center;justify-content:center;color:var(--coral);font-size:14px;transition:all .2s;}
-        .deal-card:hover .deal-arrow{background:var(--coral);color:#fff;}
-        .deals-loading{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--t3);font-size:13px;gap:8px;grid-column:1/-1;}
-        .deals-loading i{animation:spin 1s linear infinite;}
-        @keyframes spin{to{transform:rotate(360deg);}}
+        /* ===== DEALS SECTION ===== */
+        .deals-sec { padding: 40px 20px 60px; max-width: 1100px; margin: 0 auto; }
+        .deals-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 20px; gap: 16px; flex-wrap: wrap; }
+        .deals-head h2 { font-family: Outfit; font-size: 28px; font-weight: 800; color: var(--text-primary); letter-spacing: -.5px; }
+        .deals-head p { font-size: 14px; color: var(--text-tertiary); margin-top: 2px; }
+        .deals-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+        .deal-card { border-radius: var(--radius-lg); overflow: hidden; background: var(--white); border: 1px solid var(--border); cursor: pointer; transition: all .3s; position: relative; box-shadow: var(--shadow-sm); }
+        .deal-card:hover { transform: translateY(-4px); border-color: rgba(0,0,0,.12); box-shadow: var(--shadow-lg); }
+        .deal-img-wrap { position: relative; width: 100%; height: 160px; overflow: hidden; }
+        .deal-img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s; }
+        .deal-card:hover .deal-img { transform: scale(1.06); }
+        .deal-hot { position: absolute; top: 10px; left: 10px; padding: 4px 10px; border-radius: 6px; background: var(--coral); color: #fff; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .5px; display: flex; align-items: center; gap: 4px; }
+        .deal-hot i { font-size: 11px; }
+        .deal-info { padding: 14px 16px; }
+        .deal-route { font-size: 11px; color: var(--text-tertiary); font-weight: 600; display: flex; align-items: center; gap: 4px; }
+        .deal-route i { font-size: 10px; }
+        .deal-city { font-family: Outfit; font-size: 18px; font-weight: 800; color: var(--text-primary); margin-top: 4px; }
+        .deal-bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+        .deal-price-wrap { display: flex; align-items: baseline; gap: 4px; }
+        .deal-from { font-size: 11px; color: var(--text-tertiary); font-weight: 500; }
+        .deal-price { font-family: Outfit; font-size: 24px; font-weight: 800; color: var(--coral); }
+        .deal-date { font-size: 11px; color: var(--text-tertiary); font-weight: 500; text-align: right; }
+        .deal-arrow { width: 32px; height: 32px; border-radius: 50%; background: rgba(245,96,64,.06); display: flex; align-items: center; justify-content: center; color: var(--coral); font-size: 14px; transition: all .2s; }
+        .deal-card:hover .deal-arrow { background: var(--coral); color: #fff; }
+        .deals-loading { display: flex; align-items: center; justify-content: center; padding: 40px; color: var(--text-tertiary); font-size: 13px; gap: 8px; grid-column: 1/-1; }
+        .deals-loading i { animation: spin 1s linear infinite; }
         @media(max-width:900px){.deals-grid{grid-template-columns:repeat(2,1fr);}}
         @media(max-width:640px){.deals-grid{grid-template-columns:1fr;}.deals-head h2{font-size:22px;}.deal-img-wrap{height:140px;}}
 
-        /* SEARCH */
-        .sb{width:100%;max-width:880px;position:relative;z-index:10;}
-        .sb-box{background:var(--sb-bg);border:1px solid var(--border);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.4);overflow:visible;}
-        [data-theme="light"] .sb-box{box-shadow:0 20px 60px rgba(0,0,0,.06);}
-        .sb-tabs{display:flex;border-bottom:1px solid var(--border);}
-        .sb-tab{flex:1;padding:16px;border:none;background:none;color:var(--t3);font-size:13px;font-weight:600;cursor:pointer;font-family:Inter;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s;border-bottom:2px solid transparent;}
-        .sb-tab:hover{color:var(--t1);}
-        .sb-tab.on{color:var(--coral);border-bottom-color:var(--coral);background:rgba(255,82,82,.03);}
-        .sb-tab i{font-size:18px;}
-        /* Options row */
-        .sb-opts{display:flex;gap:6px;padding:12px 16px;border-bottom:1px solid var(--border);flex-wrap:wrap;align-items:center;}
-        .opt-btn{padding:7px 14px;border-radius:9px;border:1px solid var(--border);background:none;color:var(--t2);font-size:12px;font-weight:600;cursor:pointer;font-family:Inter;display:flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap;}
-        .opt-btn:hover,.opt-btn.on{background:rgba(255,255,255,.04);color:var(--w);border-color:rgba(255,255,255,.1);}
-        .opt-btn i{font-size:14px;}
-        /* Dropdown generic */
-        .dd{display:none;position:absolute;bottom:calc(100% + 8px);left:0;background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:8px;box-shadow:0 -8px 48px rgba(0,0,0,.6);z-index:500;min-width:240px;}
-        .dd.open{display:block;animation:fadeIn .15s;}
-        .dd-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--t2);font-weight:500;transition:background .15s;}
-        .dd-item:hover{background:rgba(255,255,255,.04);color:var(--w);}
-        .dd-item.on{color:var(--coral);}
-        .dd-item .dot{width:8px;height:8px;border-radius:50%;border:2px solid var(--t5);flex-shrink:0;}
-        .dd-item.on .dot{background:var(--coral);border-color:var(--coral);}
-        /* Pax dropdown */
-        .pax-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;}
-        .pax-row+.pax-row{border-top:1px solid var(--border);}
-        .pax-l{display:flex;align-items:center;gap:10px;}
-        .pax-l i{font-size:20px;color:var(--t3);width:24px;text-align:center;}
-        .pax-name{font-size:14px;font-weight:600;color:var(--w);}
-        .pax-age{font-size:11px;color:var(--t3);}
-        .pax-ctrls{display:flex;align-items:center;gap:10px;}
-        .pax-b{width:34px;height:34px;border-radius:50%;border:1.5px solid var(--border);background:none;color:var(--t3);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
-        .pax-b:hover{border-color:var(--coral);color:var(--coral);}
-        .pax-n{font-family:Outfit;font-size:18px;font-weight:700;color:var(--w);min-width:24px;text-align:center;}
-        .pax-done{width:100%;padding:12px;border:none;border-radius:12px;background:var(--coral);color:var(--w);font-family:Outfit;font-size:14px;font-weight:700;cursor:pointer;margin-top:6px;}
-        .pax-sec{padding:6px 14px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:1px;border-top:1px solid var(--border);margin-top:4px;}
-        /* Search fields */
-        .sb-fields{display:flex;padding:12px;gap:6px;align-items:stretch;}
-        .sf{flex:1;position:relative;}
-        .sf label{position:absolute;top:10px;left:14px;font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;z-index:1;pointer-events:none;}
-        .sf input,.sf select{width:100%;padding:30px 14px 10px;border:1.5px solid var(--border);border-radius:14px;font-size:14px;font-family:Inter;font-weight:600;color:var(--w);background:rgba(255,255,255,.02);transition:all .2s;min-height:60px;}
-        .sf input:focus,.sf select:focus{outline:none;border-color:var(--coral);background:rgba(255,82,82,.03);}
-        .sf input::placeholder{color:var(--t5);font-weight:400;}
-        .sf select{appearance:none;cursor:pointer;}
-        .sf select option{background:var(--bg3);color:var(--w);}
-        /* Flatpickr override */
-        .sf .flatpickr-input{cursor:pointer;}
-        /* Swap */
-        .swap{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--border);background:var(--bg3);color:var(--t3);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;align-self:center;margin:0 -2px;z-index:1;}
-        .swap:hover{border-color:var(--coral);color:var(--coral);}
-        /* Search btn */
-        .sb-btn{padding:0 28px;border:none;border-radius:14px;background:linear-gradient(135deg,var(--coral),var(--orange));color:var(--w);font-family:Outfit;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;transition:all .2s;min-height:60px;animation:pulse 2s infinite;}
-        .sb-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,82,82,.3);}
-        .sb-btn:disabled{opacity:.4;animation:none;cursor:default;transform:none;}
-        /* Autocomplete */
-        .ac{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--bg3);border:1px solid rgba(255,255,255,.08);border-radius:16px;max-height:320px;overflow-y:auto;z-index:500;box-shadow:0 20px 60px rgba(0,0,0,.6);padding:6px;-webkit-overflow-scrolling:touch;}
-        .ac.open{display:block;animation:fadeIn .12s;}
-        .ac-i{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;cursor:pointer;transition:background .12s;min-height:56px;-webkit-tap-highlight-color:rgba(255,82,82,.1);}
-        .ac-i:active{background:rgba(255,82,82,.08);}
-        .ac-i:hover{background:rgba(255,82,82,.06);}
-        .ac-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,82,82,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:Outfit;font-weight:800;font-size:13px;color:var(--coral);}
-        .ac-city{font-size:14px;font-weight:600;color:var(--w);}
-        .ac-name{font-size:11px;color:var(--t3);margin-top:1px;}
-        .ac-ctry{font-size:10px;color:var(--t4);background:rgba(255,255,255,.03);padding:2px 8px;border-radius:6px;flex-shrink:0;}
+        /* Hidden deals banner (not needed with new layout) */
+        .deals-banner { display: none; }
 
-        /* RESULTS */
-        .results{display:none;max-width:880px;width:100%;margin:36px auto 0;position:relative;z-index:1;}
-        .res-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding:0 4px;}
-        .res-head h2{font-size:18px;font-weight:700;color:var(--w);}
-        .res-count{font-size:13px;color:var(--t3);}
-        /* Outer glass card */
-        .res-card{background:rgba(255,255,255,.08);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.15);border-radius:20px;margin-bottom:14px;transition:all .3s;overflow:hidden;position:relative;padding:18px;}
-        .res-card:hover{border-color:rgba(255,255,255,.25);transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.25);}
-        [data-theme="light"] .res-card{background:rgba(255,255,255,.7);border-color:rgba(0,0,0,.08);box-shadow:0 2px 16px rgba(0,0,0,.06);backdrop-filter:blur(16px);}
-        [data-theme="light"] .res-card:hover{border-color:rgba(0,0,0,.12);box-shadow:0 8px 32px rgba(0,0,0,.1);}
-        /* Card header — route + date */
-        .res-header{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding:0 2px;}
-        .res-header i{font-size:16px;color:rgba(255,255,255,.5);}
-        .res-header-txt{font-size:13px;color:rgba(255,255,255,.7);font-weight:500;}
-        .res-header-sub{font-size:12px;color:rgba(255,255,255,.4);}
-        [data-theme="light"] .res-header i{color:rgba(0,0,0,.3);}
-        [data-theme="light"] .res-header-txt{color:rgba(0,0,0,.6);}
-        [data-theme="light"] .res-header-sub{color:rgba(0,0,0,.35);}
-        /* Inner card — dark glass style */
-        .res-inner{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:18px 20px;}
-        [data-theme="light"] .res-inner{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 1px 4px rgba(0,0,0,.06);}
-        /* Airline row inside inner card */
-        .res-airline-row{font-size:13px;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:14px;display:flex;align-items:center;gap:6px;}
-        .res-airline-row .cabin-tag{font-size:11px;color:rgba(255,255,255,.4);font-weight:500;}
-        [data-theme="light"] .res-airline-row{color:#475569;}
-        [data-theme="light"] .res-airline-row .cabin-tag{color:#94a3b8;}
-        /* Flight route inside inner card */
-        .res-flight{display:flex;align-items:center;gap:14px;}
-        .res-air-logo{width:44px;height:44px;border-radius:10px;object-fit:contain;background:rgba(255,255,255,.9);padding:4px;flex-shrink:0;}
-        [data-theme="light"] .res-air-logo{background:#f1f5f9;}
-        .res-times{flex:1;display:flex;align-items:center;gap:8px;}
-        .res-ep{text-align:center;min-width:50px;}
-        .res-ep .time{font-family:Outfit;font-size:24px;font-weight:800;color:#fff;line-height:1.1;}
-        .res-ep .code{font-size:11px;color:rgba(255,255,255,.5);font-weight:600;letter-spacing:.5px;margin-top:2px;}
-        [data-theme="light"] .res-ep .time{color:#1a1a2e;}
-        [data-theme="light"] .res-ep .code{color:#94a3b8;}
-        .res-line{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 4px;}
-        .res-line-bar{width:100%;height:2px;background:rgba(255,255,255,.2);position:relative;}
-        .res-line-bar::before,.res-line-bar::after{content:'';position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.3);}
-        .res-line-bar::before{left:0;}
-        .res-line-bar::after{right:0;}
-        [data-theme="light"] .res-line-bar{background:#cbd5e1;}
-        [data-theme="light"] .res-line-bar::before,[data-theme="light"] .res-line-bar::after{background:#94a3b8;}
-        .res-dur{font-size:11px;color:rgba(255,255,255,.4);font-weight:500;}
-        .res-stops{font-size:10px;font-weight:600;}
-        [data-theme="light"] .res-dur{color:#94a3b8;}
-        /* Bottom — price + CTA */
-        .res-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:0 2px;}
-        .res-price{display:flex;align-items:baseline;gap:6px;}
-        .res-price .amt{font-family:Outfit;font-size:32px;font-weight:800;color:var(--w);}
-        .res-price .pp{font-size:12px;color:rgba(255,255,255,.45);font-weight:500;}
-        [data-theme="light"] .res-price .amt{color:#1a1a2e;}
-        [data-theme="light"] .res-price .pp{color:#94a3b8;}
-        .res-cta{display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:linear-gradient(135deg,var(--coral),var(--orange));border-radius:50px;color:#fff;font-size:13px;font-weight:700;text-decoration:none;transition:all .2s;font-family:Inter;white-space:nowrap;}
-        .res-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(255,82,82,.3);}
-        .res-cta i{font-size:16px;}
-        .best{position:absolute;top:0;right:0;padding:5px 14px;background:var(--green);color:#fff;font-size:10px;font-weight:800;letter-spacing:.5px;border-radius:0 20px 0 12px;text-transform:uppercase;z-index:1;}
-        /* Layover info */
-        .res-layover{display:flex;align-items:center;gap:6px;margin-top:10px;padding:8px 12px;border-radius:8px;background:rgba(255,179,71,.06);font-size:11px;color:#ffb347;font-weight:500;}
-        .res-layover i{font-size:13px;}
-        [data-theme="light"] .res-layover{background:rgba(245,158,11,.06);color:#d97706;}
-        /* Detail tags */
-        .res-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
-        .res-tag{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:600;color:rgba(255,255,255,.5);background:rgba(255,255,255,.05);}
-        .res-tag i{font-size:11px;}
-        [data-theme="light"] .res-tag{color:#64748b;background:rgba(0,0,0,.04);}
-        /* Hotel card — Expedia style */
-        .htl-card{background:rgba(255,255,255,.08);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;margin-bottom:12px;transition:all .3s;position:relative;}
-        .htl-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.2);}
-        [data-theme="light"] .htl-card{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
-        [data-theme="light"] .htl-card:hover{border-color:rgba(0,0,0,.1);box-shadow:0 8px 24px rgba(0,0,0,.08);}
-        .htl-body{display:flex;gap:0;}
-        .htl-img{width:220px;min-height:180px;flex-shrink:0;position:relative;overflow:hidden;}
-        .htl-img img{width:100%;height:100%;object-fit:cover;}
-        .htl-badge{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;}
-        .htl-info{flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:8px;}
-        .htl-name{font-family:Outfit;font-size:17px;font-weight:800;color:var(--w);line-height:1.25;}
-        [data-theme="light"] .htl-name{color:#1a1a2e;}
-        .htl-loc{font-size:12px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:4px;}
-        [data-theme="light"] .htl-loc{color:#94a3b8;}
-        .htl-stars{color:#f59e0b;font-size:12px;letter-spacing:1px;}
-        .htl-rating{display:inline-flex;align-items:center;gap:6px;}
-        .htl-rating-badge{padding:4px 8px;border-radius:6px;font-size:12px;font-weight:800;color:#fff;}
-        .htl-rating-text{font-size:12px;font-weight:600;color:rgba(255,255,255,.6);}
-        .htl-rating-count{font-size:11px;color:rgba(255,255,255,.3);}
-        [data-theme="light"] .htl-rating-text{color:#475569;}
-        [data-theme="light"] .htl-rating-count{color:#94a3b8;}
-        .htl-tags{display:flex;flex-wrap:wrap;gap:5px;}
-        .htl-tag{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:5px;font-size:10px;font-weight:600;background:rgba(255,255,255,.06);color:rgba(255,255,255,.5);}
-        .htl-tag.green{background:rgba(6,214,160,.08);color:#06d6a0;}
-        .htl-tag.blue{background:rgba(56,189,248,.08);color:#38bdf8;}
-        [data-theme="light"] .htl-tag{background:rgba(0,0,0,.03);color:#64748b;}
-        [data-theme="light"] .htl-tag.green{background:rgba(6,214,160,.06);color:#059669;}
-        [data-theme="light"] .htl-tag.blue{background:rgba(56,189,248,.06);color:#0284c7;}
-        .htl-bottom{display:flex;align-items:center;justify-content:space-between;padding:0 18px 16px;gap:10px;}
-        .htl-price{font-family:Outfit;font-size:26px;font-weight:800;color:var(--w);}
-        .htl-price-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px;}
-        [data-theme="light"] .htl-price{color:#1a1a2e;}
-        [data-theme="light"] .htl-price-sub{color:#94a3b8;}
-        .htl-checkin{font-size:10px;color:rgba(255,255,255,.3);display:flex;align-items:center;gap:3px;}
-        [data-theme="light"] .htl-checkin{color:#94a3b8;}
-        @media(max-width:640px){.htl-body{flex-direction:column;}.htl-img{width:100%;min-height:160px;max-height:200px;}}
-        /* Car rental card — matching hotel style */
-        .car-card{background:rgba(255,255,255,.08);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.12);border-radius:16px;overflow:hidden;margin-bottom:12px;transition:all .3s;position:relative;}
-        .car-card:hover{border-color:rgba(255,255,255,.2);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.2);}
-        [data-theme="light"] .car-card{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
-        [data-theme="light"] .car-card:hover{border-color:rgba(0,0,0,.1);box-shadow:0 8px 24px rgba(0,0,0,.08);}
-        .car-body{display:flex;gap:0;}
-        .car-img{width:220px;min-height:160px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.04);padding:16px;position:relative;}
-        .car-img img{max-width:100%;max-height:120px;object-fit:contain;}
-        .car-group{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;background:rgba(56,189,248,.9);color:#fff;}
-        [data-theme="light"] .car-img{background:#f8fafc;}
-        .car-info{flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:8px;}
-        .car-name{font-family:Outfit;font-size:18px;font-weight:800;color:var(--w);}
-        [data-theme="light"] .car-name{color:#1a1a2e;}
-        .car-supplier{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.5);}
-        .car-supplier img{height:20px;border-radius:4px;object-fit:contain;}
-        [data-theme="light"] .car-supplier{color:#64748b;}
-        .car-specs{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
-        .car-spec{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;font-size:11px;font-weight:600;background:rgba(255,255,255,.06);color:rgba(255,255,255,.6);}
-        .car-spec i{font-size:14px;color:rgba(255,255,255,.4);}
-        [data-theme="light"] .car-spec{background:#f1f5f9;color:#475569;}
-        [data-theme="light"] .car-spec i{color:#94a3b8;}
-        .car-bottom{display:flex;align-items:center;justify-content:space-between;padding:0 18px 16px;gap:10px;}
-        .car-price{font-family:Outfit;font-size:26px;font-weight:800;color:var(--w);}
-        .car-price-sub{font-size:11px;color:rgba(255,255,255,.35);margin-top:1px;}
-        [data-theme="light"] .car-price{color:#1a1a2e;}
-        [data-theme="light"] .car-price-sub{color:#94a3b8;}
-        @media(max-width:640px){.car-body{flex-direction:column;}.car-img{width:100%;min-height:120px;max-height:160px;}}
-        /* Price Insight Panel */
-        .pi-panel{background:rgba(255,255,255,.06);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;margin-bottom:16px;transition:all .3s;}
-        [data-theme="light"] .pi-panel{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
-        .pi-toggle{display:flex;align-items:center;justify-content:space-between;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-        .pi-toggle .pi-arrow{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.4);font-size:14px;transition:all .3s;flex-shrink:0;}
-        .pi-toggle .pi-arrow.collapsed{transform:rotate(180deg);}
-        [data-theme="light"] .pi-toggle .pi-arrow{background:rgba(0,0,0,.04);color:#94a3b8;}
-        .pi-body{overflow:hidden;transition:max-height .35s ease,opacity .25s ease;max-height:500px;opacity:1;}
-        .pi-body.collapsed{max-height:0;opacity:0;margin-top:0;}
-        .pi-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;}
-        .pi-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;font-family:Inter;}
-        .pi-badge.low{background:rgba(6,214,160,.12);color:#06d6a0;}
-        .pi-badge.typical{background:rgba(56,189,248,.1);color:#38bdf8;}
-        .pi-badge.high{background:rgba(255,82,82,.1);color:#ff5252;}
-        .pi-badge i{font-size:14px;}
-        .pi-trend{font-size:11px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:4px;}
-        .pi-trend i{font-size:13px;}
-        .pi-trend.rising{color:#ff5252;}
-        .pi-trend.falling{color:#06d6a0;}
-        [data-theme="light"] .pi-trend{color:#94a3b8;}
-        [data-theme="light"] .pi-trend.rising{color:#ef4444;}
-        [data-theme="light"] .pi-trend.falling{color:#06d6a0;}
-        .pi-range{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:11px;color:rgba(255,255,255,.35);}
-        .pi-range-bar{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.06);position:relative;overflow:visible;}
-        [data-theme="light"] .pi-range-bar{background:rgba(0,0,0,.06);}
-        [data-theme="light"] .pi-range{color:#94a3b8;}
-        .pi-range-fill{height:100%;border-radius:3px;}
-        .pi-range-marker{position:absolute;top:-4px;width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3);transform:translateX(-50%);}
-        .pi-chart{width:100%;height:50px;position:relative;}
-        .pi-chart canvas{width:100%!important;height:50px!important;}
-        /* Price Calendar */
-        .pcal{margin-top:12px;}
-        .pcal-title{font-size:12px;font-weight:700;color:rgba(255,255,255,.5);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
-        .pcal-title i{font-size:14px;}
-        [data-theme="light"] .pcal-title{color:#64748b;}
-        .pcal-grid{display:flex;gap:3px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;}
-        .pcal-grid::-webkit-scrollbar{height:4px;}
-        .pcal-grid::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
-        .pcal-day{display:flex;flex-direction:column;align-items:center;min-width:48px;padding:6px 4px;border-radius:8px;cursor:pointer;transition:all .15s;border:1px solid transparent;flex-shrink:0;}
-        .pcal-day:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.1);}
-        [data-theme="light"] .pcal-day:hover{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06);}
-        .pcal-day.cheapest{background:rgba(6,214,160,.08);border-color:rgba(6,214,160,.2);}
-        .pcal-day.selected{background:rgba(255,82,82,.08);border-color:var(--coral);}
-        .pcal-d{font-size:10px;color:rgba(255,255,255,.35);font-weight:500;}
-        .pcal-p{font-size:12px;font-weight:800;color:rgba(255,255,255,.7);font-family:Outfit;margin-top:2px;}
-        .pcal-day.cheapest .pcal-p{color:#06d6a0;}
-        .pcal-day.selected .pcal-p{color:var(--coral);}
-        [data-theme="light"] .pcal-d{color:#94a3b8;}
-        [data-theme="light"] .pcal-p{color:#475569;}
-        [data-theme="light"] .pcal-day.cheapest .pcal-p{color:#06d6a0;}
-        [data-theme="light"] .pcal-day.selected .pcal-p{color:var(--coral);}
-        /* Flight Filters */
-        .fl-filters{margin-bottom:14px;}
-        .fl-tabs{display:flex;gap:0;background:rgba(255,255,255,.06);border-radius:12px;overflow:hidden;margin-bottom:10px;border:1px solid rgba(255,255,255,.08);}
-        .fl-tab{flex:1;padding:12px;border:none;background:none;color:rgba(255,255,255,.5);font-size:13px;font-weight:700;cursor:pointer;font-family:Inter;text-align:center;transition:all .2s;}
-        .fl-tab:hover{color:rgba(255,255,255,.8);}
-        .fl-tab.on{background:rgba(255,82,82,.1);color:var(--coral);box-shadow:inset 0 -2px 0 var(--coral);}
-        .fl-tab .fl-tab-price{font-size:11px;color:rgba(255,255,255,.3);font-weight:500;margin-top:2px;}
-        .fl-tab.on .fl-tab-price{color:rgba(255,82,82,.6);}
-        [data-theme="light"] .fl-tabs{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.06);}
-        [data-theme="light"] .fl-tab{color:#94a3b8;}
-        [data-theme="light"] .fl-tab.on{background:rgba(255,82,82,.06);color:var(--coral);}
-        [data-theme="light"] .fl-tab .fl-tab-price{color:#cbd5e1;}
-        .fl-chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch;}
-        .fl-chips::-webkit-scrollbar{height:3px;}
-        .fl-chips::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:2px;}
-        .fl-chip{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:50px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:rgba(255,255,255,.6);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s;font-family:Inter;flex-shrink:0;}
-        .fl-chip:hover{border-color:rgba(255,255,255,.2);color:rgba(255,255,255,.8);}
-        .fl-chip.on{border-color:var(--coral);background:rgba(255,82,82,.08);color:var(--coral);}
-        .fl-chip i{font-size:13px;}
-        .fl-chip .fl-chip-count{font-size:10px;background:rgba(255,255,255,.08);padding:1px 6px;border-radius:50px;color:rgba(255,255,255,.4);}
-        .fl-chip.on .fl-chip-count{background:rgba(255,82,82,.12);color:var(--coral);}
-        [data-theme="light"] .fl-chip{border-color:rgba(0,0,0,.08);background:rgba(0,0,0,.02);color:#64748b;}
-        [data-theme="light"] .fl-chip:hover{border-color:rgba(0,0,0,.15);color:#1a1a2e;}
-        [data-theme="light"] .fl-chip.on{border-color:var(--coral);background:rgba(255,82,82,.04);color:var(--coral);}
-        [data-theme="light"] .fl-chip .fl-chip-count{background:rgba(0,0,0,.04);color:#94a3b8;}
-        .fl-reset{padding:7px 14px;border-radius:50px;border:none;background:none;color:rgba(255,255,255,.3);font-size:11px;font-weight:600;cursor:pointer;font-family:Inter;flex-shrink:0;transition:color .15s;}
-        .fl-reset:hover{color:var(--coral);}
-        [data-theme="light"] .fl-reset{color:#94a3b8;}
-        .skel{background:linear-gradient(90deg,var(--bg3) 25%,var(--bg4) 50%,var(--bg3) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:18px;height:90px;margin-bottom:10px;}
-        @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+        /* ===== DESTINATIONS ===== */
+        .dests { padding: 60px 20px; max-width: 1100px; margin: 0 auto; }
+        .sec-h { text-align: center; margin-bottom: 40px; }
+        .sec-tag { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 50px; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+        .sec-h h2 { font-size: 32px; font-weight: 800; color: var(--text-primary); letter-spacing: -1px; margin-bottom: 8px; }
+        .sec-h p { font-size: 15px; color: var(--text-tertiary); }
+        .dest-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+        .dest-card { position: relative; border-radius: var(--radius-lg); overflow: hidden; cursor: pointer; display: block; text-decoration: none; aspect-ratio: 4/3; transition: all .35s; box-shadow: var(--shadow-md); }
+        .dest-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-xl); }
+        .dest-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+        .dest-card:hover img { transform: scale(1.06); }
+        .dest-ov { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,.65)); }
+        .dest-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px; }
+        .dest-name { font-family: Outfit; font-size: 20px; font-weight: 800; color: #fff; }
+        .dest-sub { font-size: 12px; color: rgba(255,255,255,.7); margin-top: 2px; }
+        .dest-price { font-family: Outfit; font-size: 14px; font-weight: 700; color: var(--gold); margin-top: 4px; }
+        .dest-arrow { position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,.2); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; transition: background .2s; }
+        .dest-card:hover .dest-arrow { background: var(--coral); }
 
-        /* DESTINATIONS */
-        .dests{padding:80px 20px;max-width:1100px;margin:0 auto;}
-        .sec-h{text-align:center;margin-bottom:48px;}
-        .sec-tag{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:50px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
-        .sec-h h2{font-size:34px;font-weight:800;color:var(--w);letter-spacing:-1px;margin-bottom:8px;}
-        .sec-h p{font-size:15px;color:var(--t3);}
-        .dest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-        .dest-card{position:relative;border-radius:18px;overflow:hidden;cursor:pointer;display:block;text-decoration:none;aspect-ratio:4/3;transition:all .35s;}
-        .dest-card:hover{transform:translateY(-4px);box-shadow:0 12px 40px rgba(0,0,0,.3);}
-        .dest-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s;}
-        .dest-card:hover img{transform:scale(1.06);}
-        .dest-ov{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.7));}
-        .dest-info{position:absolute;bottom:0;left:0;right:0;padding:18px;}
-        .dest-name{font-family:Outfit;font-size:20px;font-weight:800;color:var(--w);}
-        .dest-sub{font-size:12px;color:rgba(255,255,255,.6);margin-top:2px;}
-        .dest-price{font-family:Outfit;font-size:14px;font-weight:700;color:var(--gold);margin-top:4px;}
-        .dest-arrow{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:var(--w);font-size:14px;transition:background .2s;}
-        .dest-card:hover .dest-arrow{background:var(--coral);}
+        /* ===== FEATURES ===== */
+        .feats { padding: 60px 20px; max-width: 1100px; margin: 0 auto; }
+        .feat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+        .feat { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px 24px; transition: all .3s; box-shadow: var(--shadow-sm); }
+        .feat:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: rgba(0,0,0,.06); }
+        .feat i { font-size: 28px; margin-bottom: 14px; display: block; }
+        .feat h3 { font-size: 16px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+        .feat p { font-size: 13px; color: var(--text-tertiary); line-height: 1.6; }
 
-        /* FEATURES */
-        .feats{padding:80px 20px;max-width:1000px;margin:0 auto;}
-        .feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
-        .feat{background:var(--bg2);border:1px solid var(--border);border-radius:20px;padding:28px 24px;transition:all .3s;}
-        .feat:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.08);}
-        .feat i{font-size:24px;margin-bottom:14px;display:block;}
-        .feat h3{font-size:16px;font-weight:700;color:var(--w);margin-bottom:6px;}
-        .feat p{font-size:13px;color:var(--t3);line-height:1.5;}
+        /* ===== AGENT ===== */
+        .agent { padding: 40px 20px 60px; max-width: 700px; margin: 0 auto; }
+        .agent-box { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 40px; display: flex; align-items: center; gap: 28px; box-shadow: var(--shadow-md); }
+        .agent-box img { width: 90px; height: 90px; border-radius: 50%; object-fit: cover; border: 3px solid #e8eaed; flex-shrink: 0; }
+        .agent-box h3 { font-size: 20px; font-weight: 800; color: var(--text-primary); }
+        .agent-box .role { font-size: 12px; color: var(--primary); font-weight: 600; margin-top: 2px; }
+        .agent-box p { font-size: 13px; color: var(--text-tertiary); line-height: 1.6; margin-top: 8px; }
+        .agent-btns { display: flex; gap: 8px; margin-top: 14px; }
+        .agent-btns a { padding: 10px 18px; border-radius: 8px; font-size: 13px; font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 6px; transition: all .2s; }
+        .btn-wa { background: #25d366; color: #fff; }
+        .btn-wa:hover { box-shadow: 0 4px 14px rgba(37,211,102,.3); }
+        .btn-call { background: #f5f6f8; color: var(--text-primary); border: 1px solid #dadce0; }
+        .btn-call:hover { background: #e8eaed; }
 
-        /* AGENT */
-        .agent{padding:60px 20px;max-width:680px;margin:0 auto;}
-        .agent-box{background:var(--card);border:1px solid var(--border);border-radius:24px;padding:40px;display:flex;align-items:center;gap:28px;}
-        .agent-box img{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid rgba(255,255,255,.06);flex-shrink:0;}
-        .agent-box h3{font-size:20px;font-weight:800;color:var(--w);}
-        .agent-box .role{font-size:12px;color:var(--coral);font-weight:600;margin-top:2px;}
-        .agent-box p{font-size:13px;color:var(--t3);line-height:1.5;margin-top:8px;}
-        .agent-btns{display:flex;gap:8px;margin-top:14px;}
-        .agent-btns a{padding:10px 18px;border-radius:10px;font-size:13px;font-weight:700;text-decoration:none;display:flex;align-items:center;gap:6px;transition:all .2s;}
-        .btn-wa{background:#25d366;color:var(--w);}
-        .btn-wa:hover{box-shadow:0 4px 16px rgba(37,211,102,.3);}
-        .btn-call{background:rgba(255,255,255,.05);color:var(--w);border:1px solid var(--border);}
-
-        /* FOOTER */
-        footer{padding:60px 20px 40px;border-top:1px solid var(--border);background:var(--bg2);}
-        .ft-inner{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
-        .ft-col h4{font-family:Outfit;font-size:16px;font-weight:700;color:var(--w);margin-bottom:16px;}
-        .ft-col a{display:block;color:var(--t3);text-decoration:none;font-size:13px;padding:4px 0;transition:color .2s;}
-        .ft-col a:hover{color:var(--coral);}
-        .ft-col p{font-size:13px;color:var(--t4);line-height:1.6;}
-        .ft-col .ft-logo{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
-        .ft-col .ft-logo img{height:48px;}
-        .ft-col .ft-logo span{font-family:Outfit;font-weight:900;font-size:22px;color:var(--w);}
-        .ft-col .ft-logo .a{color:var(--coral);}
-        .ft-social{display:flex;gap:10px;margin-top:12px;}
-        .ft-social a{width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:16px;transition:all .2s;text-decoration:none;}
-        .ft-social a:hover{background:var(--coral);color:var(--w);}
-        .ft-bottom{text-align:center;padding-top:24px;border-top:1px solid var(--border);max-width:1000px;margin:0 auto;}
-        .ft-bottom p{font-size:11px;color:var(--t5);}
+        /* ===== FOOTER ===== */
+        footer { padding: 60px 20px 40px; border-top: 1px solid var(--border); background: #1a1a2e; }
+        .ft-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+        .ft-col h4 { font-family: Outfit; font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+        .ft-col a { display: block; color: #94a3b8; text-decoration: none; font-size: 13px; padding: 4px 0; transition: color .2s; }
+        .ft-col a:hover { color: var(--coral); }
+        .ft-col p { font-size: 13px; color: #64748b; line-height: 1.6; }
+        .ft-col .ft-logo { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .ft-col .ft-logo img { height: 48px; }
+        .ft-col .ft-logo span { font-family: Outfit; font-weight: 900; font-size: 22px; color: #fff; }
+        .ft-col .ft-logo .a { color: var(--coral); }
+        .ft-social { display: flex; gap: 10px; margin-top: 12px; }
+        .ft-social a { width: 36px; height: 36px; border-radius: 8px; background: rgba(255,255,255,.06); display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 16px; transition: all .2s; text-decoration: none; }
+        .ft-social a:hover { background: var(--coral); color: #fff; }
+        .ft-bottom { text-align: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.06); max-width: 1000px; margin: 0 auto; }
+        .ft-bottom p { font-size: 11px; color: #475569; }
         @media(max-width:768px){.ft-inner{grid-template-columns:1fr;gap:24px;text-align:center;}.ft-social{justify-content:center;}}
 
-        /* WA FLOAT */
-        .wa-float{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:50px;background:#25d366;color:var(--w);text-decoration:none;font-size:14px;font-weight:700;box-shadow:0 6px 24px rgba(37,211,102,.35);transition:all .3s;font-family:Inter;}
-        .wa-float:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(37,211,102,.45);}
-        .wa-float i{font-size:22px;}
+        /* ===== WA FLOAT ===== */
+        .wa-float { position: fixed; bottom: 20px; right: 20px; z-index: 999; display: flex; align-items: center; gap: 8px; padding: 12px 20px; border-radius: 50px; background: #25d366; color: #fff; text-decoration: none; font-size: 14px; font-weight: 700; box-shadow: 0 4px 20px rgba(37,211,102,.35); transition: all .3s; font-family: Inter; }
+        .wa-float:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(37,211,102,.45); }
+        .wa-float i { font-size: 22px; }
 
-        /* RESPONSIVE — Tablets landscape / small laptops */
-        @media(max-width:1024px){
-            .dests{padding:60px 16px;}
-            .feats{padding:60px 16px;}
-            .sb{max-width:100%;padding:0 4px;}
+        /* ===== RESPONSIVE ===== */
+        @media(max-width:1024px) {
+            .dests { padding: 50px 16px; }
+            .feats { padding: 50px 16px; }
+            .sb { max-width: 100%; padding: 0 4px; }
         }
-        /* RESPONSIVE — Tablets / iPad */
-        @media(max-width:900px){
-            .hero h1{font-size:36px;letter-spacing:-1.5px;}
-            .hero p{font-size:15px;}
-            .sb-fields{flex-direction:column;gap:8px;}
-            .sf{min-width:100%!important;flex:1 1 100%!important;}
-            .sb-btn{width:100%;justify-content:center;min-height:54px;}
-            .swap{display:none;}
-            .sb-opts{gap:4px;padding:10px 12px;}
-            .opt-btn{font-size:11px;padding:6px 10px;}
-            .res-card{padding:14px;}
-            .res-flight{flex-wrap:wrap;}
-            .res-bottom{flex-direction:column;gap:12px;align-items:stretch;}
-            .res-cta{justify-content:center;width:100%;padding:14px;}
-            .dest-grid{grid-template-columns:1fr 1fr;}
-            .dest-lg{grid-column:span 2;}
-            .feat-grid{grid-template-columns:1fr 1fr;}
-            .agent-box{flex-direction:column;text-align:center;padding:28px 20px;}
-            .agent-btns{justify-content:center;flex-wrap:wrap;}
-            nav .nav-links{display:none;}
-            .ft-inner{grid-template-columns:1fr 1fr;gap:28px;}
+        @media(max-width:900px) {
+            .hero { min-height: 400px; padding: 90px 16px 40px; }
+            .sb-fields { flex-direction: column; gap: 8px; }
+            .sf { min-width: 100%!important; flex: 1 1 100%!important; }
+            .sb-btn { width: 100%; justify-content: center; min-height: 54px; }
+            .swap { display: none; }
+            .sb-opts { gap: 4px; padding: 10px 12px; }
+            .opt-btn { font-size: 11px; padding: 6px 10px; }
+            .res-card { padding: 14px; }
+            .res-flight { flex-wrap: wrap; }
+            .res-bottom { flex-direction: column; gap: 12px; align-items: stretch; }
+            .res-cta { justify-content: center; width: 100%; padding: 14px; }
+            .dest-grid { grid-template-columns: 1fr 1fr; }
+            .feat-grid { grid-template-columns: 1fr 1fr; }
+            .agent-box { flex-direction: column; text-align: center; padding: 28px 20px; }
+            .agent-btns { justify-content: center; flex-wrap: wrap; }
+            .ft-inner { grid-template-columns: 1fr 1fr; gap: 28px; }
         }
-        /* RESPONSIVE — Large phones / iPhone Pro Max / Android large */
-        @media(max-width:640px){
-            nav{padding:0 14px;height:60px;}
-            .logo img{height:42px;border-radius:9px;padding:3px;}
-            .logo span{font-size:24px;}
-            .nav-wa{padding:7px 12px;font-size:12px;border-radius:8px;}
-            .nav-wa i{font-size:15px;}
-            .lang-btn{padding:6px 10px;font-size:12px;}
-            .lang-btn .f{font-size:17px;}
-            .hero{padding:76px 14px 30px;min-height:auto;}
-            .hero{padding:72px 14px 24px;}
-            .hero h1{font-size:28px;letter-spacing:-1px;}
-            .hero p{font-size:14px;max-width:100%;}
-            .sb-box{border-radius:18px;}
-            .sb-tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;}
-            .sb-tab{padding:14px 10px;font-size:12px;gap:5px;white-space:nowrap;min-width:0;}
-            .sb-tab i{font-size:15px;}
-            .sb-fields{padding:10px;gap:6px;}
-            .sf input,.sf select{min-height:54px;font-size:16px;padding:28px 12px 8px;border-radius:12px;}
-            .sf label{font-size:9px;top:8px;left:12px;}
-            .sb-btn{min-height:50px;font-size:14px;border-radius:12px;}
-            .sb-opts{padding:8px 10px;gap:3px;}
-            .opt-btn{padding:5px 8px;font-size:10px;border-radius:7px;}
-            .dest-grid{grid-template-columns:1fr;gap:12px;}
-            .dest-lg{grid-column:span 1;aspect-ratio:4/3;}
-            .dest-lg .dest-name{font-size:22px;}
-            .feat-grid{grid-template-columns:1fr;gap:10px;}
-            .feat{padding:22px 18px;border-radius:16px;}
-            .agent{padding:40px 14px;}
-            .agent-box{padding:24px 18px;gap:18px;border-radius:18px;}
-            .agent-box img{width:72px;height:72px;}
-            .agent-box h3{font-size:18px;}
-            .agent-btns{flex-direction:column;width:100%;gap:6px;}
-            .agent-btns a{justify-content:center;width:100%;}
-            .sec-h h2{font-size:26px;}
-            .sec-h p{font-size:13px;}
-            .results{margin:20px auto 0;padding:0 4px;}
-            .res-card{border-radius:14px;margin-bottom:10px;padding:12px;}
-            .res-inner{padding:14px 16px;border-radius:12px;}
-            .res-ep .time{font-size:20px;}
-            .res-price .amt{font-size:26px;}
-            .res-air-logo{width:36px;height:36px;}
-            .res-header-txt{font-size:12px;}
-            .res-cta{font-size:12px;padding:12px 20px;}
-            .ft-inner{grid-template-columns:1fr;gap:24px;text-align:center;}
-            .ft-social{justify-content:center;}
-            footer{padding:40px 14px 30px;}
-            .wa-float span{display:none;}
-            .wa-float{padding:14px;border-radius:50%;bottom:16px;right:16px;}
-            /* Autocomplete full width on mobile */
-            .ac{border-radius:12px;max-height:260px;}
-            .ac-i{padding:12px 14px;min-height:48px;}
-            /* Dropdowns */
-            .dd{min-width:220px;border-radius:12px;}
-            .lang-dd{min-width:150px;}
+        @media(max-width:640px) {
+            nav { padding: 0 14px; height: 58px; }
+            .logo img { height: 40px; width: 40px; border-radius: 8px; }
+            .logo span { font-size: 22px; }
+            .nav-wa { padding: 7px 12px; font-size: 12px; border-radius: 8px; }
+            .nav-wa i { font-size: 15px; }
+            .lang-btn { padding: 6px 10px; font-size: 12px; }
+            .lang-btn .f { font-size: 17px; }
+            .hero { padding: 76px 14px 30px; min-height: 360px; }
+            .sb-box { border-radius: var(--radius-lg); }
+            .sb-tabs { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .sb-tab { padding: 14px 10px; font-size: 12px; gap: 5px; white-space: nowrap; min-width: 0; }
+            .sb-tab i { font-size: 15px; }
+            .sb-fields { padding: 10px; gap: 6px; }
+            .sf input,.sf select { min-height: 54px; font-size: 16px; padding: 28px 12px 8px; border-radius: 10px; }
+            .sf label { font-size: 9px; top: 8px; left: 12px; }
+            .sb-btn { min-height: 50px; font-size: 14px; border-radius: 10px; }
+            .sb-opts { padding: 8px 10px; gap: 3px; }
+            .opt-btn { padding: 5px 8px; font-size: 10px; border-radius: 7px; }
+            .dest-grid { grid-template-columns: 1fr; gap: 12px; }
+            .feat-grid { grid-template-columns: 1fr; gap: 10px; }
+            .feat { padding: 22px 18px; border-radius: var(--radius); }
+            .agent { padding: 30px 14px 40px; }
+            .agent-box { padding: 24px 18px; gap: 18px; border-radius: var(--radius-lg); }
+            .agent-box img { width: 72px; height: 72px; }
+            .agent-box h3 { font-size: 18px; }
+            .agent-btns { flex-direction: column; width: 100%; gap: 6px; }
+            .agent-btns a { justify-content: center; width: 100%; }
+            .sec-h h2 { font-size: 24px; }
+            .sec-h p { font-size: 13px; }
+            .results { margin: 20px auto 0; padding: 0 4px; }
+            .res-card { border-radius: var(--radius); margin-bottom: 10px; padding: 12px; }
+            .res-inner { padding: 14px 16px; border-radius: 10px; }
+            .res-ep .time { font-size: 20px; }
+            .res-price .amt { font-size: 26px; }
+            .res-air-logo { width: 36px; height: 36px; }
+            .res-header-txt { font-size: 12px; }
+            .res-cta { font-size: 12px; padding: 12px 20px; }
+            .ft-inner { grid-template-columns: 1fr; gap: 24px; text-align: center; }
+            .ft-social { justify-content: center; }
+            footer { padding: 40px 14px 30px; }
+            .wa-float span { display: none; }
+            .wa-float { padding: 14px; border-radius: 50%; bottom: 16px; right: 16px; }
+            .ac { border-radius: 10px; max-height: 260px; }
+            .ac-i { padding: 12px 14px; min-height: 48px; }
+            .dd { min-width: 220px; border-radius: 10px; }
+            .lang-dd { min-width: 150px; }
+            .promo-banner { padding: 30px 14px 0; }
         }
-        /* RESPONSIVE — Small phones / iPhone SE / older Android */
-        @media(max-width:380px){
-            nav{padding:0 10px;height:56px;}
-            .logo img{height:36px;}
-            .logo span{font-size:20px;}
-            .nav-wa span{display:none;}
-            .nav-wa{padding:8px;border-radius:8px;}
-            .lang-btn{padding:5px 8px;}
-            .lang-btn .f{font-size:15px;}
-            .lang-btn span:not(.f){display:none;}
-            .hero h1{font-size:24px;}
-            .hero p{font-size:13px;}
-            .sb-tab{font-size:11px;padding:12px 6px;}
-            .sf input,.sf select{min-height:50px;font-size:16px;}
-            .sb-btn{min-height:48px;font-size:13px;}
-            .dest-name{font-size:17px;}
-            .dest-lg .dest-name{font-size:19px;}
-            .agent-box img{width:64px;height:64px;}
-            .agent-box h3{font-size:16px;}
-            .sec-h h2{font-size:22px;}
+        @media(max-width:380px) {
+            nav { padding: 0 10px; height: 54px; }
+            .logo img { height: 34px; width: 34px; }
+            .logo span { font-size: 18px; }
+            .nav-wa span { display: none; }
+            .nav-wa { padding: 8px; border-radius: 8px; }
+            .lang-btn { padding: 5px 8px; }
+            .lang-btn .f { font-size: 15px; }
+            .lang-btn span:not(.f) { display: none; }
+            .hero { min-height: 320px; }
+            .sb-tab { font-size: 11px; padding: 12px 6px; }
+            .sf input,.sf select { min-height: 50px; font-size: 16px; }
+            .sb-btn { min-height: 48px; font-size: 13px; }
+            .dest-name { font-size: 17px; }
+            .agent-box img { width: 64px; height: 64px; }
+            .agent-box h3 { font-size: 16px; }
+            .sec-h h2 { font-size: 22px; }
         }
-        /* Fix iOS zoom on input focus — keep font-size >= 16px */
-        @supports(-webkit-touch-callout:none){
-            .sf input,.sf select{font-size:16px;}
+        @supports(-webkit-touch-callout:none) {
+            .sf input,.sf select { font-size: 16px; }
         }
-        /* Safe area for devices with notch */
-        @supports(padding:max(0px)){
-            nav{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right));}
-            .hero{padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right));}
-            .wa-float{right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));}
-            footer{padding-bottom:max(30px,env(safe-area-inset-bottom));}
+        @supports(padding:max(0px)) {
+            nav { padding-left: max(14px,env(safe-area-inset-left)); padding-right: max(14px,env(safe-area-inset-right)); }
+            .hero { padding-left: max(14px,env(safe-area-inset-left)); padding-right: max(14px,env(safe-area-inset-right)); }
+            .wa-float { right: max(16px,env(safe-area-inset-right)); bottom: max(16px,env(safe-area-inset-bottom)); }
+            footer { padding-bottom: max(30px,env(safe-area-inset-bottom)); }
         }
+
+        /* ===== Flatpickr light theme override ===== */
+        .flatpickr-calendar { border-radius: 12px !important; box-shadow: 0 8px 32px rgba(0,0,0,.12) !important; border: 1px solid #e8eaed !important; }
+        .flatpickr-day.selected { background: var(--primary) !important; border-color: var(--primary) !important; }
     </style>
 </head>
 <body>
@@ -671,7 +573,7 @@
                 <div class="lang-opt" data-l="es"><span class="f">&#127474;&#127485;</span> Espanol</div>
             </div>
         </div>
-        <a href="https://wa.me/14352146939" target="_blank" class="nav-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
+        <a href="https://wa.me/14352146939" target="_blank" class="nav-wa"><i class="bi bi-whatsapp"></i> <span>WhatsApp</span></a>
     </div>
 </nav>
 
@@ -682,7 +584,7 @@
     </div>
 
     <!-- SEARCH BOX -->
-    <div class="sb ani">
+    <div class="sb">
         <div class="sb-box">
             <!-- Tabs -->
             <div class="sb-tabs" id="sbTabs">
@@ -693,7 +595,7 @@
             </div>
             <!-- Options -->
             <div class="sb-opts" id="sbOpts">
-                <div style="display:flex;gap:3px;background:rgba(255,255,255,.02);border-radius:8px;padding:2px;">
+                <div style="display:flex;gap:3px;background:#f5f6f8;border-radius:8px;padding:2px;">
                     <button class="opt-btn on" id="optRT" onclick="setTrip('rt')"><i class="bi bi-arrow-left-right"></i> <span class="tl">Ida e Volta</span></button>
                     <button class="opt-btn" id="optOW" onclick="setTrip('ow')"><i class="bi bi-arrow-right"></i> <span class="tl">Somente Ida</span></button>
                 </div>
@@ -810,51 +712,51 @@
 </section>
 
 <!-- PROMO CAROUSEL -->
-<div class="promo-banner ani">
+<div class="promo-banner">
     <div class="promo-track" id="promoTrack">
         <div class="promo-slide active">
             <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=500&fit=crop" alt="Beach">
             <div class="promo-overlay"></div>
             <div class="promo-content">
-                <h2>Viaje por menos</h2>
-                <p>As melhores ferias comecam com os melhores precos. Confira nossas ofertas.</p>
-                <button class="promo-btn" onclick="scrollToDeals()"><i class="bi bi-tag-fill"></i> Ver ofertas</button>
+                <h2 class="ps-t" data-pt="Viaje por menos" data-en="Travel for less" data-es="Viaja por menos">Viaje por menos</h2>
+                <p class="ps-d" data-pt="As melhores ferias comecam com os melhores precos." data-en="The best vacations start with the best prices." data-es="Las mejores vacaciones comienzan con los mejores precios.">As melhores ferias comecam com os melhores precos.</p>
+                <button class="promo-btn" onclick="scrollToDeals()"><i class="bi bi-tag-fill"></i> <span class="ps-b" data-pt="Ver ofertas" data-en="See deals" data-es="Ver ofertas">Ver ofertas</span></button>
             </div>
         </div>
         <div class="promo-slide">
             <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&h=500&fit=crop" alt="Mountains lake">
             <div class="promo-overlay"></div>
             <div class="promo-content">
-                <h2>Cancun a partir de $280</h2>
-                <p>Praias paradisiacas, all-inclusive e voos diretos. Reserve agora.</p>
-                <button class="promo-btn" onclick="qSearch('SLC','CUN')"><i class="bi bi-airplane-fill"></i> Buscar voos</button>
+                <h2 class="ps-t" data-pt="Cancun a partir de $280" data-en="Cancun from $280" data-es="Cancun desde $280">Cancun a partir de $280</h2>
+                <p class="ps-d" data-pt="Praias paradisiacas, all-inclusive e voos diretos." data-en="Paradise beaches, all-inclusive and direct flights." data-es="Playas paradisiacas, todo incluido y vuelos directos.">Praias paradisiacas, all-inclusive e voos diretos.</p>
+                <button class="promo-btn" onclick="qSearch('SLC','CUN')"><i class="bi bi-airplane-fill"></i> <span class="ps-b" data-pt="Buscar voos" data-en="Search flights" data-es="Buscar vuelos">Buscar voos</span></button>
             </div>
         </div>
         <div class="promo-slide">
             <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1200&h=500&fit=crop" alt="Rio de Janeiro">
             <div class="promo-overlay"></div>
             <div class="promo-content">
-                <h2>Rio de Janeiro te espera</h2>
-                <p>Cristo Redentor, Copacabana e muito mais. Voos saindo de Salt Lake City.</p>
-                <button class="promo-btn" onclick="qSearch('SLC','GIG')"><i class="bi bi-airplane-fill"></i> Buscar voos</button>
+                <h2 class="ps-t" data-pt="Rio de Janeiro te espera" data-en="Rio de Janeiro awaits you" data-es="Rio de Janeiro te espera">Rio de Janeiro te espera</h2>
+                <p class="ps-d" data-pt="Cristo Redentor, Copacabana e muito mais." data-en="Christ the Redeemer, Copacabana and much more." data-es="Cristo Redentor, Copacabana y mucho mas.">Cristo Redentor, Copacabana e muito mais.</p>
+                <button class="promo-btn" onclick="qSearch('SLC','GIG')"><i class="bi bi-airplane-fill"></i> <span class="ps-b" data-pt="Buscar voos" data-en="Search flights" data-es="Buscar vuelos">Buscar voos</span></button>
             </div>
         </div>
         <div class="promo-slide">
             <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&h=500&fit=crop" alt="Lisboa">
             <div class="promo-overlay"></div>
             <div class="promo-content">
-                <h2>Europa te chama</h2>
-                <p>Lisboa, Porto e alem. Descubra Portugal com precos incriveis.</p>
-                <button class="promo-btn" onclick="qSearch('SLC','LIS')"><i class="bi bi-airplane-fill"></i> Buscar voos</button>
+                <h2 class="ps-t" data-pt="Europa te chama" data-en="Europe is calling" data-es="Europa te llama">Europa te chama</h2>
+                <p class="ps-d" data-pt="Lisboa, Porto e alem. Descubra Portugal." data-en="Lisbon, Porto and beyond. Discover Portugal." data-es="Lisboa, Oporto y mas. Descubre Portugal.">Lisboa, Porto e alem. Descubra Portugal.</p>
+                <button class="promo-btn" onclick="qSearch('SLC','LIS')"><i class="bi bi-airplane-fill"></i> <span class="ps-b" data-pt="Buscar voos" data-en="Search flights" data-es="Buscar vuelos">Buscar voos</span></button>
             </div>
         </div>
         <div class="promo-slide">
             <img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=1200&h=500&fit=crop" alt="Las Vegas">
             <div class="promo-overlay"></div>
             <div class="promo-content">
-                <h2>Las Vegas a partir de $55</h2>
-                <p>Shows, cassinos e diversao. A apenas 1h de voo de SLC.</p>
-                <button class="promo-btn" onclick="qSearch('SLC','LAS')"><i class="bi bi-airplane-fill"></i> Buscar voos</button>
+                <h2 class="ps-t" data-pt="Las Vegas a partir de $55" data-en="Las Vegas from $55" data-es="Las Vegas desde $55">Las Vegas a partir de $55</h2>
+                <p class="ps-d" data-pt="Shows, cassinos e diversao. 1h de voo de SLC." data-en="Shows, casinos and fun. 1h flight from SLC." data-es="Shows, casinos y diversion. 1h de vuelo de SLC.">Shows, cassinos e diversao. 1h de voo de SLC.</p>
+                <button class="promo-btn" onclick="qSearch('SLC','LAS')"><i class="bi bi-airplane-fill"></i> <span class="ps-b" data-pt="Buscar voos" data-en="Search flights" data-es="Buscar vuelos">Buscar voos</span></button>
             </div>
         </div>
     </div>
@@ -866,22 +768,22 @@
 </div>
 
 <!-- LAST MINUTE DEALS -->
-<section class="deals-sec ani" id="dealsAnchor">
+<section class="deals-sec" id="dealsAnchor">
     <div class="deals-head">
         <div>
-            <h2 id="dealsTitle">Last-minute deals</h2>
-            <p id="dealsSub">Os melhores precos para os proximos dias saindo de SLC</p>
+            <h2 id="dealsTitle" class="tl">Ofertas de Ultima Hora</h2>
+            <p id="dealsSub" class="tl">Os melhores precos para os proximos dias saindo de SLC</p>
         </div>
     </div>
     <div class="deals-grid" id="dealsGrid">
-        <div class="deals-loading" id="dealsLoading"><i class="bi bi-arrow-repeat"></i> <span>Buscando ofertas...</span></div>
+        <div class="deals-loading" id="dealsLoading"><i class="bi bi-arrow-repeat"></i> <span class="tl">Buscando ofertas...</span></div>
     </div>
 </section>
 
 <!-- DESTINATIONS -->
-<section class="dests ani">
+<section class="dests">
     <div class="sec-h">
-        <div class="sec-tag" style="background:rgba(255,82,82,.06);color:var(--coral);"><i class="bi bi-fire"></i> <span class="tl">Destinos Populares</span></div>
+        <div class="sec-tag" style="background:rgba(245,96,64,.06);color:var(--coral);"><i class="bi bi-fire"></i> <span class="tl">Destinos Populares</span></div>
         <h2 class="tl">Explore o Mundo</h2>
         <p class="tl">Os destinos mais buscados saindo dos EUA</p>
     </div>
@@ -889,46 +791,46 @@
         <a class="dest-card" onclick="qSearch('MIA','GRU')">
             <img src="https://images.unsplash.com/photo-1543059080-f9b1272213d5?w=600&h=450&fit=crop" alt="Sao Paulo" loading="lazy">
             <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
-            <div class="dest-info"><div class="dest-name">Sao Paulo &#127463;&#127479;</div><div class="dest-sub">MIA → GRU</div><div class="dest-price">from $420</div></div>
+            <div class="dest-info"><div class="dest-name">Sao Paulo &#127463;&#127479;</div><div class="dest-sub">MIA &rarr; GRU</div><div class="dest-price">from $420</div></div>
         </a>
         <a class="dest-card" onclick="qSearch('JFK','GIG')">
             <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&h=450&fit=crop" alt="Rio de Janeiro" loading="lazy">
             <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
-            <div class="dest-info"><div class="dest-name">Rio de Janeiro &#127463;&#127479;</div><div class="dest-sub">JFK → GIG</div><div class="dest-price">from $480</div></div>
+            <div class="dest-info"><div class="dest-name">Rio de Janeiro &#127463;&#127479;</div><div class="dest-sub">JFK &rarr; GIG</div><div class="dest-price">from $480</div></div>
         </a>
         <a class="dest-card" onclick="qSearch('SLC','CUN')">
             <img src="https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=600&h=450&fit=crop" alt="Cancun" loading="lazy">
             <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
-            <div class="dest-info"><div class="dest-name">Cancun &#127474;&#127485;</div><div class="dest-sub">SLC → CUN</div><div class="dest-price">from $280</div></div>
+            <div class="dest-info"><div class="dest-name">Cancun &#127474;&#127485;</div><div class="dest-sub">SLC &rarr; CUN</div><div class="dest-price">from $280</div></div>
         </a>
         <a class="dest-card" onclick="qSearch('SLC','LIS')">
             <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=450&fit=crop" alt="Lisboa" loading="lazy">
             <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
-            <div class="dest-info"><div class="dest-name">Lisboa &#127477;&#127481;</div><div class="dest-sub">SLC → LIS</div><div class="dest-price">from $520</div></div>
+            <div class="dest-info"><div class="dest-name">Lisboa &#127477;&#127481;</div><div class="dest-sub">SLC &rarr; LIS</div><div class="dest-price">from $520</div></div>
         </a>
         <a class="dest-card" onclick="qSearch('SLC','LAS')">
             <img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=600&h=450&fit=crop" alt="Las Vegas" loading="lazy">
             <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
-            <div class="dest-info"><div class="dest-name">Las Vegas &#127482;&#127480;</div><div class="dest-sub">SLC → LAS</div><div class="dest-price">from $55</div></div>
+            <div class="dest-info"><div class="dest-name">Las Vegas &#127482;&#127480;</div><div class="dest-sub">SLC &rarr; LAS</div><div class="dest-price">from $55</div></div>
         </a>
         <a class="dest-card" onclick="qSearch('SLC','MIA')">
             <img src="https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=600&h=450&fit=crop" alt="Miami" loading="lazy">
             <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
-            <div class="dest-info"><div class="dest-name">Miami &#127482;&#127480;</div><div class="dest-sub">SLC → MIA</div><div class="dest-price">from $180</div></div>
+            <div class="dest-info"><div class="dest-name">Miami &#127482;&#127480;</div><div class="dest-sub">SLC &rarr; MIA</div><div class="dest-price">from $180</div></div>
         </a>
     </div>
 </section>
 
 <!-- FEATURES -->
-<section class="feats ani">
+<section class="feats">
     <div class="sec-h">
-        <div class="sec-tag" style="background:rgba(6,214,160,.06);color:var(--green);"><i class="bi bi-stars"></i> <span class="tl">Por que Rio Travel</span></div>
+        <div class="sec-tag" style="background:rgba(15,157,88,.06);color:var(--green);"><i class="bi bi-stars"></i> <span class="tl">Por que Rio Travel</span></div>
         <h2 class="tl">Viaje com Confianca</h2>
     </div>
     <div class="feat-grid">
-        <div class="feat"><i class="bi bi-translate" style="color:var(--coral);"></i><h3 class="tl">Multilingual</h3><p class="tl">Atendimento em Portugues, Ingles e Espanhol.</p></div>
+        <div class="feat"><i class="bi bi-translate" style="color:var(--primary);"></i><h3 class="tl">Multilingual</h3><p class="tl">Atendimento em Portugues, Ingles e Espanhol.</p></div>
         <div class="feat"><i class="bi bi-shield-check" style="color:var(--green);"></i><h3 class="tl">Agente Certificado</h3><p class="tl">Agencia licenciada nos EUA. Seguranca total.</p></div>
-        <div class="feat"><i class="bi bi-lightning-charge-fill" style="color:var(--sky);"></i><h3 class="tl">Precos em Tempo Real</h3><p class="tl">Busca direto nas companhias aereas.</p></div>
+        <div class="feat"><i class="bi bi-lightning-charge-fill" style="color:var(--primary);"></i><h3 class="tl">Precos em Tempo Real</h3><p class="tl">Busca direto nas companhias aereas.</p></div>
         <div class="feat"><i class="bi bi-credit-card" style="color:var(--gold);"></i><h3 class="tl">Pagamento Flexivel</h3><p class="tl">Cartao, PIX ou parcelamento. Voce escolhe.</p></div>
         <div class="feat"><i class="bi bi-headset" style="color:var(--purple);"></i><h3 class="tl">Suporte Dedicado</h3><p class="tl">Problemas no voo? Estamos aqui pra resolver.</p></div>
         <div class="feat"><i class="bi bi-globe2" style="color:var(--coral);"></i><h3 class="tl">Destinos Globais</h3><p class="tl">Brasil, Mexico, Europa, Caribe e muito mais.</p></div>
@@ -936,12 +838,12 @@
 </section>
 
 <!-- AGENT -->
-<section class="agent ani">
+<section class="agent">
     <div class="agent-box">
         <img src="/static/hudson-photo.jpg" alt="Hudson" onerror="this.style.display='none'">
         <div>
             <h3>Hudson Valeriano</h3>
-            <div class="role">Travel Advisor — Rio Travel LLC</div>
+            <div class="role tl">Travel Advisor — Rio Travel LLC</div>
             <p class="tl">40+ paises visitados. Especialista em viagens internacionais. Atendimento via WhatsApp.</p>
             <div class="agent-btns">
                 <a href="https://wa.me/14352146939" target="_blank" class="btn-wa"><i class="bi bi-whatsapp"></i> WhatsApp</a>
@@ -956,7 +858,7 @@
     <div class="ft-inner">
         <div class="ft-col">
             <div class="ft-logo"><img src="/static/logo-riotravel-sm.png" alt="Rio Travel"><span>Rio<span class="a">Travel</span></span></div>
-            <p>Sua agencia de viagens nos EUA. Atendimento personalizado em Portugues, Ingles e Espanhol.</p>
+            <p class="tl">Sua agencia de viagens nos EUA. Atendimento personalizado em Portugues, Ingles e Espanhol.</p>
             <div class="ft-social">
                 <a href="https://wa.me/14352146939" target="_blank"><i class="bi bi-whatsapp"></i></a>
                 <a href="https://instagram.com/riotravelllc" target="_blank"><i class="bi bi-instagram"></i></a>
@@ -965,15 +867,15 @@
             </div>
         </div>
         <div class="ft-col">
-            <h4>Servicos</h4>
-            <a href="#">Passagens Aereas</a>
-            <a href="#">Hoteis</a>
-            <a href="#">Tours & Atividades</a>
-            <a href="#">Aluguel de Carros</a>
-            <a href="#">Pacotes de Viagem</a>
+            <h4 class="tl">Servicos</h4>
+            <a href="#" class="tl">Passagens Aereas</a>
+            <a href="#" class="tl">Hoteis</a>
+            <a href="#" class="tl">Tours & Atividades</a>
+            <a href="#" class="tl">Aluguel de Carros</a>
+            <a href="#" class="tl">Pacotes de Viagem</a>
         </div>
         <div class="ft-col">
-            <h4>Contato</h4>
+            <h4 class="tl">Contato</h4>
             <a href="tel:+14352146939"><i class="bi bi-telephone"></i> +1 (435) 214-6939</a>
             <a href="mailto:contactus@riotravelpc.com"><i class="bi bi-envelope"></i> contactus@riotravelpc.com</a>
             <a href="https://wa.me/14352146939" target="_blank"><i class="bi bi-whatsapp"></i> WhatsApp</a>
@@ -993,21 +895,14 @@
 <script>
 // ========== THEME ==========
 function toggleTheme(){
-    const html=document.documentElement;
-    const cur=html.getAttribute('data-theme');
-    const next=cur==='light'?'dark':'light';
-    html.setAttribute('data-theme',next);
-    localStorage.setItem('rt-theme',next);
-    updateThemeIcon(next);
+    // No-op: light theme only
 }
 function updateThemeIcon(th){
-    const btn=document.getElementById('themeBtn');
-    if(btn)btn.innerHTML=th==='light'?'<i class="bi bi-sun-fill"></i>':'<i class="bi bi-moon-fill"></i>';
+    // No-op: light theme only
 }
 (function(){
-    const saved=localStorage.getItem('rt-theme')||'dark';
-    document.documentElement.setAttribute('data-theme',saved);
-    updateThemeIcon(saved);
+    // Always light theme
+    document.documentElement.removeAttribute('data-theme');
 })();
 
 // ========== STATE ==========
@@ -1049,7 +944,7 @@ const AP=[
     {c:'MQH',n:'Minacu Airport',ci:'Minacu',co:'Brasil'},{c:'JDO',n:'Orlando Bezerra de Menezes',ci:'Juazeiro do Norte',co:'Brasil'},
     {c:'BVH',n:'Vilhena Airport',ci:'Vilhena',co:'Brasil'},{c:'OPS',n:'Sinop Airport',ci:'Sinop',co:'Brasil'},
     {c:'ROO',n:'Rondonopolis Airport',ci:'Rondonopolis',co:'Brasil'},{c:'ATM',n:'Altamira Airport',ci:'Altamira',co:'Brasil'},
-    {c:'MAB',n:'Marabá Airport',ci:'Maraba',co:'Brasil'},{c:'PHB',n:'Prefeito Dr Joao Silva Filho',ci:'Parnaiba',co:'Brasil'},
+    {c:'MAB',n:'Marab\u00e1 Airport',ci:'Maraba',co:'Brasil'},{c:'PHB',n:'Prefeito Dr Joao Silva Filho',ci:'Parnaiba',co:'Brasil'},
     {c:'FEN',n:'Fernando de Noronha',ci:'Fernando de Noronha',co:'Brasil'},{c:'TFF',n:'Tefe Airport',ci:'Tefe',co:'Brasil'},
     {c:'TBT',n:'Tabatinga Airport',ci:'Tabatinga',co:'Brasil'},{c:'PLL',n:'Ponta Pelada',ci:'Manaus',co:'Brasil'},
     {c:'PPG',n:'Pelotas Airport',ci:'Pelotas',co:'Brasil'},{c:'PET',n:'Federal de Pelotas',ci:'Pelotas',co:'Brasil'},
@@ -1274,7 +1169,11 @@ const I={
         whyLabel:'Por que Rio Travel',whyTitle:'Viaje com Confianca',
         f1:'Multilingual',f1d:'Atendimento em Portugues, Ingles e Espanhol.',f2:'Agente Certificado',f2d:'Agencia licenciada nos EUA. Seguranca total.',f3:'Precos em Tempo Real',f3d:'Busca direto nas companhias aereas.',f4:'Pagamento Flexivel',f4d:'Cartao, PIX ou parcelamento. Voce escolhe.',f5:'Suporte Dedicado',f5d:'Problemas no voo? Estamos aqui pra resolver.',f6:'Destinos Globais',f6d:'Brasil, Mexico, Europa, Caribe e muito mais.',
         agentBio:'40+ paises visitados. Especialista em viagens internacionais. Atendimento via WhatsApp.',
+        agentRole:'Consultor de Viagens — Rio Travel LLC',
         wa:'Fale Conosco',
+        dealsTitle:'Ofertas de Ultima Hora',dealsSub:'Os melhores precos para os proximos dias saindo de SLC',dealsLoading:'Buscando ofertas...',
+        ftDesc:'Sua agencia de viagens nos EUA. Atendimento personalizado em Portugues, Ingles e Espanhol.',
+        ftServices:'Servicos',ftFlights:'Passagens Aereas',ftHotels:'Hoteis',ftTours:'Tours & Atividades',ftCars:'Aluguel de Carros',ftPackages:'Pacotes de Viagem',ftContact:'Contato',
         tourDest:'Destino ou Atividade',explore:'Explorar Tours',orAgent:'Ou fale com nosso agente',cars:'Carros',carLoc:'Local de Retirada',carPickup:'Retirada',carDropoff:'Devolucao',searchCars:'Buscar Carros',carsFound:'carros encontrados',noCars:'Nenhum carro encontrado.',perDay:'por dia',
         best:'Melhor Preco',pp:'por pessoa',pn:'por noite',book:'Reservar',searching:'Buscando...',found:'voos encontrados',noFlights:'Nenhum voo encontrado.',
         direct:'Direto',stop1:'1 parada',stops:'paradas',hotelDest:'Destino',
@@ -1290,7 +1189,11 @@ const I={
         whyLabel:'Why Rio Travel',whyTitle:'Travel with Confidence',
         f1:'Multilingual',f1d:'Support in English, Portuguese and Spanish.',f2:'Certified Agent',f2d:'Licensed agency in the USA. Total security.',f3:'Real-Time Prices',f3d:'Search directly from airlines.',f4:'Flexible Payment',f4d:'Card, wire or installments. Your choice.',f5:'Dedicated Support',f5d:'Flight issues? We are here to help.',f6:'Global Destinations',f6d:'Brazil, Mexico, Europe, Caribbean and more.',
         agentBio:'40+ countries visited. International travel specialist. WhatsApp support.',
+        agentRole:'Travel Advisor — Rio Travel LLC',
         wa:'Contact Us',
+        dealsTitle:'Last-Minute Deals',dealsSub:'Best prices for the next few days from SLC',dealsLoading:'Loading deals...',
+        ftDesc:'Your travel agency in the USA. Personalized service in English, Portuguese and Spanish.',
+        ftServices:'Services',ftFlights:'Flights',ftHotels:'Hotels',ftTours:'Tours & Activities',ftCars:'Car Rentals',ftPackages:'Travel Packages',ftContact:'Contact',
         tourDest:'Destination or Activity',explore:'Explore Tours',orAgent:'Or speak with our agent',cars:'Cars',carLoc:'Pickup Location',carPickup:'Pickup',carDropoff:'Dropoff',searchCars:'Search Cars',carsFound:'cars found',noCars:'No cars found.',perDay:'per day',
         best:'Best Price',pp:'per person',pn:'per night',book:'Book Now',searching:'Searching...',found:'flights found',noFlights:'No flights found.',
         direct:'Direct',stop1:'1 stop',stops:'stops',hotelDest:'Destination',
@@ -1306,7 +1209,11 @@ const I={
         whyLabel:'Por que Rio Travel',whyTitle:'Viaja con Confianza',
         f1:'Multilingue',f1d:'Atencion en Espanol, Ingles y Portugues.',f2:'Agente Certificado',f2d:'Agencia licenciada en EE.UU. Total seguridad.',f3:'Precios en Tiempo Real',f3d:'Busqueda directa en aerolineas.',f4:'Pago Flexible',f4d:'Tarjeta, transferencia o cuotas. Tu eliges.',f5:'Soporte Dedicado',f5d:'Problemas con el vuelo? Estamos aqui para ayudar.',f6:'Destinos Globales',f6d:'Brasil, Mexico, Europa, Caribe y mucho mas.',
         agentBio:'40+ paises visitados. Especialista en viajes internacionales. Atencion por WhatsApp.',
+        agentRole:'Asesor de Viajes — Rio Travel LLC',
         wa:'Contactanos',
+        dealsTitle:'Ofertas de Ultimo Minuto',dealsSub:'Mejores precios para los proximos dias desde SLC',dealsLoading:'Buscando ofertas...',
+        ftDesc:'Tu agencia de viajes en EE.UU. Atencion personalizada en Espanol, Ingles y Portugues.',
+        ftServices:'Servicios',ftFlights:'Vuelos',ftHotels:'Hoteles',ftTours:'Tours y Actividades',ftCars:'Alquiler de Autos',ftPackages:'Paquetes de Viaje',ftContact:'Contacto',
         tourDest:'Destino o Actividad',explore:'Explorar Tours',orAgent:'O habla con nuestro agente',cars:'Autos',carLoc:'Lugar de Retiro',carPickup:'Retiro',carDropoff:'Devolucion',searchCars:'Buscar Autos',carsFound:'autos encontrados',noCars:'No se encontraron autos.',perDay:'por dia',
         best:'Mejor Precio',pp:'por persona',pn:'por noche',book:'Reservar',searching:'Buscando...',found:'vuelos encontrados',noFlights:'No se encontraron vuelos.',
         direct:'Directo',stop1:'1 escala',stops:'escalas',hotelDest:'Destino',
@@ -1376,10 +1283,16 @@ function setLang(l){
     // Tour labels
     const tLabel=document.querySelector('#tFields .sf label.tl');
     if(tLabel)tLabel.textContent=t('tourDest');
+    // Car labels
+    const carLabels=document.querySelectorAll('#carFields .sf label.tl');
+    if(carLabels[0])carLabels[0].textContent=t('carLoc');
+    if(carLabels[1])carLabels[1].textContent=t('carPickup');
+    if(carLabels[2])carLabels[2].textContent=t('carDropoff');
 
     // ---- SEARCH BUTTONS ----
     document.querySelectorAll('.sb-btn .tl').forEach(s=>{
         if(s.closest('#tFields'))s.textContent=t('searchTours');
+        else if(s.closest('#carFields'))s.textContent=t('searchCars');
         else s.textContent=t('search');
     });
 
@@ -1402,14 +1315,43 @@ function setLang(l){
     if(fts[0]){fts[0].querySelector('h3').textContent=t('f1');fts[0].querySelector('p').textContent=t('f1d');}
     if(fts[1]){fts[1].querySelector('h3').textContent=t('f2');fts[1].querySelector('p').textContent=t('f2d');}
     if(fts[2]){fts[2].querySelector('h3').textContent=t('f3');fts[2].querySelector('p').textContent=t('f3d');}
+    if(fts[3]){fts[3].querySelector('h3').textContent=t('f4');fts[3].querySelector('p').textContent=t('f4d');}
+    if(fts[4]){fts[4].querySelector('h3').textContent=t('f5');fts[4].querySelector('p').textContent=t('f5d');}
+    if(fts[5]){fts[5].querySelector('h3').textContent=t('f6');fts[5].querySelector('p').textContent=t('f6d');}
 
-    // ---- AGENT BIO ----
+    // ---- AGENT BIO + ROLE ----
     const agentP=document.querySelector('.agent-box p.tl');
     if(agentP)agentP.textContent=t('agentBio');
+    const agentRole=document.querySelector('.agent-box .role.tl');
+    if(agentRole)agentRole.textContent=t('agentRole');
 
     // ---- WA FLOAT ----
     const waSpan=document.querySelector('.wa-float span.tl');
     if(waSpan)waSpan.textContent=t('wa');
+
+    // ---- DEALS SECTION ----
+    const dealsTitle=document.getElementById('dealsTitle');
+    if(dealsTitle)dealsTitle.textContent=t('dealsTitle');
+    const dealsSub=document.getElementById('dealsSub');
+    if(dealsSub)dealsSub.textContent=t('dealsSub');
+
+    // ---- PROMO SLIDES ----
+    document.querySelectorAll('.ps-t').forEach(el=>{if(el.dataset[l])el.textContent=el.dataset[l];});
+    document.querySelectorAll('.ps-d').forEach(el=>{if(el.dataset[l])el.textContent=el.dataset[l];});
+    document.querySelectorAll('.ps-b').forEach(el=>{if(el.dataset[l])el.textContent=el.dataset[l];});
+
+    // ---- FOOTER ----
+    const ftDesc=document.querySelector('footer .ft-col p.tl');
+    if(ftDesc)ftDesc.textContent=t('ftDesc');
+    const ftH4s=document.querySelectorAll('footer .ft-col h4.tl');
+    if(ftH4s[0])ftH4s[0].textContent=t('ftServices');
+    if(ftH4s[1])ftH4s[1].textContent=t('ftContact');
+    const ftLinks=document.querySelectorAll('footer .ft-col a.tl');
+    if(ftLinks[0])ftLinks[0].textContent=t('ftFlights');
+    if(ftLinks[1])ftLinks[1].textContent=t('ftHotels');
+    if(ftLinks[2])ftLinks[2].textContent=t('ftTours');
+    if(ftLinks[3])ftLinks[3].textContent=t('ftCars');
+    if(ftLinks[4])ftLinks[4].textContent=t('ftPackages');
 
     // ---- FLATPICKR LOCALE ----
     const fpLocale=l==='es'?'es':l==='pt'?'pt':'default';
@@ -1469,44 +1411,36 @@ function updatePax(){
     if(paxC)parts.push(paxC+' '+(L==='en'?(paxC===1?'Child':'Children'):L==='es'?(paxC===1?'Nino':'Ninos'):(paxC===1?'Crianca':'Criancas')));
     if(paxI)parts.push(paxI+' '+(L==='en'?(paxI===1?'Infant':'Infants'):'Bebe'+(paxI>1?'s':'')));
     document.getElementById('paxTxt').textContent=parts.join(', ');
-    // Update labels in dropdown
-    const rows=document.querySelectorAll('#paxDD .pax-name.tl');
-    // Not using tl class for simplicity — direct update
 }
 
 // ========== AUTOCOMPLETE (works on Desktop + Mobile + iPad + Android) ==========
-let acActive=null; // track which autocomplete is open
+let acActive=null;
 
 function initAC(inputId, acId) {
     const input = document.getElementById(inputId);
     const ac = document.getElementById(acId);
-    let picking = false; // prevent blur from closing before pick
+    let picking = false;
 
-    // Show on focus (popular airports)
     input.addEventListener('focus', () => {
-        input.select(); // select all text so user can type fresh
+        input.select();
         input.dataset.code = '';
         showAC(input, ac);
     });
 
-    // Also handle click (for mobile where focus may not trigger)
     input.addEventListener('click', () => {
         showAC(input, ac);
     });
 
-    // Filter on input
     input.addEventListener('input', () => {
         showAC(input, ac);
     });
 
-    // Close on blur — but wait for pick
     input.addEventListener('blur', () => {
         setTimeout(() => {
             if (!picking) ac.classList.remove('open');
         }, 250);
     });
 
-    // Handle clicks/taps on results — use event delegation
     ac.addEventListener('mousedown', e => { picking = true; });
     ac.addEventListener('touchstart', e => { picking = true; }, {passive: true});
 
@@ -1519,7 +1453,6 @@ function initAC(inputId, acId) {
             input.dataset.code = code;
             ac.classList.remove('open');
             acActive = null;
-            // Move focus to next field
             if (inputId === 'from') document.getElementById('to').focus();
             else if (inputId === 'to') document.getElementById('dep')._flatpickr?.open();
         }
@@ -1532,10 +1465,8 @@ function showAC(input, ac) {
     let results;
 
     if (raw.length === 0) {
-        // Show popular airports when empty
         results = AP.slice(0, 10);
     } else {
-        // Smart search: prioritize starts-with, then includes
         const starts = AP.filter(a =>
             a.c.toLowerCase().startsWith(raw) ||
             a.ci.toLowerCase().startsWith(raw)
@@ -1560,7 +1491,7 @@ function showAC(input, ac) {
         `<div class="ac-i" data-code="${a.c}" data-city="${a.ci}">
             <div class="ac-icon">${a.c}</div>
             <div style="flex:1;min-width:0;">
-                <div class="ac-city">${highlight(a.ci, raw)} <span style="color:var(--t4);font-weight:400;font-size:12px;">(${a.c})</span></div>
+                <div class="ac-city">${highlight(a.ci, raw)} <span style="color:var(--text-light);font-weight:400;font-size:12px;">(${a.c})</span></div>
                 <div class="ac-name">${a.n}</div>
             </div>
             <span class="ac-ctry">${a.co}</span>
@@ -1570,26 +1501,22 @@ function showAC(input, ac) {
     acActive = ac;
 }
 
-// Highlight matching text
 function highlight(text, query) {
     if (!query) return text;
     const idx = text.toLowerCase().indexOf(query);
     if (idx === -1) return text;
-    return text.substring(0, idx) + '<b style="color:var(--coral);">' + text.substring(idx, idx + query.length) + '</b>' + text.substring(idx + query.length);
+    return text.substring(0, idx) + '<b style="color:var(--primary);">' + text.substring(idx, idx + query.length) + '</b>' + text.substring(idx + query.length);
 }
 
-// Initialize both fields
 initAC('from', 'fromAC');
 initAC('to', 'toAC');
 
-// Swap airports
 function swp() {
     const f = document.getElementById('from'), t = document.getElementById('to');
     const tmpVal = f.value; f.value = t.value; t.value = tmpVal;
     const tmpCode = f.dataset.code; f.dataset.code = t.dataset.code; t.dataset.code = tmpCode;
 }
 
-// Close autocomplete when clicking outside
 document.addEventListener('click', e => {
     if (!e.target.closest('.sf')) {
         document.querySelectorAll('.ac').forEach(a => a.classList.remove('open'));
@@ -1597,7 +1524,7 @@ document.addEventListener('click', e => {
 });
 
 // ========== FLATPICKR DATES ==========
-const fpOpts={dateFormat:'Y-m-d',altInput:true,altFormat:'M d, Y',minDate:'today',theme:'dark',disableMobile:true};
+const fpOpts={dateFormat:'Y-m-d',altInput:true,altFormat:'M d, Y',minDate:'today',disableMobile:true};
 window.fpDep=flatpickr('#dep',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
 window.fpRet=flatpickr('#ret',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
 flatpickr('#hIn',{...fpOpts,locale:lang==='es'?'es':lang==='pt'?'pt':'default'});
@@ -1617,7 +1544,7 @@ function getCode(id){const el=document.getElementById(id);return(el.dataset.code
 
 function renderFlightCard(fl,i,f,tt,d,tripType,cabinType){
     const stops=fl.stops===0?t('direct'):fl.stops===1?t('stop1'):`${fl.stops} ${t('stops')}`;
-    const stopsColor=fl.stops===0?'#06d6a0':fl.stops===1?'#ffb347':'#94a3b8';
+    const stopsColor=fl.stops===0?'#0f9d58':fl.stops===1?'#f9ab00':'#9aa0a6';
     const tripLabel=tripType==='rt'?t('rt'):t('ow');
     const cabinLabel=cabinType==='economy'?t('eco'):cabinType==='business'?t('biz'):cabinType==='first'?t('first'):'Premium';
     const paxParts=[];
@@ -1625,15 +1552,15 @@ function renderFlightCard(fl,i,f,tt,d,tripType,cabinType){
     if(paxC>0)paxParts.push(paxC+' '+t('wamsg_children'));
     if(paxI>0)paxParts.push(paxI+' '+t('wamsg_infants'));
     const paxLabel=paxParts.join(', ');
-    const layoverTxt=(fl.layovers||[]).map(l=>`${l.city} (${l.durationLabel})`).join(' → ');
+    const layoverTxt=(fl.layovers||[]).map(l=>`${l.city} (${l.durationLabel})`).join(' \u2192 ');
     const bagsInfo=[];
-    if(fl.bagsCarryOn!==null&&fl.bagsCarryOn!==undefined) bagsInfo.push(fl.bagsCarryOn>0?'<i class="bi bi-bag-check-fill" style="color:#06d6a0;"></i>':'<i class="bi bi-bag-x-fill" style="color:#ff5252;"></i>');
-    if(fl.bagsChecked!==null&&fl.bagsChecked!==undefined) bagsInfo.push(fl.bagsChecked>0?'<i class="bi bi-luggage-fill" style="color:#06d6a0;"></i>':'<i class="bi bi-luggage-fill" style="color:#ff5252;"></i>');
+    if(fl.bagsCarryOn!==null&&fl.bagsCarryOn!==undefined) bagsInfo.push(fl.bagsCarryOn>0?'<i class="bi bi-bag-check-fill" style="color:#0f9d58;"></i>':'<i class="bi bi-bag-x-fill" style="color:#ea4335;"></i>');
+    if(fl.bagsChecked!==null&&fl.bagsChecked!==undefined) bagsInfo.push(fl.bagsChecked>0?'<i class="bi bi-luggage-fill" style="color:#0f9d58;"></i>':'<i class="bi bi-luggage-fill" style="color:#ea4335;"></i>');
     const co2kg=fl.co2?Math.round(fl.co2/1000):0;
     const co2diff=fl.co2Diff||0;
-    const co2Color=co2diff<=0?'#06d6a0':'#ff5252';
+    const co2Color=co2diff<=0?'#0f9d58':'#ea4335';
     const retDate=document.getElementById('ret').value;
-    const msgLines=[t('wamsg_head'),'','✈️ '+t('wamsg_airline')+': '+fl.airline+(fl.flightNumber?' | '+fl.flightNumber:''),'✈️ '+(fl.aircraft||''),'🛫 '+t('wamsg_route')+': '+(fl.originAirport||fl.origin||f)+' ('+(fl.origin||f)+') → '+(fl.destinationAirport||fl.destination||tt)+' ('+(fl.destination||tt)+')','📅 '+t('wamsg_date')+': '+(fl.departureDate||d)+(tripType==='rt'&&retDate?' → '+retDate:''),'🕐 '+t('wamsg_dep')+': '+(fl.departureTime||'--:--')+' | '+t('wamsg_arr')+': '+(fl.arrivalTime||'--:--'),'⏱️ '+t('wamsg_dur')+': '+(fl.duration||'N/A'),'📍 '+t('wamsg_stops')+': '+stops+(layoverTxt?' ('+layoverTxt+')':''),'💺 '+t('wamsg_class')+': '+cabinLabel+(fl.legroom?' | Legroom: '+fl.legroom:''),'🎫 '+t('wamsg_trip')+': '+tripLabel,'👥 '+t('wamsg_pax')+': '+paxLabel,'','💰 '+t('wamsg_price')+': $'+fl.price+' '+t('pp')].filter(l=>l!==undefined&&l!=='✈️ ').join('\n');
+    const msgLines=[t('wamsg_head'),'','\u2708\uFE0F '+t('wamsg_airline')+': '+fl.airline+(fl.flightNumber?' | '+fl.flightNumber:''),'\u2708\uFE0F '+(fl.aircraft||''),'\uD83D\uDEEB '+t('wamsg_route')+': '+(fl.originAirport||fl.origin||f)+' ('+(fl.origin||f)+') \u2192 '+(fl.destinationAirport||fl.destination||tt)+' ('+(fl.destination||tt)+')','\uD83D\uDCC5 '+t('wamsg_date')+': '+(fl.departureDate||d)+(tripType==='rt'&&retDate?' \u2192 '+retDate:''),'\uD83D\uDD50 '+t('wamsg_dep')+': '+(fl.departureTime||'--:--')+' | '+t('wamsg_arr')+': '+(fl.arrivalTime||'--:--'),'\u23F1\uFE0F '+t('wamsg_dur')+': '+(fl.duration||'N/A'),'\uD83D\uDCCD '+t('wamsg_stops')+': '+stops+(layoverTxt?' ('+layoverTxt+')':''),'\uD83D\uDCBA '+t('wamsg_class')+': '+cabinLabel+(fl.legroom?' | Legroom: '+fl.legroom:''),'\uD83C\uDFAB '+t('wamsg_trip')+': '+tripLabel,'\uD83D\uDC65 '+t('wamsg_pax')+': '+paxLabel,'','\uD83D\uDCB0 '+t('wamsg_price')+': $'+fl.price+' '+t('pp')].filter(l=>l!==undefined&&l!=='\u2708\uFE0F ').join('\n');
     const msg=encodeURIComponent(msgLines);
     const originCity=fl.originCity||f;
     const destCity=fl.destinationCity||tt;
@@ -1642,11 +1569,11 @@ function renderFlightCard(fl,i,f,tt,d,tripType,cabinType){
     if(fl.aircraft)tags.push(`<span class="res-tag"><i class="bi bi-airplane-engines"></i> ${fl.aircraft}</span>`);
     if(fl.legroom)tags.push(`<span class="res-tag"><i class="bi bi-arrows-expand"></i> ${fl.legroom}</span>`);
     if(bagsInfo.length)tags.push(`<span class="res-tag">${bagsInfo.join(' ')}</span>`);
-    if(co2kg)tags.push(`<span class="res-tag" style="color:${co2Color};"><i class="bi bi-leaf"></i> ${co2kg}kg CO₂ (${co2diff>0?'+':''}${co2diff}%)</span>`);
+    if(co2kg)tags.push(`<span class="res-tag" style="color:${co2Color};"><i class="bi bi-leaf"></i> ${co2kg}kg CO\u2082 (${co2diff>0?'+':''}${co2diff}%)</span>`);
     return `<div class="res-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
-<div class="res-header"><i class="bi bi-airplane-fill"></i><div><div class="res-header-txt">${originCity} → ${destCity} · ${tripLabel}</div><div class="res-header-sub">${fl.departureDate||d} · ${paxLabel}</div></div></div>
+<div class="res-header"><i class="bi bi-airplane-fill"></i><div><div class="res-header-txt">${originCity} \u2192 ${destCity} \u00B7 ${tripLabel}</div><div class="res-header-sub">${fl.departureDate||d} \u00B7 ${paxLabel}</div></div></div>
 <div class="res-inner">
-<div class="res-airline-row">${fl.airline} <span class="cabin-tag">· ${cabinLabel}</span></div>
+<div class="res-airline-row">${fl.airline} <span class="cabin-tag">\u00B7 ${cabinLabel}</span></div>
 <div class="res-flight">
 <img class="res-air-logo" src="${fl.airlineLogo||''}" alt="${fl.airline}" onerror="this.style.display='none'">
 <div class="res-times">
@@ -1668,7 +1595,7 @@ function doSearch(){
     const res=document.getElementById('results'),list=document.getElementById('resList');
     res.style.display='block';
     list.innerHTML='<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
-    document.getElementById('resTitle').textContent=`${f} → ${tt}`;
+    document.getElementById('resTitle').textContent=`${f} \u2192 ${tt}`;
     document.getElementById('resCount').textContent=t('searching');
     const cabinMap={economy:'ECONOMY',premium:'PREMIUM_ECONOMY',business:'BUSINESS',first:'FIRST'};
     const langMap={pt:'pt-BR',en:'en-US',es:'es-MX'};
@@ -1678,19 +1605,17 @@ function doSearch(){
     fetch(url).then(r=>r.json()).then(data=>{
         btn.disabled=false;btn.innerHTML=`<i class="bi bi-search"></i> ${t('search')}`;
         const flights=data.flights||[];
-        if(!flights.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--t3);"><i class="bi bi-airplane" style="font-size:32px;"></i><p style="margin-top:12px;">${t('noFlights')}</p>${data.error?`<p style="font-size:11px;margin-top:8px;color:var(--t4);">${data.error}</p>`:''}</div>`;document.getElementById('resCount').textContent='';return;}
-        // Store globally for filtering
+        if(!flights.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--text-tertiary);"><i class="bi bi-airplane" style="font-size:32px;"></i><p style="margin-top:12px;">${t('noFlights')}</p>${data.error?`<p style="font-size:11px;margin-top:8px;color:var(--text-light);">${data.error}</p>`:''}</div>`;document.getElementById('resCount').textContent='';return;}
         window._allFlights=flights;window._flightData=data;window._searchParams={f,tt,d,trip,cabin};
         window._activeFilters={stops:null,airline:null,sort:'best'};
         document.getElementById('resCount').textContent=`${flights.length} ${t('found')}`;
-        // Build filter bar
         const airlines=[];const airSet=new Set();
         flights.forEach(fl=>{if(!airSet.has(fl.airline)){airSet.add(fl.airline);airlines.push({name:fl.airline,logo:fl.airlineLogo,min:fl.price});}else{const a=airlines.find(x=>x.name===fl.airline);if(a&&fl.price<a.min)a.min=fl.price;}});
         airlines.sort((a,b)=>a.min-b.min);
         const stopsMap={};flights.forEach(fl=>{const s=fl.stops;stopsMap[s]=(stopsMap[s]||0)+1;});
         const cheapest=Math.min(...flights.map(f=>f.price));
         const bestLabel=lang==='pt'?'Melhores':lang==='es'?'Mejores':'Best';
-        const cheapLabel=lang==='pt'?'Mais Baratos':lang==='es'?'Más Baratos':'Cheapest';
+        const cheapLabel=lang==='pt'?'Mais Baratos':lang==='es'?'M\u00e1s Baratos':'Cheapest';
         const stopsLabel={0:{pt:'Direto',en:'Nonstop',es:'Directo'},1:{pt:'1 Parada',en:'1 Stop',es:'1 Escala'},2:{pt:'2+ Paradas',en:'2+ Stops',es:'2+ Escalas'}};
         const resetLabel=lang==='pt'?'Limpar':lang==='es'?'Limpiar':'Clear';
         const filtersHTML=`<div class="fl-filters" id="flFilters">
@@ -1700,32 +1625,30 @@ function doSearch(){
 </div>
 <div class="fl-chips">
 ${Object.keys(stopsMap).sort().map(s=>{const n=parseInt(s);const lb=(stopsLabel[Math.min(n,2)]||{})[lang]||(n+' stops');return `<div class="fl-chip" data-filter="stops" data-val="${n}" onclick="flToggle('stops',${n})"><i class="bi ${n===0?'bi-lightning-charge-fill':n===1?'bi-node-plus':'bi-diagram-3'}"></i> ${lb} <span class="fl-chip-count">${stopsMap[s]}</span></div>`;}).join('')}
-<div style="width:1px;background:rgba(255,255,255,.08);margin:0 2px;flex-shrink:0;"></div>
-${airlines.map(a=>`<div class="fl-chip" data-filter="airline" data-val="${a.name}" onclick="flToggle('airline','${a.name.replace(/'/g,"\\'")}')"><img src="${a.logo}" style="width:18px;height:18px;border-radius:4px;object-fit:contain;background:rgba(255,255,255,.9);" onerror="this.style.display='none'"> ${a.name} <span class="fl-chip-count">$${a.min}</span></div>`).join('')}
+<div style="width:1px;background:#e8eaed;margin:0 2px;flex-shrink:0;"></div>
+${airlines.map(a=>`<div class="fl-chip" data-filter="airline" data-val="${a.name}" onclick="flToggle('airline','${a.name.replace(/'/g,"\\'")}')"><img src="${a.logo}" style="width:18px;height:18px;border-radius:4px;object-fit:contain;background:#fff;border:1px solid #e8eaed;" onerror="this.style.display='none'"> ${a.name} <span class="fl-chip-count">$${a.min}</span></div>`).join('')}
 <button class="fl-reset" onclick="flReset()"><i class="bi bi-x-circle"></i> ${resetLabel}</button>
 </div></div>`;
         document.getElementById('resCount').insertAdjacentHTML('afterend','');
-        // Price insight panel
         const pi=data.priceInsight||{};
         let piHTML='';
         if(pi.current){
             const lvl=pi.level||'typical';
             const lvlLabel={low:{pt:'Preco Baixo',en:'Low Price',es:'Precio Bajo'},typical:{pt:'Preco Normal',en:'Typical Price',es:'Precio Normal'},high:{pt:'Preco Alto',en:'High Price',es:'Precio Alto'}};
             const lvlIcon={low:'bi-graph-down-arrow',typical:'bi-dash-lg',high:'bi-graph-up-arrow'};
-            const trendLabel={rising:{pt:'Precos subindo — reserve agora',en:'Prices rising — book now',es:'Precios subiendo — reserve ahora'},falling:{pt:'Precos caindo — pode esperar',en:'Prices dropping — can wait',es:'Precios bajando — puede esperar'},stable:{pt:'Precos estaveis',en:'Prices stable',es:'Precios estables'}};
+            const trendLabel={rising:{pt:'Precos subindo \u2014 reserve agora',en:'Prices rising \u2014 book now',es:'Precios subiendo \u2014 reserve ahora'},falling:{pt:'Precos caindo \u2014 pode esperar',en:'Prices dropping \u2014 can wait',es:'Precios bajando \u2014 puede esperar'},stable:{pt:'Precos estaveis',en:'Prices stable',es:'Precios estables'}};
             const trendIcon={rising:'bi-arrow-up-right',falling:'bi-arrow-down-right',stable:'bi-arrow-right'};
             const trend=pi.trend||'stable';
-            // Range bar position (0-100%)
             const lo=pi.low||0,tLo=pi.typicalLow||0,tHi=pi.typicalHigh||0;
             const rangeMax=tHi*1.5||500;
             const markerPos=Math.min(Math.max((pi.current/rangeMax)*100,2),98);
             const typLowPct=(tLo/rangeMax)*100;
             const typHighPct=(tHi/rangeMax)*100;
-            const markerColor=lvl==='low'?'#06d6a0':lvl==='high'?'#ff5252':'#38bdf8';
+            const markerColor=lvl==='low'?'#0f9d58':lvl==='high'?'#ea4335':'#1a73e8';
             piHTML=`<div class="pi-panel">
 <div class="pi-toggle" onclick="togglePI()">
 <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-<div class="pi-badge ${lvl}"><i class="bi ${lvlIcon[lvl]}"></i> ${(lvlLabel[lvl]||{})[lang]||lvlLabel[lvl]?.en||''} — $${pi.current}</div>
+<div class="pi-badge ${lvl}"><i class="bi ${lvlIcon[lvl]}"></i> ${(lvlLabel[lvl]||{})[lang]||lvlLabel[lvl]?.en||''} \u2014 $${pi.current}</div>
 <div class="pi-trend ${trend}"><i class="bi ${trendIcon[trend]}"></i> ${(trendLabel[trend]||{})[lang]||trendLabel[trend]?.en||''}</div>
 </div>
 <div class="pi-arrow" id="piArrow"><i class="bi bi-chevron-up"></i></div>
@@ -1733,7 +1656,7 @@ ${airlines.map(a=>`<div class="fl-chip" data-filter="airline" data-val="${a.name
 <div class="pi-body" id="piBody" style="margin-top:12px;">
 <div class="pi-range"><span>$${lo||'?'}</span>
 <div class="pi-range-bar">
-<div class="pi-range-fill" style="position:absolute;left:${typLowPct}%;width:${typHighPct-typLowPct}%;height:100%;background:rgba(56,189,248,.2);border-radius:3px;"></div>
+<div class="pi-range-fill" style="position:absolute;left:${typLowPct}%;width:${typHighPct-typLowPct}%;height:100%;background:rgba(26,115,232,.15);border-radius:3px;"></div>
 <div class="pi-range-marker" style="left:${markerPos}%;background:${markerColor};"></div>
 </div><span>$${tHi||'?'}</span></div>
 <div class="pi-chart"><canvas id="piChart"></canvas></div>
@@ -1745,7 +1668,6 @@ ${airlines.map(a=>`<div class="fl-chip" data-filter="airline" data-val="${a.name
 </div>`;
         }
         list.innerHTML=filtersHTML+piHTML+'<div id="flCardsList">'+flights.map((fl,i)=>renderFlightCard(fl,i,f,tt,d,trip,cabin)).join('')+'</div>';
-        // Fetch price calendar (async, appends when ready)
         fetch(`/api/priceGraph?origin=${f}&destination=${tt}&date=${d}&currency=USD`).then(r=>r.json()).then(pg=>{
             const prices=pg.prices||[];
             if(!prices.length)return;
@@ -1765,12 +1687,10 @@ ${airlines.map(a=>`<div class="fl-chip" data-filter="airline" data-val="${a.name
 <div class="pcal-p">$${p.price}</div>
 </div>`;
             }).join('');
-            // Scroll to selected date
             const sel=calEl.querySelector('.selected')||calEl.querySelector('.cheapest');
             if(sel)sel.scrollIntoView({inline:'center',behavior:'smooth',block:'nearest'});
         }).catch(()=>{});
 
-        // Draw price history chart
         if(pi.history&&pi.history.length>1){
             setTimeout(()=>{
                 const cvs=document.getElementById('piChart');
@@ -1787,7 +1707,6 @@ ${airlines.map(a=>`<div class="fl-chip" data-filter="airline" data-val="${a.name
                 const mn=Math.min(...vals),mx=Math.max(...vals);
                 const range=mx-mn||1;
                 const pad=4;
-                // Draw area fill
                 ctx.beginPath();
                 pts.forEach((p,i)=>{
                     const x=pad+(i/(pts.length-1))*(w-pad*2);
@@ -1795,24 +1714,21 @@ ${airlines.map(a=>`<div class="fl-chip" data-filter="airline" data-val="${a.name
                     i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
                 });
                 ctx.lineTo(w-pad,h);ctx.lineTo(pad,h);ctx.closePath();
-                const isDark=document.documentElement.getAttribute('data-theme')!=='light';
                 const grad=ctx.createLinearGradient(0,0,0,h);
-                grad.addColorStop(0,isDark?'rgba(56,189,248,.15)':'rgba(56,189,248,.1)');
-                grad.addColorStop(1,'rgba(56,189,248,0)');
+                grad.addColorStop(0,'rgba(26,115,232,.1)');
+                grad.addColorStop(1,'rgba(26,115,232,0)');
                 ctx.fillStyle=grad;ctx.fill();
-                // Draw line
                 ctx.beginPath();
                 pts.forEach((p,i)=>{
                     const x=pad+(i/(pts.length-1))*(w-pad*2);
                     const y=pad+((mx-p.v)/range)*(h-pad*2);
                     i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
                 });
-                ctx.strokeStyle='#38bdf8';ctx.lineWidth=2;ctx.stroke();
-                // Current price dot
+                ctx.strokeStyle='#1a73e8';ctx.lineWidth=2;ctx.stroke();
                 const lastX=w-pad;
                 const lastY=pad+((mx-vals[vals.length-1])/range)*(h-pad*2);
                 ctx.beginPath();ctx.arc(lastX,lastY,4,0,Math.PI*2);
-                ctx.fillStyle=pi.level==='low'?'#06d6a0':pi.level==='high'?'#ff5252':'#38bdf8';
+                ctx.fillStyle=pi.level==='low'?'#0f9d58':pi.level==='high'?'#ea4335':'#1a73e8';
                 ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1.5;ctx.stroke();
             },50);
         }
@@ -1850,7 +1766,6 @@ function setupLocAC(inputId,acId,apiUrl,renderFn){
     input.addEventListener('focus',()=>{if(ac.children.length&&input.value.length>=2)ac.classList.add('open');});
     document.addEventListener('click',e=>{if(!input.contains(e.target)&&!ac.contains(e.target))ac.classList.remove('open');});
 }
-// Hotel autocomplete
 setupLocAC('hDest','hDestAC','/api/hotelLocations',r=>{
     return `<div class="ac-i" data-label="${r.label||r.name}" data-name="${r.name}">
 <div class="ac-icon"><i class="bi bi-building" style="font-size:16px;"></i></div>
@@ -1861,7 +1776,6 @@ setupLocAC('hDest','hDestAC','/api/hotelLocations',r=>{
 ${r.hotels?`<span class="ac-ctry">${r.hotels.toLocaleString()} hotels</span>`:''}
 </div>`;
 });
-// Car autocomplete
 setupLocAC('carLoc','carLocAC','/api/carLocations',r=>{
     return `<div class="ac-i" data-label="${r.label||r.name}" data-name="${r.name}">
 <div class="ac-icon"><i class="bi bi-geo-alt-fill" style="font-size:16px;"></i></div>
@@ -1882,24 +1796,24 @@ function searchHotels(){
     fetch(`/api/hotels?destination=${d}&checkin=${ci}&checkout=${co}&adults=${paxA}`).then(r=>r.json()).then(data=>{
         const h=data.hotels||[];
         document.getElementById('resCount').textContent=h.length+' hotels';
-        if(!h.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--t3);">No hotels found.</div>';return;}
+        if(!h.length){list.innerHTML='<div style="text-align:center;padding:40px;color:var(--text-tertiary);">No hotels found.</div>';return;}
         list.innerHTML=h.map((ht,i)=>{
             const htMsg=[
                 lang==='pt'?'Oi Hudson! Quero reservar este hotel:':lang==='es'?'Hola Hudson! Quiero reservar este hotel:':'Hi Hudson! I want to book this hotel:',
-                '','🏨 Hotel: '+ht.name,
-                '📍 '+(ht.address?ht.address+', ':'')+ht.city,
-                '📅 Check-in: '+ci+(ht.checkin?.from?' ('+ht.checkin.from+')':''),
-                '📅 Check-out: '+co+(ht.checkout?.until?' ('+ht.checkout.until+')':''),
-                '👥 '+(lang==='pt'?'Hospedes':lang==='es'?'Huespedes':'Guests')+': '+paxA,
-                ht.stars?'⭐ '+Math.round(ht.stars)+' '+(lang==='pt'?'estrelas':lang==='es'?'estrellas':'stars'):'',
-                ht.rating?'📊 '+ht.rating+'/10 — '+ht.ratingWord+' ('+ht.reviewCount+' reviews)':'',
-                ht.isFreeCancel?'✅ '+(lang==='pt'?'Cancelamento gratis':lang==='es'?'Cancelacion gratis':'Free cancellation'):'',
-                '','💰 '+(lang==='pt'?'Preco':lang==='es'?'Precio':'Price')+': $'+ht.price+' total',
+                '','\uD83C\uDFE8 Hotel: '+ht.name,
+                '\uD83D\uDCCD '+(ht.address?ht.address+', ':'')+ht.city,
+                '\uD83D\uDCC5 Check-in: '+ci+(ht.checkin?.from?' ('+ht.checkin.from+')':''),
+                '\uD83D\uDCC5 Check-out: '+co+(ht.checkout?.until?' ('+ht.checkout.until+')':''),
+                '\uD83D\uDC65 '+(lang==='pt'?'Hospedes':lang==='es'?'Huespedes':'Guests')+': '+paxA,
+                ht.stars?'\u2B50 '+Math.round(ht.stars)+' '+(lang==='pt'?'estrelas':lang==='es'?'estrellas':'stars'):'',
+                ht.rating?'\uD83D\uDCCA '+ht.rating+'/10 \u2014 '+ht.ratingWord+' ('+ht.reviewCount+' reviews)':'',
+                ht.isFreeCancel?'\u2705 '+(lang==='pt'?'Cancelamento gratis':lang==='es'?'Cancelacion gratis':'Free cancellation'):'',
+                '','\uD83D\uDCB0 '+(lang==='pt'?'Preco':lang==='es'?'Precio':'Price')+': $'+ht.price+' total',
             ].filter(l=>l).join('\n');
             const msg=encodeURIComponent(htMsg);
             const starCount=Math.round(ht.stars||0);
-            const stars=starCount>0?'★'.repeat(starCount)+'☆'.repeat(Math.max(0,5-starCount)):'';
-            const rc=ht.rating>=9?'#06d6a0':ht.rating>=7?'#38bdf8':ht.rating>=5?'#ffb347':'#ff5252';
+            const stars=starCount>0?'\u2605'.repeat(starCount)+'\u2606'.repeat(Math.max(0,5-starCount)):'';
+            const rc=ht.rating>=9?'#0f9d58':ht.rating>=7?'#1a73e8':ht.rating>=5?'#f9ab00':'#ea4335';
             const freeCancelLabel=lang==='pt'?'Cancelamento gratis':lang==='es'?'Cancelacion gratis':'Free cancellation';
             const noPrepayLabel=lang==='pt'?'Sem pagamento antecipado':lang==='es'?'Sin pago anticipado':'No prepayment';
             const fromCenterLabel=lang==='pt'?'do centro':lang==='es'?'del centro':'from center';
@@ -1910,12 +1824,12 @@ function searchHotels(){
 <div class="htl-body">
 <div class="htl-img">
 ${ht.photo?`<img src="${ht.photo}" alt="${ht.name}" onerror="this.parentElement.style.display='none'" loading="lazy">`:''}
-${ht.isFreeCancel?`<div class="htl-badge green" style="background:rgba(6,214,160,.9);color:#fff;"><i class="bi bi-check-circle-fill"></i> ${freeCancelLabel}</div>`:''}
+${ht.isFreeCancel?`<div class="htl-badge green" style="background:rgba(15,157,88,.9);color:#fff;"><i class="bi bi-check-circle-fill"></i> ${freeCancelLabel}</div>`:''}
 </div>
 <div class="htl-info">
 <div class="htl-name">${ht.name}</div>
 ${stars?`<div class="htl-stars">${stars}</div>`:''}
-<div class="htl-loc"><i class="bi bi-geo-alt-fill"></i> ${ht.address?ht.address+', ':''}${ht.city}${ht.distance?' · '+ht.distance+' '+( ht.distanceUnit||'km')+' '+fromCenterLabel:''}</div>
+<div class="htl-loc"><i class="bi bi-geo-alt-fill"></i> ${ht.address?ht.address+', ':''}${ht.city}${ht.distance?' \u00B7 '+ht.distance+' '+( ht.distanceUnit||'km')+' '+fromCenterLabel:''}</div>
 ${ht.rating?`<div class="htl-rating">
 <span class="htl-rating-badge" style="background:${rc};">${ht.rating}</span>
 <span class="htl-rating-text">${ht.ratingWord||''}</span>
@@ -1942,14 +1856,14 @@ function searchTours(){
     if(!d)return;
     const res=document.getElementById('results'),list=document.getElementById('resList');
     res.style.display='block';
-    document.getElementById('resTitle').textContent=d+' — Tours';
+    document.getElementById('resTitle').textContent=d+' \u2014 Tours';
     document.getElementById('resCount').textContent='';
     const civ=`https://www.civitatis.com/en/?query=${encodeURIComponent(d)}&ag_aid=64713`;
     const via=`https://www.viator.com/searchResults/all?text=${encodeURIComponent(d)}&pid=P00006875`;
     list.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <a href="${civ}" target="_blank" class="res-card" style="text-decoration:none;"><div class="res-inner" style="flex-direction:column;text-align:center;gap:14px;padding:28px;"><div style="font-size:40px;">🌎</div><div style="font-size:18px;font-weight:800;color:var(--w);font-family:Outfit;">Civitatis</div><div style="font-size:13px;color:var(--t3);">Tours & ${t('explore')}</div><div style="padding:10px 22px;background:linear-gradient(135deg,var(--coral),var(--orange));border-radius:10px;color:var(--w);font-weight:700;font-size:13px;">${t('explore')}</div></div></a>
-        <a href="${via}" target="_blank" class="res-card" style="text-decoration:none;"><div class="res-inner" style="flex-direction:column;text-align:center;gap:14px;padding:28px;"><div style="font-size:40px;">🏛️</div><div style="font-size:18px;font-weight:800;color:var(--w);font-family:Outfit;">Viator</div><div style="font-size:13px;color:var(--t3);">Experiences & Tickets</div><div style="padding:10px 22px;background:linear-gradient(135deg,var(--green),#0ead8c);border-radius:10px;color:var(--w);font-weight:700;font-size:13px;">${t('explore')}</div></div></a>
-    </div><div style="text-align:center;margin-top:16px;"><a href="https://wa.me/14352146939?text=${encodeURIComponent('Help with tours in '+d)}" target="_blank" style="color:var(--t3);font-size:13px;text-decoration:none;"><i class="bi bi-whatsapp" style="color:#25d366;"></i> ${t('orAgent')}</a></div>`;
+        <a href="${civ}" target="_blank" class="res-card" style="text-decoration:none;"><div class="res-inner" style="flex-direction:column;text-align:center;gap:14px;padding:28px;"><div style="font-size:40px;">\uD83C\uDF0E</div><div style="font-size:18px;font-weight:800;color:var(--text-primary);font-family:Outfit;">Civitatis</div><div style="font-size:13px;color:var(--text-tertiary);">Tours & ${t('explore')}</div><div style="padding:10px 22px;background:var(--coral);border-radius:10px;color:#fff;font-weight:700;font-size:13px;">${t('explore')}</div></div></a>
+        <a href="${via}" target="_blank" class="res-card" style="text-decoration:none;"><div class="res-inner" style="flex-direction:column;text-align:center;gap:14px;padding:28px;"><div style="font-size:40px;">\uD83C\uDFDB\uFE0F</div><div style="font-size:18px;font-weight:800;color:var(--text-primary);font-family:Outfit;">Viator</div><div style="font-size:13px;color:var(--text-tertiary);">Experiences & Tickets</div><div style="padding:10px 22px;background:var(--green);border-radius:10px;color:#fff;font-weight:700;font-size:13px;">${t('explore')}</div></div></a>
+    </div><div style="text-align:center;margin-top:16px;"><a href="https://wa.me/14352146939?text=${encodeURIComponent('Help with tours in '+d)}" target="_blank" style="color:var(--text-tertiary);font-size:13px;text-decoration:none;"><i class="bi bi-whatsapp" style="color:#25d366;"></i> ${t('orAgent')}</a></div>`;
 }
 
 // ========== FLIGHT FILTERS ==========
@@ -1962,7 +1876,6 @@ function flSort(type){
 function flToggle(filterType,val){
     if(!window._allFlights)return;
     const af=window._activeFilters;
-    // Parse val to int for stops
     const parsedVal=filterType==='stops'?parseInt(val):val;
     if(af[filterType]===parsedVal){af[filterType]=null;}else{af[filterType]=parsedVal;}
     document.querySelectorAll(`.fl-chip[data-filter="${filterType}"]`).forEach(c=>{
@@ -1985,13 +1898,12 @@ function flApply(){
     }
     if(af.airline!==null)filtered=filtered.filter(f=>f.airline===af.airline);
     if(af.sort==='cheap')filtered.sort((a,b)=>a.price-b.price);
-    // Remove only flight cards, keep filters + pi-panel
     const container=document.getElementById('flCardsList');
     if(!container)return;
     const sp=window._searchParams;
     document.getElementById('resCount').textContent=`${filtered.length} ${t('found')}`;
     if(!filtered.length){
-        container.innerHTML=`<div class="res-card" style="text-align:center;padding:30px;color:var(--t3);font-size:13px;">${lang==='pt'?'Nenhum voo com esses filtros':lang==='es'?'Ningún vuelo con estos filtros':'No flights match these filters'}</div>`;
+        container.innerHTML=`<div class="res-card" style="text-align:center;padding:30px;color:var(--text-tertiary);font-size:13px;">${lang==='pt'?'Nenhum voo com esses filtros':lang==='es'?'Ning\u00fan vuelo con estos filtros':'No flights match these filters'}</div>`;
         return;
     }
     container.innerHTML=filtered.map((fl,i)=>renderFlightCard(fl,i,sp.f,sp.tt,sp.d,sp.trip,sp.cabin)).join('');
@@ -2012,12 +1924,12 @@ function searchCars(){
     if(!loc||!pickup||!dropoff){alert('Preencha todos os campos.');return;}
     const res=document.getElementById('results'),list=document.getElementById('resList');
     res.style.display='block';list.innerHTML='<div class="skel"></div><div class="skel"></div>';
-    document.getElementById('resTitle').textContent=loc+' — '+t('cars');
+    document.getElementById('resTitle').textContent=loc+' \u2014 '+t('cars');
     document.getElementById('resCount').textContent=t('searching');
     const langMap={pt:'pt-br',en:'en-gb',es:'es'};
     fetch(`/api/cars?location=${encodeURIComponent(loc)}&pickup=${pickup}&dropoff=${dropoff}&lang=${langMap[lang]||'en-gb'}`).then(r=>r.json()).then(data=>{
         const cars=data.cars||[];
-        if(!cars.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--t3);"><i class="bi bi-car-front" style="font-size:32px;"></i><p style="margin-top:12px;">${t('noCars')}</p>${data.error?`<p style="font-size:11px;margin-top:8px;color:var(--t4);">${data.error}</p>`:''}</div>`;document.getElementById('resCount').textContent='';return;}
+        if(!cars.length){list.innerHTML=`<div style="text-align:center;padding:40px;color:var(--text-tertiary);"><i class="bi bi-car-front" style="font-size:32px;"></i><p style="margin-top:12px;">${t('noCars')}</p>${data.error?`<p style="font-size:11px;margin-top:8px;color:var(--text-light);">${data.error}</p>`:''}</div>`;document.getElementById('resCount').textContent='';return;}
         document.getElementById('resCount').textContent=`${cars.length} ${t('carsFound')}`;
         const pickupLabel=lang==='pt'?'Retirada':lang==='es'?'Retiro':'Pickup';
         const dropoffLabel=lang==='pt'?'Devolucao':lang==='es'?'Devolucion':'Dropoff';
@@ -2029,31 +1941,31 @@ function searchCars(){
             const msgLines=[
                 lang==='pt'?'Oi Hudson! Quero alugar este carro:':lang==='es'?'Hola Hudson! Quiero alquilar este auto:':'Hi Hudson! I want to rent this car:',
                 '',
-                '🚗 '+c.name+' ('+( c.group||c.type||'')+')',
-                '🏢 '+(lang==='pt'?'Locadora':lang==='es'?'Empresa':'Supplier')+': '+c.supplier,
-                '📍 '+c.pickup,
-                '📅 '+pickupLabel+': '+pickup,
-                '📅 '+dropoffLabel+': '+dropoff,
+                '\uD83D\uDE97 '+c.name+' ('+( c.group||c.type||'')+')',
+                '\uD83C\uDFE2 '+(lang==='pt'?'Locadora':lang==='es'?'Empresa':'Supplier')+': '+c.supplier,
+                '\uD83D\uDCCD '+c.pickup,
+                '\uD83D\uDCC5 '+pickupLabel+': '+pickup,
+                '\uD83D\uDCC5 '+dropoffLabel+': '+dropoff,
                 '',
-                c.seats?'💺 '+seatsLabel+': '+c.seats:'',
-                c.transmission?'⚙️ '+c.transmission:'',
-                c.ac?'❄️ A/C':'',
-                c.doors?'🚪 '+doorsLabel+': '+c.doors:'',
+                c.seats?'\uD83D\uDCBA '+seatsLabel+': '+c.seats:'',
+                c.transmission?'\u2699\uFE0F '+c.transmission:'',
+                c.ac?'\u2744\uFE0F A/C':'',
+                c.doors?'\uD83D\uDEAA '+doorsLabel+': '+c.doors:'',
                 '',
-                '💰 '+(lang==='pt'?'Preco':lang==='es'?'Precio':'Price')+': $'+c.price+' '+totalLabel,
+                '\uD83D\uDCB0 '+(lang==='pt'?'Preco':lang==='es'?'Precio':'Price')+': $'+c.price+' '+totalLabel,
             ].filter(l=>l).join('\n');
             const msg=encodeURIComponent(msgLines);
             return `<div class="car-card">${i===0?`<div class="best"><i class="bi bi-trophy-fill"></i> ${t('best')}</div>`:''}
 <div class="car-body">
 <div class="car-img">
-${c.photo?`<img src="${c.photo}" alt="${c.name}" onerror="this.style.display='none'">`:'<i class="bi bi-car-front" style="font-size:48px;color:rgba(255,255,255,.2);"></i>'}
+${c.photo?`<img src="${c.photo}" alt="${c.name}" onerror="this.style.display='none'">`:'<i class="bi bi-car-front" style="font-size:48px;color:#dadce0;"></i>'}
 ${c.group?`<div class="car-group">${c.group}</div>`:''}
 </div>
 <div class="car-info">
 <div class="car-name">${c.name}</div>
 <div class="car-supplier">
 ${c.supplierLogo?`<img src="${c.supplierLogo}" alt="${c.supplier}" onerror="this.style.display='none'">`:''} ${c.supplier}
-${c.supplierRating?`<span style="padding:2px 7px;border-radius:5px;background:rgba(6,214,160,.12);color:#06d6a0;font-size:10px;font-weight:800;">${c.supplierRating}/10</span>`:''}
+${c.supplierRating?`<span style="padding:2px 7px;border-radius:5px;background:rgba(15,157,88,.1);color:#0f9d58;font-size:10px;font-weight:800;">${c.supplierRating}/10</span>`:''}
 </div>
 <div class="car-specs">
 ${c.seats?`<div class="car-spec"><i class="bi bi-people-fill"></i> ${c.seats} ${seatsLabel}</div>`:''}
@@ -2078,7 +1990,6 @@ ${c.fuel&&c.fuel!=='N/A'?`<div class="car-spec"><i class="bi bi-fuel-pump-fill">
 }
 
 // ========== QUICK SEARCH ==========
-// Switch date from price calendar and re-search
 function switchDate(newDate){
     window.fpDep.setDate(newDate,true);
     document.getElementById('dep').value=newDate;
@@ -2101,7 +2012,6 @@ let promoIdx=0,promoTimer;
 const promoSlides=document.querySelectorAll('.promo-slide');
 const promoDots=document.getElementById('promoDots');
 
-// Create dots
 promoSlides.forEach((_,i)=>{
     const d=document.createElement('button');
     d.className='promo-dot'+(i===0?' active':'');
@@ -2161,7 +2071,6 @@ ${i<2?'<div class="deal-hot"><i class="bi bi-fire"></i> HOT</div>':''}
         });
 }
 
-// Load deals on page load
 loadDeals();
 
 // ========== INIT ==========
