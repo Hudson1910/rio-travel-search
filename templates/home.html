@@ -66,6 +66,92 @@
             --radius-xl: 24px;
         }
 
+        [data-theme="dark"] {
+            --bg: #0f1117;
+            --white: #1a1d27;
+            --card: #1a1d27;
+            --text-primary: #e8eaed;
+            --text-secondary: #9aa0a6;
+            --text-tertiary: #6b7280;
+            --text-light: #5f6368;
+            --border: rgba(255,255,255,.08);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,.3);
+            --shadow-md: 0 4px 16px rgba(0,0,0,.3);
+            --shadow-lg: 0 8px 32px rgba(0,0,0,.4);
+            --shadow-xl: 0 16px 48px rgba(0,0,0,.5);
+            --primary-light: rgba(26,115,232,.15);
+        }
+        [data-theme="dark"] body { background: var(--bg); color: var(--text-primary); }
+        [data-theme="dark"] nav { background: #1a1d27; border-bottom-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] nav.scrolled { background: rgba(26,29,39,.95); }
+        [data-theme="dark"] .logo span { color: var(--text-primary); }
+        [data-theme="dark"] .nav-r a { color: var(--text-primary); }
+        [data-theme="dark"] .sb-box { background: #1e2130; border: 1px solid rgba(255,255,255,.06); }
+        [data-theme="dark"] .sb-tab { color: var(--text-tertiary); }
+        [data-theme="dark"] .sb-tab.on { color: var(--primary); }
+        [data-theme="dark"] .sb-tabs { border-bottom-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .sb-opts { border-bottom-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .opt-btn { border-color: rgba(255,255,255,.1); color: var(--text-secondary); }
+        [data-theme="dark"] .opt-btn:hover,[data-theme="dark"] .opt-btn.on { background: rgba(26,115,232,.15); color: var(--primary); border-color: var(--primary); }
+        [data-theme="dark"] .sf input,[data-theme="dark"] .sf select { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); color: var(--text-primary); }
+        [data-theme="dark"] .sf input:focus,[data-theme="dark"] .sf select:focus { border-color: var(--primary); background: rgba(26,115,232,.06); }
+        [data-theme="dark"] .sf input::placeholder { color: var(--text-tertiary); }
+        [data-theme="dark"] .sf label { color: var(--text-tertiary); }
+        [data-theme="dark"] .dd { background: #252836; border-color: rgba(255,255,255,.08); }
+        [data-theme="dark"] .dd-item { color: var(--text-secondary); }
+        [data-theme="dark"] .dd-item:hover { background: rgba(255,255,255,.04); color: var(--text-primary); }
+        [data-theme="dark"] .ac { background: #252836; border-color: rgba(255,255,255,.08); }
+        [data-theme="dark"] .ac-i:hover { background: rgba(255,255,255,.06); }
+        [data-theme="dark"] .ac-city { color: var(--text-primary); }
+        [data-theme="dark"] .pax-name { color: var(--text-primary); }
+        [data-theme="dark"] .pax-n { color: var(--text-primary); }
+        [data-theme="dark"] .pax-b { border-color: rgba(255,255,255,.1); color: var(--text-secondary); }
+        [data-theme="dark"] .swap { background: #252836; border-color: rgba(255,255,255,.08); color: var(--text-secondary); }
+        [data-theme="dark"] .hero { background: linear-gradient(180deg, #0f1117 0%, #161927 100%); }
+        [data-theme="dark"] .hero-img { opacity: .3; }
+        [data-theme="dark"] .promo-overlay { background: linear-gradient(90deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.3) 60%,transparent 100%); }
+        [data-theme="dark"] .res-card { background: #1e2130; border-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .res-card:hover { border-color: rgba(255,255,255,.12); }
+        [data-theme="dark"] .res-inner { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .res-ep .time { color: var(--text-primary); }
+        [data-theme="dark"] .res-ep .code { color: var(--text-tertiary); }
+        [data-theme="dark"] .res-price .amt { color: var(--text-primary); }
+        [data-theme="dark"] .res-line-bar { background: rgba(255,255,255,.15); }
+        [data-theme="dark"] .res-line-bar::before,[data-theme="dark"] .res-line-bar::after { background: rgba(255,255,255,.25); }
+        [data-theme="dark"] .res-airline-row { color: var(--text-secondary); }
+        [data-theme="dark"] .deal-card { background: #1e2130; border-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .deal-city { color: var(--text-primary); }
+        [data-theme="dark"] .dest-card { box-shadow: 0 4px 20px rgba(0,0,0,.4); }
+        [data-theme="dark"] .sec-h h2 { color: var(--text-primary); }
+        [data-theme="dark"] .feat { background: #1e2130; border-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .feat h3 { color: var(--text-primary); }
+        [data-theme="dark"] .agent-box { background: #1e2130; border-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .agent-box h3 { color: var(--text-primary); }
+        [data-theme="dark"] .btn-call { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.08); color: var(--text-primary); }
+        [data-theme="dark"] footer { background: #1a1d27; border-top-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .ft-col h4 { color: var(--text-primary); }
+        [data-theme="dark"] .ft-col a { color: var(--text-secondary); }
+        [data-theme="dark"] .ft-col p { color: var(--text-tertiary); }
+        [data-theme="dark"] .ft-col .ft-logo span { color: var(--text-primary); }
+        [data-theme="dark"] .theme-btn { border-color: rgba(255,255,255,.1); color: var(--text-secondary); }
+        [data-theme="dark"] .theme-btn:hover { background: rgba(255,255,255,.06); color: var(--primary); }
+        [data-theme="dark"] .lang-btn { border-color: rgba(255,255,255,.1); color: var(--text-secondary); }
+        [data-theme="dark"] .lang-dd { background: #252836; border-color: rgba(255,255,255,.08); }
+        [data-theme="dark"] .lang-opt:hover { background: rgba(255,255,255,.04); color: var(--text-primary); }
+        [data-theme="dark"] .lang-opt.on { background: rgba(26,115,232,.12); color: var(--primary); }
+        [data-theme="dark"] .chat-window { background: #1e2130; border-color: rgba(255,255,255,.08); }
+        [data-theme="dark"] .chat-msg.bot { background: #252836; color: var(--text-primary); }
+        [data-theme="dark"] .chat-input { border-top-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .chat-input input { background: #252836; border-color: rgba(255,255,255,.08); color: var(--text-primary); }
+        [data-theme="dark"] .chat-qbtn { border-color: var(--primary); }
+        [data-theme="dark"] .htl-card { background: #1e2130; border-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .htl-name { color: var(--text-primary); }
+        [data-theme="dark"] .htl-price { color: var(--text-primary); }
+        [data-theme="dark"] .car-card { background: #1e2130; border-color: rgba(255,255,255,.06); }
+        [data-theme="dark"] .car-name { color: var(--text-primary); }
+        [data-theme="dark"] .car-price { color: var(--text-primary); }
+        [data-theme="dark"] .skel { background: linear-gradient(90deg,#252836 25%,#2d3142 50%,#252836 75%); background-size: 200% 100%; }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text-primary); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
@@ -87,7 +173,8 @@
         .nav-r { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
         /* Hidden theme button (keeping for JS compat) */
-        .theme-btn { display: none; }
+        .theme-btn { width:38px;height:38px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text-secondary);font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s; }
+        .theme-btn:hover { background:rgba(0,0,0,.05);color:var(--primary); }
 
         /* LANG */
         .lang { position: relative; }
@@ -595,7 +682,7 @@
     </a>
     <div class="nav-r">
         <a href="/blog" class="nav-link" style="color:inherit;text-decoration:none;font-size:14px;font-weight:600;padding:8px 14px;border-radius:8px;transition:all .2s;">Blog</a>
-        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Dark/Light mode" style="display:none;"><i class="bi bi-moon-fill"></i></button>
+        <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="Dark/Light mode"><i class="bi bi-moon-fill"></i></button>
         <div class="lang">
             <button class="lang-btn" id="langBtn"><span class="f" id="langF">&#127463;&#127479;</span> <span id="langL">PT</span> <i class="bi bi-chevron-down" style="font-size:10px;"></i></button>
             <div class="lang-dd" id="langDD">
@@ -1005,14 +1092,22 @@
 <script>
 // ========== THEME ==========
 function toggleTheme(){
-    // No-op: light theme only
+    const html=document.documentElement;
+    const cur=html.getAttribute('data-theme');
+    const next=cur==='dark'?'light':'dark';
+    html.setAttribute('data-theme',next);
+    if(next==='light')html.removeAttribute('data-theme');
+    localStorage.setItem('rt-theme',next);
+    updateThemeIcon(next);
 }
 function updateThemeIcon(th){
-    // No-op: light theme only
+    const btn=document.getElementById('themeBtn');
+    if(btn)btn.innerHTML=th==='dark'?'<i class="bi bi-sun-fill"></i>':'<i class="bi bi-moon-fill"></i>';
 }
 (function(){
-    // Always light theme
-    document.documentElement.removeAttribute('data-theme');
+    const saved=localStorage.getItem('rt-theme')||'light';
+    if(saved==='dark')document.documentElement.setAttribute('data-theme','dark');
+    updateThemeIcon(saved);
 })();
 
 // ========== STATE ==========
