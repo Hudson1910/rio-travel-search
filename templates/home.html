@@ -125,10 +125,55 @@
         .hero h1{font-size:56px;font-weight:900;letter-spacing:-2.5px;line-height:1.06;margin-bottom:18px;color:var(--w);}
         .hero h1 b{background:linear-gradient(135deg,var(--coral),var(--orange),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
         .hero p{font-size:18px;color:var(--t2);line-height:1.7;max-width:580px;margin:0 auto;}
-        .hero-trust{display:flex;align-items:center;justify-content:center;gap:24px;margin-top:20px;flex-wrap:wrap;}
-        .hero-trust-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--t3);}
-        .hero-trust-item i{font-size:15px;color:var(--coral);}
-        [data-theme="light"] .hero-trust-item{color:#64748b;}
+
+        /* LAST MINUTE BANNER (below search box) */
+        .deals-banner{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 20px;margin-top:12px;border-radius:14px;background:rgba(255,82,82,.06);border:1px solid rgba(255,82,82,.12);cursor:pointer;transition:all .2s;position:relative;z-index:10;}
+        .deals-banner:hover{background:rgba(255,82,82,.1);border-color:rgba(255,82,82,.2);}
+        [data-theme="light"] .deals-banner{background:rgba(255,82,82,.04);border-color:rgba(255,82,82,.1);}
+        [data-theme="light"] .deals-banner:hover{background:rgba(255,82,82,.08);}
+        .deals-banner-icon{font-size:18px;color:var(--coral);}
+        .deals-banner-title{font-size:13px;font-weight:800;color:var(--coral);}
+        .deals-banner-text{font-size:13px;color:var(--t2);font-weight:500;}
+        .deals-banner-link{font-size:13px;font-weight:700;color:var(--w);text-decoration:underline;text-underline-offset:2px;}
+        [data-theme="light"] .deals-banner-link{color:#1a1a2e;}
+        @media(max-width:640px){.deals-banner{flex-wrap:wrap;gap:4px 8px;padding:10px 14px;}.deals-banner-text{font-size:12px;}}
+
+        /* DEALS SECTION */
+        .deals-sec{padding:0 20px 60px;max-width:1100px;margin:0 auto;}
+        .deals-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:20px;gap:16px;flex-wrap:wrap;}
+        .deals-head h2{font-family:Outfit;font-size:28px;font-weight:800;color:var(--w);letter-spacing:-.5px;}
+        [data-theme="light"] .deals-head h2{color:#1a1a2e;}
+        .deals-head p{font-size:14px;color:var(--t3);margin-top:2px;}
+        .deals-see-all{padding:10px 22px;border-radius:50px;border:1.5px solid var(--border);background:none;color:var(--t1);font-size:13px;font-weight:700;cursor:pointer;font-family:Inter;transition:all .2s;white-space:nowrap;}
+        .deals-see-all:hover{border-color:var(--coral);color:var(--coral);}
+        [data-theme="light"] .deals-see-all{border-color:rgba(0,0,0,.15);color:#1a1a2e;}
+        .deals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+        .deal-card{border-radius:16px;overflow:hidden;background:var(--card);border:1px solid var(--border);cursor:pointer;transition:all .3s;position:relative;}
+        .deal-card:hover{transform:translateY(-4px);border-color:rgba(255,82,82,.25);box-shadow:0 12px 36px rgba(0,0,0,.25);}
+        [data-theme="light"] .deal-card{background:#fff;border-color:rgba(0,0,0,.06);box-shadow:0 2px 12px rgba(0,0,0,.04);}
+        [data-theme="light"] .deal-card:hover{border-color:rgba(255,82,82,.15);box-shadow:0 12px 36px rgba(0,0,0,.08);}
+        .deal-img-wrap{position:relative;width:100%;height:160px;overflow:hidden;}
+        .deal-img{width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+        .deal-card:hover .deal-img{transform:scale(1.06);}
+        .deal-hot{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:6px;background:var(--coral);color:#fff;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:4px;}
+        .deal-hot i{font-size:11px;}
+        .deal-info{padding:14px 16px;}
+        .deal-route{font-size:11px;color:var(--t3);font-weight:600;display:flex;align-items:center;gap:4px;}
+        .deal-route i{font-size:10px;}
+        .deal-city{font-family:Outfit;font-size:18px;font-weight:800;color:var(--w);margin-top:4px;}
+        [data-theme="light"] .deal-city{color:#1a1a2e;}
+        .deal-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+        .deal-price-wrap{display:flex;align-items:baseline;gap:4px;}
+        .deal-from{font-size:11px;color:var(--t3);font-weight:500;}
+        .deal-price{font-family:Outfit;font-size:24px;font-weight:800;color:var(--coral);}
+        .deal-date{font-size:11px;color:var(--t3);font-weight:500;text-align:right;}
+        .deal-arrow{width:32px;height:32px;border-radius:50%;background:rgba(255,82,82,.08);display:flex;align-items:center;justify-content:center;color:var(--coral);font-size:14px;transition:all .2s;}
+        .deal-card:hover .deal-arrow{background:var(--coral);color:#fff;}
+        .deals-loading{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--t3);font-size:13px;gap:8px;grid-column:1/-1;}
+        .deals-loading i{animation:spin 1s linear infinite;}
+        @keyframes spin{to{transform:rotate(360deg);}}
+        @media(max-width:900px){.deals-grid{grid-template-columns:repeat(2,1fr);}}
+        @media(max-width:640px){.deals-grid{grid-template-columns:1fr;}.deals-head h2{font-size:22px;}.deal-img-wrap{height:140px;}}
 
         /* SEARCH */
         .sb{width:100%;max-width:880px;position:relative;z-index:10;}
@@ -742,10 +787,31 @@
         </div>
     </div>
 
+    <!-- DEALS BANNER -->
+    <div class="deals-banner" id="dealsBanner" onclick="scrollToDeals()">
+        <i class="bi bi-tag-fill deals-banner-icon"></i>
+        <span class="deals-banner-title" id="dealsBannerTitle">Last minute savings</span>
+        <span class="deals-banner-text" id="dealsBannerText">Ofertas de ultima hora saindo de Salt Lake City</span>
+        <span class="deals-banner-link" id="dealsBannerLink">Ver ofertas</span>
+    </div>
+
     <!-- RESULTS -->
     <div class="results" id="results">
         <div class="res-head"><h2 id="resTitle"></h2><span class="res-count" id="resCount"></span></div>
         <div id="resList"></div>
+    </div>
+</section>
+
+<!-- LAST MINUTE DEALS -->
+<section class="deals-sec ani" id="dealsAnchor">
+    <div class="deals-head">
+        <div>
+            <h2 id="dealsTitle">Last-minute deals</h2>
+            <p id="dealsSub">Os melhores precos para os proximos dias saindo de SLC</p>
+        </div>
+    </div>
+    <div class="deals-grid" id="dealsGrid">
+        <div class="deals-loading" id="dealsLoading"><i class="bi bi-arrow-repeat"></i> <span>Buscando ofertas...</span></div>
     </div>
 </section>
 
@@ -1962,6 +2028,49 @@ function qSearch(f,tt){
     window.scrollTo({top:0,behavior:'smooth'});
     setTimeout(doSearch,300);
 }
+
+// ========== DEALS ==========
+function scrollToDeals(){
+    document.getElementById('dealsAnchor').scrollIntoView({behavior:'smooth'});
+}
+
+function loadDeals(){
+    fetch('/api/deals')
+        .then(r=>r.json())
+        .then(data=>{
+            const grid=document.getElementById('dealsGrid');
+            const deals=data.deals||[];
+            if(!deals.length){
+                grid.innerHTML='<div class="deals-loading">Nenhuma oferta no momento</div>';
+                return;
+            }
+            grid.innerHTML=deals.map((d,i)=>{
+                const dateObj=new Date(d.date+'T12:00:00');
+                const dateStr=dateObj.toLocaleDateString(lang==='pt'?'pt-BR':lang==='es'?'es-ES':'en-US',{day:'numeric',month:'short'});
+                const fromLabel=lang==='pt'?'a partir de':lang==='es'?'desde':'from';
+                return `<div class="deal-card" onclick="qSearch('${d.origin}','${d.dest}')">
+<div class="deal-img-wrap">
+<img class="deal-img" src="${d.img}" alt="${d.city}" loading="lazy">
+${i<2?'<div class="deal-hot"><i class="bi bi-fire"></i> HOT</div>':''}
+</div>
+<div class="deal-info">
+<div class="deal-route">${d.origin} <i class="bi bi-arrow-right"></i> ${d.dest} ${d.flag}</div>
+<div class="deal-city">${d.city}</div>
+<div class="deal-bottom">
+<div class="deal-price-wrap"><span class="deal-from">${fromLabel}</span> <span class="deal-price">$${d.price}</span></div>
+<div class="deal-arrow"><i class="bi bi-arrow-right"></i></div>
+</div>
+<div class="deal-date"><i class="bi bi-calendar3"></i> ${dateStr}</div>
+</div></div>`;
+            }).join('');
+        })
+        .catch(()=>{
+            document.getElementById('dealsGrid').innerHTML='<div class="deals-loading">Erro ao carregar ofertas</div>';
+        });
+}
+
+// Load deals on page load
+loadDeals();
 
 // ========== INIT ==========
 setLang(lang);

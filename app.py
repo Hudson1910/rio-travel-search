@@ -139,6 +139,13 @@ def api_hotels():
     return jsonify(results)
 
 
+@app.route('/api/deals')
+def api_deals():
+    """Get last minute flight deals."""
+    deals = search.get_deals()
+    return jsonify({'deals': deals})
+
+
 @app.route('/contact')
 def contact():
     return render_template('contact.html', config=config)

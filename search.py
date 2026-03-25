@@ -1,6 +1,73 @@
 """Flight search via Google Flights API (RapidAPI) + Hotels via Booking COM."""
 import requests
+import json
+import os
+import time
+from datetime import datetime, timedelta
 from config import RAPIDAPI_KEY
+
+# ========== DEALS CACHE ==========
+DEALS_CACHE_FILE = os.path.join(os.path.dirname(__file__), 'deals_cache.json')
+DEALS_CACHE_TTL = 86400  # 24 hours
+
+DEAL_ROUTES = [
+    {'origin': 'SLC', 'dest': 'CUN', 'city': 'Cancun', 'country': 'Mexico', 'flag': '\U0001f1f2\U0001f1fd', 'img': 'https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=400&h=250&fit=crop'},
+    {'origin': 'SLC', 'dest': 'GRU', 'city': 'Sao Paulo', 'country': 'Brasil', 'flag': '\U0001f1e7\U0001f1f7', 'img': 'https://images.unsplash.com/photo-1543059080-f9b1272213d5?w=400&h=250&fit=crop'},
+    {'origin': 'SLC', 'dest': 'GIG', 'city': 'Rio de Janeiro', 'country': 'Brasil', 'flag': '\U0001f1e7\U0001f1f7', 'img': 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=400&h=250&fit=crop'},
+    {'origin': 'SLC', 'dest': 'LIS', 'city': 'Lisboa', 'country': 'Portugal', 'flag': '\U0001f1f5\U0001f1f9', 'img': 'https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=400&h=250&fit=crop'},
+    {'origin': 'SLC', 'dest': 'MIA', 'city': 'Miami', 'country': 'USA', 'flag': '\U0001f1fa\U0001f1f8', 'img': 'https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=400&h=250&fit=crop'},
+    {'origin': 'SLC', 'dest': 'LAS', 'city': 'Las Vegas', 'country': 'USA', 'flag': '\U0001f1fa\U0001f1f8', 'img': 'https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=400&h=250&fit=crop'},
+]
+
+
+def get_deals():
+    """Get cached deals or fetch new ones."""
+    # Try cache first
+    if os.path.exists(DEALS_CACHE_FILE):
+        try:
+            with open(DEALS_CACHE_FILE, 'r') as f:
+                cache = json.load(f)
+            if time.time() - cache.get('updated', 0) < DEALS_CACHE_TTL:
+                return cache.get('deals', [])
+        except Exception:
+            pass
+
+    # Fetch fresh deals
+    deals = []
+    next_month = (datetime.now() + timedelta(days=7)).strftime('%Y-%m-%d')
+
+    for route in DEAL_ROUTES:
+        try:
+            result = get_price_graph(route['origin'], route['dest'], next_month, 'USD')
+            prices = result.get('prices', [])
+            if prices:
+                valid = [p for p in prices if p.get('price', 0) > 0]
+                if valid:
+                    cheapest = min(valid, key=lambda x: x['price'])
+                    deals.append({
+                        'origin': route['origin'],
+                        'dest': route['dest'],
+                        'city': route['city'],
+                        'country': route['country'],
+                        'flag': route['flag'],
+                        'img': route['img'],
+                        'price': cheapest['price'],
+                        'date': cheapest['date'],
+                    })
+        except Exception as e:
+            print(f"[Deals] Error fetching {route['city']}: {e}")
+
+    # Sort by price
+    deals.sort(key=lambda x: x['price'])
+
+    # Save cache
+    try:
+        with open(DEALS_CACHE_FILE, 'w') as f:
+            json.dump({'updated': time.time(), 'deals': deals}, f)
+    except Exception:
+        pass
+
+    return deals
 
 # ========== GOOGLE FLIGHTS ==========
 GF_HEADERS = {
