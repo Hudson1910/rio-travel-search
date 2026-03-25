@@ -121,20 +121,31 @@
         .hero-text{text-align:center;max-width:750px;margin:0 auto 32px;position:relative;z-index:1;}
         .hero h1{font-size:48px;font-weight:900;letter-spacing:-2.5px;line-height:1.08;margin-bottom:14px;color:var(--w);}
         .hero h1 b{background:linear-gradient(135deg,var(--coral),var(--orange),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-        .hero p{font-size:17px;color:var(--t2);line-height:1.6;max-width:520px;margin:0 auto;}
 
-        /* PROMO BANNER (big image like Orbitz/Expedia) */
-        .promo-banner{width:100%;max-width:1100px;margin:0 auto;padding:0 20px;}
-        .promo-card{position:relative;width:100%;border-radius:20px;overflow:hidden;min-height:380px;display:flex;align-items:flex-end;}
-        .promo-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+        /* PROMO CAROUSEL */
+        .promo-banner{width:100%;max-width:1100px;margin:0 auto;padding:0 20px;position:relative;}
+        .promo-track{position:relative;width:100%;border-radius:20px;overflow:hidden;min-height:380px;}
+        .promo-slide{position:absolute;inset:0;display:flex;align-items:flex-end;opacity:0;transition:opacity .8s ease;pointer-events:none;}
+        .promo-slide.active{opacity:1;pointer-events:auto;}
+        .promo-slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
         .promo-overlay{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.15) 60%,transparent 100%);}
         .promo-content{position:relative;z-index:1;padding:40px;max-width:420px;}
         .promo-content h2{font-family:Outfit;font-size:36px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:10px;letter-spacing:-1px;}
         .promo-content p{font-size:15px;color:rgba(255,255,255,.85);line-height:1.5;margin-bottom:18px;}
         .promo-btn{display:inline-flex;align-items:center;gap:6px;padding:12px 28px;border-radius:50px;background:var(--coral);color:#fff;font-size:14px;font-weight:700;text-decoration:none;transition:all .2s;font-family:Inter;border:none;cursor:pointer;}
         .promo-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,82,82,.4);background:var(--orange);}
-        @media(max-width:900px){.promo-card{min-height:300px;}.promo-content h2{font-size:28px;}.promo-content{padding:28px;}}
-        @media(max-width:640px){.promo-card{min-height:260px;border-radius:16px;}.promo-content{padding:20px;max-width:280px;}.promo-content h2{font-size:24px;}.promo-content p{font-size:13px;margin-bottom:14px;}.promo-btn{padding:10px 22px;font-size:13px;}}
+        /* Dots */
+        .promo-dots{display:flex;justify-content:center;gap:8px;margin-top:14px;}
+        .promo-dot{width:8px;height:8px;border-radius:50%;background:var(--t5);cursor:pointer;transition:all .3s;border:none;padding:0;}
+        .promo-dot.active{background:var(--coral);width:24px;border-radius:4px;}
+        [data-theme="light"] .promo-dot{background:#cbd5e1;}
+        /* Arrows */
+        .promo-arrows{position:absolute;top:50%;left:0;right:0;display:flex;justify-content:space-between;padding:0 8px;transform:translateY(-50%);z-index:5;pointer-events:none;}
+        .promo-arr{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);border:none;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;pointer-events:auto;opacity:0;transition:opacity .3s;}
+        .promo-banner:hover .promo-arr{opacity:1;}
+        .promo-arr:hover{background:rgba(0,0,0,.7);}
+        @media(max-width:900px){.promo-track{min-height:300px;}.promo-content h2{font-size:28px;}.promo-content{padding:28px;}}
+        @media(max-width:640px){.promo-track{min-height:260px;border-radius:16px;}.promo-content{padding:20px;max-width:280px;}.promo-content h2{font-size:24px;}.promo-content p{font-size:13px;margin-bottom:14px;}.promo-btn{padding:10px 22px;font-size:13px;}.promo-arr{width:32px;height:32px;font-size:13px;}}
 
         /* LAST MINUTE BANNER (below search box) */
         .deals-banner{display:flex;align-items:center;justify-content:center;gap:10px;padding:12px 20px;margin-top:12px;border-radius:14px;background:rgba(255,82,82,.06);border:1px solid rgba(255,82,82,.12);cursor:pointer;transition:all .2s;position:relative;z-index:10;}
@@ -478,8 +489,6 @@
         .dest-price{font-family:Outfit;font-size:14px;font-weight:700;color:var(--gold);margin-top:4px;}
         .dest-arrow{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;color:var(--w);font-size:14px;transition:background .2s;}
         .dest-card:hover .dest-arrow{background:var(--coral);}
-        .dest-lg{grid-column:span 2;aspect-ratio:2/1;}
-        .dest-lg .dest-name{font-size:28px;}
 
         /* FEATURES */
         .feats{padding:80px 20px;max-width:1000px;margin:0 auto;}
@@ -669,8 +678,7 @@
 <!-- HERO -->
 <section class="hero">
     <div class="hero-text ani">
-        <h1 id="heroTitle">Sua Proxima Aventura<br><b>Comeca Aqui</b></h1>
-        <p id="heroSub">De Park City para o mundo. Pesquise, compare e reserve — tudo em um so lugar.</p>
+        <h1 id="heroTitle">Pesquise. Compare.<br><b>Reserve.</b></h1>
     </div>
 
     <!-- SEARCH BOX -->
@@ -801,17 +809,60 @@
     </div>
 </section>
 
-<!-- PROMO BANNER -->
+<!-- PROMO CAROUSEL -->
 <div class="promo-banner ani">
-    <div class="promo-card">
-        <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=500&fit=crop" alt="Beach sunset" loading="lazy">
-        <div class="promo-overlay"></div>
-        <div class="promo-content">
-            <h2 id="promoTitle">Viaje por menos</h2>
-            <p id="promoSub">As melhores ferias comecam com os melhores precos. Confira nossas ofertas de ultima hora.</p>
-            <button class="promo-btn" onclick="scrollToDeals()"><i class="bi bi-tag-fill"></i> <span id="promoBtn">Ver ofertas</span></button>
+    <div class="promo-track" id="promoTrack">
+        <div class="promo-slide active">
+            <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&h=500&fit=crop" alt="Beach">
+            <div class="promo-overlay"></div>
+            <div class="promo-content">
+                <h2>Viaje por menos</h2>
+                <p>As melhores ferias comecam com os melhores precos. Confira nossas ofertas.</p>
+                <button class="promo-btn" onclick="scrollToDeals()"><i class="bi bi-tag-fill"></i> Ver ofertas</button>
+            </div>
+        </div>
+        <div class="promo-slide">
+            <img src="https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&h=500&fit=crop" alt="Mountains lake">
+            <div class="promo-overlay"></div>
+            <div class="promo-content">
+                <h2>Cancun a partir de $280</h2>
+                <p>Praias paradisiacas, all-inclusive e voos diretos. Reserve agora.</p>
+                <button class="promo-btn" onclick="qSearch('SLC','CUN')"><i class="bi bi-airplane-fill"></i> Buscar voos</button>
+            </div>
+        </div>
+        <div class="promo-slide">
+            <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=1200&h=500&fit=crop" alt="Rio de Janeiro">
+            <div class="promo-overlay"></div>
+            <div class="promo-content">
+                <h2>Rio de Janeiro te espera</h2>
+                <p>Cristo Redentor, Copacabana e muito mais. Voos saindo de Salt Lake City.</p>
+                <button class="promo-btn" onclick="qSearch('SLC','GIG')"><i class="bi bi-airplane-fill"></i> Buscar voos</button>
+            </div>
+        </div>
+        <div class="promo-slide">
+            <img src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=1200&h=500&fit=crop" alt="Lisboa">
+            <div class="promo-overlay"></div>
+            <div class="promo-content">
+                <h2>Europa te chama</h2>
+                <p>Lisboa, Porto e alem. Descubra Portugal com precos incriveis.</p>
+                <button class="promo-btn" onclick="qSearch('SLC','LIS')"><i class="bi bi-airplane-fill"></i> Buscar voos</button>
+            </div>
+        </div>
+        <div class="promo-slide">
+            <img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=1200&h=500&fit=crop" alt="Las Vegas">
+            <div class="promo-overlay"></div>
+            <div class="promo-content">
+                <h2>Las Vegas a partir de $55</h2>
+                <p>Shows, cassinos e diversao. A apenas 1h de voo de SLC.</p>
+                <button class="promo-btn" onclick="qSearch('SLC','LAS')"><i class="bi bi-airplane-fill"></i> Buscar voos</button>
+            </div>
         </div>
     </div>
+    <div class="promo-arrows">
+        <button class="promo-arr" onclick="promoNav(-1)"><i class="bi bi-chevron-left"></i></button>
+        <button class="promo-arr" onclick="promoNav(1)"><i class="bi bi-chevron-right"></i></button>
+    </div>
+    <div class="promo-dots" id="promoDots"></div>
 </div>
 
 <!-- LAST MINUTE DEALS -->
@@ -835,15 +886,15 @@
         <p class="tl">Os destinos mais buscados saindo dos EUA</p>
     </div>
     <div class="dest-grid">
-        <a class="dest-card dest-lg" onclick="qSearch('MIA','GRU')">
-            <img src="https://images.unsplash.com/photo-1543059080-f9b1272213d5?w=800&h=400&fit=crop" alt="Sao Paulo" loading="lazy">
+        <a class="dest-card" onclick="qSearch('MIA','GRU')">
+            <img src="https://images.unsplash.com/photo-1543059080-f9b1272213d5?w=600&h=450&fit=crop" alt="Sao Paulo" loading="lazy">
             <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
             <div class="dest-info"><div class="dest-name">Sao Paulo &#127463;&#127479;</div><div class="dest-sub">MIA → GRU</div><div class="dest-price">from $420</div></div>
         </a>
         <a class="dest-card" onclick="qSearch('JFK','GIG')">
-            <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&h=450&fit=crop" alt="Rio" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=600&h=450&fit=crop" alt="Rio de Janeiro" loading="lazy">
             <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
-            <div class="dest-info"><div class="dest-name">Rio &#127463;&#127479;</div><div class="dest-sub">JFK → GIG</div><div class="dest-price">from $480</div></div>
+            <div class="dest-info"><div class="dest-name">Rio de Janeiro &#127463;&#127479;</div><div class="dest-sub">JFK → GIG</div><div class="dest-price">from $480</div></div>
         </a>
         <a class="dest-card" onclick="qSearch('SLC','CUN')">
             <img src="https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=600&h=450&fit=crop" alt="Cancun" loading="lazy">
@@ -855,10 +906,15 @@
             <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
             <div class="dest-info"><div class="dest-name">Lisboa &#127477;&#127481;</div><div class="dest-sub">SLC → LIS</div><div class="dest-price">from $520</div></div>
         </a>
-        <a class="dest-card dest-lg" onclick="qSearch('SLC','LAS')">
-            <img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=800&h=400&fit=crop" alt="Las Vegas" loading="lazy">
+        <a class="dest-card" onclick="qSearch('SLC','LAS')">
+            <img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?w=600&h=450&fit=crop" alt="Las Vegas" loading="lazy">
             <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
             <div class="dest-info"><div class="dest-name">Las Vegas &#127482;&#127480;</div><div class="dest-sub">SLC → LAS</div><div class="dest-price">from $55</div></div>
+        </a>
+        <a class="dest-card" onclick="qSearch('SLC','MIA')">
+            <img src="https://images.unsplash.com/photo-1533106497176-45ae19e68ba2?w=600&h=450&fit=crop" alt="Miami" loading="lazy">
+            <div class="dest-ov"></div><div class="dest-arrow"><i class="bi bi-arrow-right"></i></div>
+            <div class="dest-info"><div class="dest-name">Miami &#127482;&#127480;</div><div class="dest-sub">SLC → MIA</div><div class="dest-price">from $180</div></div>
         </a>
     </div>
 </section>
@@ -1213,7 +1269,7 @@ const I={
         from:'Origem',to:'Destino',dep:'Ida',ret:'Volta',search:'Buscar',searchTours:'Buscar Tours',
         adults:'Adultos',children:'Criancas',infants:'Bebes',bags:'Bagagem',cabin:'Mao',checked:'Despachada',done:'Pronto',
         adultsAge:'12+ anos',childrenAge:'2-11 anos',infantsAge:'0-23 meses',
-        heroT:'Sua Proxima Aventura<br><b>Comeca Aqui</b>',heroS:'De Park City para o mundo. Pesquise, compare e reserve — tudo em um so lugar.',
+        heroT:'Pesquise. Compare.<br><b>Reserve.</b>',
         destLabel:'Destinos Populares',destTitle:'Explore o Mundo',destSub:'Os destinos mais buscados saindo dos EUA',
         whyLabel:'Por que Rio Travel',whyTitle:'Viaje com Confianca',
         f1:'Multilingual',f1d:'Atendimento em Portugues, Ingles e Espanhol.',f2:'Agente Certificado',f2d:'Agencia licenciada nos EUA. Seguranca total.',f3:'Precos em Tempo Real',f3d:'Busca direto nas companhias aereas.',f4:'Pagamento Flexivel',f4d:'Cartao, PIX ou parcelamento. Voce escolhe.',f5:'Suporte Dedicado',f5d:'Problemas no voo? Estamos aqui pra resolver.',f6:'Destinos Globais',f6d:'Brasil, Mexico, Europa, Caribe e muito mais.',
@@ -1229,7 +1285,7 @@ const I={
         from:'From',to:'To',dep:'Depart',ret:'Return',search:'Search',searchTours:'Search Tours',
         adults:'Adults',children:'Children',infants:'Infants',bags:'Bags',cabin:'Cabin',checked:'Checked',done:'Done',
         adultsAge:'12+ years',childrenAge:'2-11 years',infantsAge:'0-23 months',
-        heroT:'Your Next Adventure<br><b>Starts Here</b>',heroS:'From Park City to the world. Search, compare and book — all in one place.',
+        heroT:'Search. Compare.<br><b>Book.</b>',
         destLabel:'Popular Destinations',destTitle:'Explore the World',destSub:'Top destinations from the USA',
         whyLabel:'Why Rio Travel',whyTitle:'Travel with Confidence',
         f1:'Multilingual',f1d:'Support in English, Portuguese and Spanish.',f2:'Certified Agent',f2d:'Licensed agency in the USA. Total security.',f3:'Real-Time Prices',f3d:'Search directly from airlines.',f4:'Flexible Payment',f4d:'Card, wire or installments. Your choice.',f5:'Dedicated Support',f5d:'Flight issues? We are here to help.',f6:'Global Destinations',f6d:'Brazil, Mexico, Europe, Caribbean and more.',
@@ -1245,7 +1301,7 @@ const I={
         from:'Origen',to:'Destino',dep:'Ida',ret:'Vuelta',search:'Buscar',searchTours:'Buscar Tours',
         adults:'Adultos',children:'Ninos',infants:'Bebes',bags:'Equipaje',cabin:'Mano',checked:'Facturado',done:'Listo',
         adultsAge:'12+ anos',childrenAge:'2-11 anos',infantsAge:'0-23 meses',
-        heroT:'Tu Proxima Aventura<br><b>Empieza Aqui</b>',heroS:'De Park City al mundo. Busca, compara y reserva — todo en un solo lugar.',
+        heroT:'Busca. Compara.<br><b>Reserva.</b>',
         destLabel:'Destinos Populares',destTitle:'Explora el Mundo',destSub:'Los destinos mas buscados desde EE.UU.',
         whyLabel:'Por que Rio Travel',whyTitle:'Viaja con Confianza',
         f1:'Multilingue',f1d:'Atencion en Espanol, Ingles y Portugues.',f2:'Agente Certificado',f2d:'Agencia licenciada en EE.UU. Total seguridad.',f3:'Precios en Tiempo Real',f3d:'Busqueda directa en aerolineas.',f4:'Pago Flexible',f4d:'Tarjeta, transferencia o cuotas. Tu eliges.',f5:'Soporte Dedicado',f5d:'Problemas con el vuelo? Estamos aqui para ayudar.',f6:'Destinos Globales',f6d:'Brasil, Mexico, Europa, Caribe y mucho mas.',
@@ -1273,7 +1329,6 @@ function setLang(l){
 
     // ---- HERO ----
     document.getElementById('heroTitle').innerHTML=t('heroT');
-    document.getElementById('heroSub').textContent=t('heroS');
 
     // ---- TABS ----
     const tabKeys=['flights','hotels','tours','cars'];
@@ -2040,6 +2095,31 @@ function qSearch(f,tt){
     window.scrollTo({top:0,behavior:'smooth'});
     setTimeout(doSearch,300);
 }
+
+// ========== PROMO CAROUSEL ==========
+let promoIdx=0,promoTimer;
+const promoSlides=document.querySelectorAll('.promo-slide');
+const promoDots=document.getElementById('promoDots');
+
+// Create dots
+promoSlides.forEach((_,i)=>{
+    const d=document.createElement('button');
+    d.className='promo-dot'+(i===0?' active':'');
+    d.onclick=()=>promoGo(i);
+    promoDots.appendChild(d);
+});
+
+function promoGo(idx){
+    promoSlides[promoIdx].classList.remove('active');
+    promoDots.children[promoIdx].classList.remove('active');
+    promoIdx=(idx+promoSlides.length)%promoSlides.length;
+    promoSlides[promoIdx].classList.add('active');
+    promoDots.children[promoIdx].classList.add('active');
+    clearInterval(promoTimer);
+    promoTimer=setInterval(()=>promoGo(promoIdx+1),6000);
+}
+function promoNav(dir){promoGo(promoIdx+dir);}
+promoTimer=setInterval(()=>promoGo(promoIdx+1),6000);
 
 // ========== DEALS ==========
 function scrollToDeals(){
