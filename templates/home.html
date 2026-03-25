@@ -1573,64 +1573,80 @@ function removeMdLeg(){
     document.getElementById('mdRemBtn').style.display='none';
 }
 
+// Multi-dest state
+let mdAllLegs=[];
+let mdCurrentLeg=0;
+let mdSelectedFlights=[];
+
 async function searchMulti(){
     // Collect legs
-    const legs=[];
+    mdAllLegs=[];
     for(let i=1;i<=mdLegs;i++){
         const fromInp=document.getElementById('mdFrom'+i);
         const toInp=document.getElementById('mdTo'+i);
         const date=document.getElementById('mdDate'+i).value;
         const from=(fromInp.dataset.code||fromInp.value.match(/\((\w{3})\)/i)?.[1]||fromInp.value.trim()).toUpperCase().substring(0,3);
         const to=(toInp.dataset.code||toInp.value.match(/\((\w{3})\)/i)?.[1]||toInp.value.trim()).toUpperCase().substring(0,3);
-        console.log('Leg',i,':',from,'→',to,date);
         if(!from||!to||!date){
-            const msg=lang==='pt'?'Preencha todos os trechos (origem, destino e data).':lang==='es'?'Complete todos los tramos.':'Fill in all legs (origin, destination, date).';
+            const msg=lang==='pt'?'Preencha todos os trechos.':lang==='es'?'Complete todos los tramos.':'Fill in all legs.';
             alert(msg);return;
         }
-        legs.push({from,to,date,fromLabel:fromInp.value,toLabel:toInp.value});
+        mdAllLegs.push({from,to,date,fromLabel:fromInp.value,toLabel:toInp.value});
     }
+    mdCurrentLeg=0;
+    mdSelectedFlights=[];
+    searchMdLeg(0);
+}
 
-    // Show results
+async function searchMdLeg(legIdx){
+    const leg=mdAllLegs[legIdx];
     const res=document.getElementById('results');
     const list=document.getElementById('resList');
     res.style.display='block';
     const legLabel=lang==='pt'?'Trecho':lang==='es'?'Tramo':'Leg';
-    document.getElementById('resTitle').textContent='Multidestino';
-    document.getElementById('resCount').textContent=t('searching');
-    list.innerHTML='<div class="skel"></div><div class="skel"></div><div class="skel"></div>';
+    const selectLabel=lang==='pt'?'Selecione o voo':lang==='es'?'Selecciona el vuelo':'Select your flight';
+    const stepLabel=lang==='pt'?`Passo ${legIdx+1} de ${mdAllLegs.length}`:lang==='es'?`Paso ${legIdx+1} de ${mdAllLegs.length}`:`Step ${legIdx+1} of ${mdAllLegs.length}`;
+
+    // Show selected flights so far
+    let selectedHtml='';
+    mdSelectedFlights.forEach((sf,si)=>{
+        const sLeg=mdAllLegs[si];
+        selectedHtml+=`<div style="padding:12px 16px;background:#e8f5e9;border:1px solid #a5d6a7;border-radius:12px;margin-bottom:8px;display:flex;align-items:center;gap:12px;">
+<i class="bi bi-check-circle-fill" style="color:#2e7d32;font-size:18px;"></i>
+<div style="flex:1;">
+<div style="font-size:12px;font-weight:800;color:#2e7d32;">${legLabel} ${si+1}: ${sLeg.from} → ${sLeg.to}</div>
+<div style="font-size:13px;color:#1a1a2e;font-weight:600;">${sf.airline} ${sf.flightNumber} · ${sf.departureTime}–${sf.arrivalTime} · <b>$${sf.price}</b></div>
+</div></div>`;
+    });
+
+    document.getElementById('resTitle').innerHTML=`${stepLabel}`;
+    document.getElementById('resCount').textContent=`${leg.from} → ${leg.to}`;
+    list.innerHTML=selectedHtml+`<div style="margin:16px 0 12px;"><span style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:8px;background:var(--primary);color:#fff;font-size:12px;font-weight:800;"><i class="bi bi-airplane-fill"></i> ${legLabel} ${legIdx+1}: ${leg.from} → ${leg.to} — ${leg.date}</span><span style="margin-left:10px;font-size:13px;color:var(--text-secondary);font-weight:600;">${selectLabel}</span></div><div class="skel"></div><div class="skel"></div><div class="skel"></div>`;
     res.scrollIntoView({behavior:'smooth'});
 
     const cabinMap={economy:'ECONOMY',premium:'PREMIUM_ECONOMY',business:'BUSINESS',first:'FIRST'};
     const langMap={pt:'pt-BR',en:'en-US',es:'es-419'};
-    let allHtml='';
-    let totalMin=0;
 
-    for(let i=0;i<legs.length;i++){
-        const leg=legs[i];
-        try{
-            const url=`/api/flights?origin=${leg.from}&destination=${leg.to}&departure=${leg.date}&adults=${paxA}&children=${paxC}&infants=${paxI}&cabin=${cabinMap[cabin]||'ECONOMY'}&lang=${langMap[lang]||'en-US'}&currency=USD`;
-            console.log('Fetching:',url);
-            const resp=await fetch(url);
-            const data=await resp.json();
-            console.log('Response:',data.flights?.length,'flights, error:',data.error);
-            const flights=(data.flights||[]).slice(0,3);
+    try{
+        const url=`/api/flights?origin=${leg.from}&destination=${leg.to}&departure=${leg.date}&adults=${paxA}&children=${paxC}&infants=${paxI}&cabin=${cabinMap[cabin]||'ECONOMY'}&lang=${langMap[lang]||'en-US'}&currency=USD`;
+        const resp=await fetch(url);
+        const data=await resp.json();
+        const flights=(data.flights||[]).slice(0,8);
 
-            allHtml+=`<div style="margin-bottom:8px;margin-top:${i>0?'20px':'0'};"><span style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:8px;background:var(--primary-light);color:var(--primary);font-size:12px;font-weight:800;"><i class="bi bi-airplane-fill"></i> ${legLabel} ${i+1}: ${leg.from} → ${leg.to} — ${leg.date}</span></div>`;
+        let flightsHtml=selectedHtml+`<div style="margin:16px 0 12px;"><span style="display:inline-flex;align-items:center;gap:6px;padding:6px 16px;border-radius:8px;background:var(--primary);color:#fff;font-size:12px;font-weight:800;"><i class="bi bi-airplane-fill"></i> ${legLabel} ${legIdx+1}: ${leg.from} → ${leg.to} — ${leg.date}</span><span style="margin-left:10px;font-size:13px;color:var(--text-secondary);font-weight:600;">${selectLabel}</span></div>`;
 
-            if(!flights.length){
-                const noMsg=lang==='pt'?'Nenhum voo encontrado nesta rota. Tente outras datas ou solicite via WhatsApp.':lang==='es'?'No se encontraron vuelos en esta ruta. Prueba otras fechas o solicita por WhatsApp.':'No flights found on this route. Try other dates or request via WhatsApp.';
-                const waReq=encodeURIComponent(`${lang==='pt'?'Oi':'Hi'}! Preciso de voo ${leg.from}→${leg.to} em ${leg.date}, ${paxA} adulto(s), classe ${cabin}`);
-                allHtml+=`<div style="text-align:center;padding:20px;background:#fff;border-radius:12px;border:1px solid var(--border);">
+        if(!flights.length){
+            const noMsg=lang==='pt'?'Nenhum voo encontrado.':lang==='es'?'No se encontraron vuelos.':'No flights found.';
+            const waReq=encodeURIComponent(`${lang==='pt'?'Oi':'Hi'}! Multidestino - ${leg.from}→${leg.to} ${leg.date}`);
+            flightsHtml+=`<div style="text-align:center;padding:24px;background:#fff;border-radius:12px;border:1px solid var(--border);">
 <p style="color:var(--text-tertiary);font-size:13px;margin-bottom:12px;">${noMsg}</p>
-<a href="https://wa.me/14352146939?text=${waReq}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#25d366;color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px;"><i class="bi bi-whatsapp"></i> ${lang==='pt'?'Solicitar via WhatsApp':lang==='es'?'Solicitar por WhatsApp':'Request via WhatsApp'}</a></div>`;
-            }else{
-                totalMin+=flights[0].price;
-                flights.forEach((fl,fi)=>{
-                    const stops=fl.stops===0?t('direct'):fl.stops===1?t('stop1'):`${fl.stops} ${t('stops')}`;
-                    const stColor=fl.stops===0?'#059669':fl.stops===1?'#d97706':'#ef4444';
-                    const waMsg=encodeURIComponent(`${lang==='pt'?'Oi':'Hi'}! ${legLabel} ${i+1}: ${fl.airline} ${fl.flightNumber} ${leg.from}→${leg.to} ${leg.date} ${fl.departureTime}-${fl.arrivalTime} $${fl.price}`);
-                    allHtml+=`<div class="res-card" ${fi===0?'style="border-color:var(--primary);border-width:2px;"':''}>
-${fi===0?`<div class="best" style="background:var(--primary);">${t('best')}</div>`:''}
+<a href="https://wa.me/14352146939?text=${waReq}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#25d366;color:#fff;border-radius:10px;text-decoration:none;font-weight:700;font-size:13px;"><i class="bi bi-whatsapp"></i> WhatsApp</a></div>`;
+        }else{
+            flights.forEach((fl,fi)=>{
+                const stops=fl.stops===0?t('direct'):fl.stops===1?t('stop1'):`${fl.stops} ${t('stops')}`;
+                const stColor=fl.stops===0?'#059669':fl.stops===1?'#d97706':'#ef4444';
+                const selectBtn=lang==='pt'?'Selecionar':lang==='es'?'Seleccionar':'Select';
+                flightsHtml+=`<div class="res-card" style="cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor=''" onclick="selectMdFlight(${legIdx},${fi})">
 <div class="res-inner">
 <div class="res-airline-row">${fl.airlineLogo?`<img src="${fl.airlineLogo}" class="res-air-logo">`:''}${fl.airline} · ${fl.flightNumber} <span class="cabin-tag">${cabin}</span></div>
 <div class="res-flight">
@@ -1639,24 +1655,69 @@ ${fi===0?`<div class="best" style="background:var(--primary);">${t('best')}</div
 <div class="res-ep"><div class="time">${fl.arrivalTime}</div><div class="code">${fl.destination}</div></div>
 </div></div>
 <div class="res-bottom"><div class="res-price"><span class="amt">$${fl.price}</span><span class="pp">${t('pp')}</span></div>
-<a href="https://wa.me/14352146939?text=${waMsg}" target="_blank" class="res-cta"><i class="bi bi-whatsapp"></i> ${t('book')}</a></div></div>`;
-                });
-            }
-        }catch(e){
-            allHtml+=`<div style="padding:16px;color:var(--coral);font-size:13px;">Error: ${e.message}</div>`;
+<button style="padding:10px 22px;border-radius:50px;background:var(--primary);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:Inter;"><i class="bi bi-check2"></i> ${selectBtn}</button></div></div>`;
+            });
+            // Store flights for selection
+            window._mdFlights=flights;
         }
+        list.innerHTML=flightsHtml;
+    }catch(e){
+        list.innerHTML=selectedHtml+`<div style="padding:16px;color:var(--coral);">Error: ${e.message}</div>`;
     }
+}
 
-    // Total estimate
-    if(totalMin>0){
-        const totalLabel=lang==='pt'?'Estimativa total (mais baratos)':lang==='es'?'Estimacion total (mas baratos)':'Total estimate (cheapest)';
-        allHtml+=`<div style="margin-top:20px;padding:16px 20px;background:var(--primary-light);border-radius:12px;display:flex;align-items:center;justify-content:space-between;">
-<span style="font-size:14px;font-weight:700;color:var(--primary);"><i class="bi bi-calculator"></i> ${totalLabel}</span>
-<span style="font-family:Outfit;font-size:28px;font-weight:800;color:var(--primary);">$${totalMin}</span></div>`;
+function selectMdFlight(legIdx,flightIdx){
+    const fl=window._mdFlights[flightIdx];
+    mdSelectedFlights[legIdx]=fl;
+
+    if(legIdx+1<mdAllLegs.length){
+        // Next leg
+        searchMdLeg(legIdx+1);
+    }else{
+        // All legs selected — show summary
+        showMdSummary();
     }
+}
 
-    list.innerHTML=allHtml;
-    document.getElementById('resCount').textContent=`${legs.length} ${lang==='pt'?'trechos':lang==='es'?'tramos':'legs'}`;
+function showMdSummary(){
+    const res=document.getElementById('results');
+    const list=document.getElementById('resList');
+    const legLabel=lang==='pt'?'Trecho':lang==='es'?'Tramo':'Leg';
+    const doneLabel=lang==='pt'?'Resumo do Itinerario':lang==='es'?'Resumen del Itinerario':'Itinerary Summary';
+    const totalLabel=lang==='pt'?'Total estimado':lang==='es'?'Total estimado':'Estimated total';
+    const bookLabel=lang==='pt'?'Reservar tudo via WhatsApp':lang==='es'?'Reservar todo por WhatsApp':'Book all via WhatsApp';
+
+    document.getElementById('resTitle').textContent=doneLabel;
+    document.getElementById('resCount').textContent='';
+
+    let total=0;
+    let html='';
+    let waLines=[];
+
+    mdSelectedFlights.forEach((fl,i)=>{
+        const leg=mdAllLegs[i];
+        total+=fl.price;
+        waLines.push(`${legLabel} ${i+1}: ${fl.airline} ${fl.flightNumber} ${leg.from}→${leg.to} ${leg.date} ${fl.departureTime}-${fl.arrivalTime} $${fl.price}`);
+        html+=`<div style="padding:16px 20px;background:#fff;border:1px solid var(--border);border-radius:14px;margin-bottom:10px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,.04);">
+<div style="width:40px;height:40px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-family:Outfit;font-weight:800;font-size:16px;flex-shrink:0;">${i+1}</div>
+<div style="flex:1;">
+<div style="font-size:11px;color:var(--text-tertiary);font-weight:600;">${leg.from} → ${leg.to} · ${leg.date}</div>
+<div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-top:2px;">${fl.airline} ${fl.flightNumber}</div>
+<div style="font-size:12px;color:var(--text-secondary);margin-top:2px;">${fl.departureTime} – ${fl.arrivalTime} · ${fl.duration}</div>
+</div>
+${fl.airlineLogo?`<img src="${fl.airlineLogo}" style="width:40px;height:40px;border-radius:8px;object-fit:contain;background:#f5f6f8;padding:4px;">`:''}
+<div style="font-family:Outfit;font-size:22px;font-weight:800;color:var(--primary);">$${fl.price}</div>
+</div>`;
+    });
+
+    const waMsg=encodeURIComponent(`${lang==='pt'?'Oi':'Hi'}! Quero reservar multidestino:\n\n${waLines.join('\n')}\n\n${totalLabel}: $${total}\n${paxA} adulto(s), classe ${cabin}`);
+
+    html+=`<div style="margin-top:16px;padding:20px;background:var(--primary-light);border-radius:14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+<div><div style="font-size:13px;font-weight:600;color:var(--primary);">${totalLabel}</div><div style="font-family:Outfit;font-size:32px;font-weight:800;color:var(--primary);">$${total}</div></div>
+<a href="https://wa.me/14352146939?text=${waMsg}" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:14px 28px;background:#25d366;color:#fff;border-radius:14px;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 4px 16px rgba(37,211,102,.3);"><i class="bi bi-whatsapp" style="font-size:18px;"></i> ${bookLabel}</a>
+</div>`;
+
+    list.innerHTML=html;
 }
 
 // ========== POSITION DROPDOWN ==========
